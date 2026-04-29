@@ -47,6 +47,7 @@ Open `index.html` in a browser to view it locally. Edit the HTML, CSS, or JavaSc
 - Basic public-repository policy files
 - Issue and pull request templates
 - Basic GitHub Actions smoke checks
+- Monthly Dependabot checks for GitHub Actions
 - Temporary sponsorship notice
 
 ## Important notices
@@ -78,6 +79,7 @@ This repository includes:
 - issue templates for bugs, features, and documentation tasks;
 - a pull request template;
 - a basic GitHub Actions workflow;
+- monthly Dependabot checks for GitHub Actions;
 - CODEOWNERS review visibility;
 - `.editorconfig` and `.gitattributes` for cleaner editing and diffs.
 
