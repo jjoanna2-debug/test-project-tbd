@@ -44,6 +44,7 @@ Do not use this repository with production credentials, secrets, private keys, A
 - [SECURITY.md](SECURITY.md) — security policy and no-support expectations
 - [SUPPORT.md](SUPPORT.md) — support and maintenance boundaries
 - [CONTRIBUTING.md](CONTRIBUTING.md) — contribution rules and sensitive-information restrictions
+- [CONTRIBUTORS.md](CONTRIBUTORS.md) — maintainer and Codex assistance notes
 
 ## Next steps
 

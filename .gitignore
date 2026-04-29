@@ -1,12 +1,22 @@
 # macOS
 .DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+Desktop.ini
 
 # Logs
 *.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
 # Environment files
 .env
-.env.local
+.env.*
+!.env.example
 
 # Dependencies
 node_modules/
@@ -14,7 +24,20 @@ node_modules/
 # Build output
 dist/
 build/
+out/
+coverage/
 
 # Editor folders
 .vscode/
 .idea/
+
+# Python experiments
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Temporary files
+.cache/
+tmp/
+temp/
