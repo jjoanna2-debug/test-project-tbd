@@ -59,4 +59,4 @@ This includes, without limitation, loss of profits, revenue, business, opportuni
 
 ## License Relationship
 
-This disclaimer supplements and clarifies the risk allocation already reflected in the [MIT License](LICENSE). It does not replace the MIT License. See [LEGAL_NOTICES.md](LEGAL_NOTICES.md) for plain-language context. If there is any conflict between this disclaimer and the MIT License, the MIT License controls to the extent required by applicable law.
+This disclaimer supplements and clarifies the risk allocation already reflected in the [Apache License 2.0](LICENSE). It does not replace the Apache License 2.0. See [LEGAL_NOTICES.md](LEGAL_NOTICES.md) for plain-language context. If there is any conflict between this disclaimer and the Apache License 2.0, the Apache License 2.0 controls to the extent required by applicable law.

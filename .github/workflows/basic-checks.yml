@@ -28,9 +28,9 @@ jobs:
           required_files=(
             "README.md"
             "START_HERE.md"
-            "index.html"
-            "src/styles.css"
-            "src/main.js"
+            "Cargo.toml"
+            "Cargo.lock"
+            "src/main.rs"
             "scripts/check_repo.py"
             "scripts/doctor.sh"
             "docs/PROJECT_STRUCTURE.md"
@@ -66,15 +66,19 @@ jobs:
             fi
           done
 
-      - name: Verify starter page references
+      - name: Verify Rust starter references
         shell: bash
         run: |
           set -euo pipefail
 
-          grep -q 'src/styles.css' index.html
-          grep -q 'src/main.js' index.html
-          grep -q 'practice-button' index.html
-          grep -q 'practice-button' src/main.js
+          grep -q 'edition = "2021"' Cargo.toml
+          grep -q 'license = "Apache-2.0"' Cargo.toml
+          grep -q 'name = "test-project-tbd"' Cargo.lock
+          grep -q 'GitHub staging lab ready.' src/main.rs
+
+      - name: Check Rust project
+        shell: bash
+        run: cargo test
 
       - name: Run repository doctor
         shell: bash

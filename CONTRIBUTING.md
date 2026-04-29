@@ -13,7 +13,7 @@ By opening an issue, pull request, discussion, comment, or other contribution, y
 - your contribution is your own work or you have the right to submit it;
 - your contribution does not contain secrets, credentials, private keys, tokens, passwords, personal data, confidential information, or third-party material you are not authorized to share;
 - your contribution may be modified, rejected, closed, deleted, or ignored at the author's discretion; and
-- your contribution is submitted under the same MIT License terms that apply to this repository, unless clearly stated otherwise in writing.
+- your contribution is submitted under the same Apache License 2.0 terms that apply to this repository, unless clearly stated otherwise in writing.
 
 ## No Sensitive Information
 

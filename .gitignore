@@ -26,6 +26,7 @@ dist/
 build/
 out/
 coverage/
+target/
 
 # Editor folders
 .vscode/

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Small repository structure check for the learning lab."""
+"""Small repository structure check for the staging lab."""
 
 from pathlib import Path
 
@@ -9,9 +9,9 @@ ROOT = Path(__file__).resolve().parents[1]
 REQUIRED_FILES = [
     "README.md",
     "START_HERE.md",
-    "index.html",
-    "src/styles.css",
-    "src/main.js",
+    "Cargo.toml",
+    "Cargo.lock",
+    "src/main.rs",
     "docs/PROJECT_STRUCTURE.md",
     "docs/LOCAL_SETUP.md",
     "docs/GITHUB_WORKFLOW.md",
@@ -38,16 +38,17 @@ REQUIRED_FILES = [
     ".github/ISSUE_TEMPLATE/documentation_task.yml",
 ]
 
-STARTER_REFERENCES = {
-    "index.html": ["src/styles.css", "src/main.js", "practice-button"],
-    "src/main.js": ["practice-button"],
+SOURCE_REFERENCES = {
+    "Cargo.toml": ['edition = "2021"', 'license = "Apache-2.0"'],
+    "Cargo.lock": ['name = "test-project-tbd"'],
+    "src/main.rs": ["GitHub staging lab ready."],
 }
 
 
 def main() -> int:
     missing = [path for path in REQUIRED_FILES if not (ROOT / path).is_file()]
 
-    for path, expected_values in STARTER_REFERENCES.items():
+    for path, expected_values in SOURCE_REFERENCES.items():
         content = (ROOT / path).read_text(encoding="utf-8")
         for expected in expected_values:
             if expected not in content:

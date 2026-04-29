@@ -10,7 +10,7 @@ This project follows a simple chronological changelog. It is a learning reposito
 
 - Starter public repository structure.
 - Beginner onboarding documentation.
-- Small static starter page with HTML, CSS, and JavaScript.
+- Rust starter project.
 - Small Python and shell checks for repository structure.
 - Project structure documentation in `docs/PROJECT_STRUCTURE.md`.
 - Local setup guide in `docs/LOCAL_SETUP.md`.
@@ -22,13 +22,14 @@ This project follows a simple chronological changelog. It is a learning reposito
 - Monthly Dependabot checks for GitHub Actions.
 - `CODEOWNERS`, `.editorconfig`, and `.gitattributes` for repository hygiene.
 - Roadmap for future learning steps.
-- Practice issues for branch workflow, screenshots/examples, and future GitHub Pages.
+- Practice issues for branch workflow and future project direction.
 
 ### Changed
 
 - Improved repository documentation and public-use boundaries.
 - Updated README and starter guide to reflect the expanded repository structure.
 - Expanded the basic GitHub Actions smoke test to verify the current file layout.
+- Replaced the static web starter with a Rust-first staging project.
 
 ### Notes
 

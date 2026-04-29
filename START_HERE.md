@@ -6,14 +6,14 @@ If you are new to GitHub, think of a repository as a project folder that remembe
 
 ## What This Repo Is
 
-This is a public test project for learning the basics:
+This is a public staging project for learning the basics:
 
 - what files live in a repository;
 - how commits work;
 - how branches work;
 - how pull requests work;
 - how public repository policy files work;
-- how a small static HTML/CSS/JavaScript project is structured.
+- how a small Rust project is structured.
 - how small Python and shell checks can support a repository.
 
 It is not a production app. That is okay. The point is to learn the shape of a clean repository before building something bigger.
@@ -24,15 +24,15 @@ It is not a production app. That is okay. The point is to learn the shape of a c
 | --- | --- |
 | `README.md` | The front page of the project. Start here when visiting the repo. |
 | `START_HERE.md` | A beginner-friendly guide to what is going on. |
-| `index.html` | A small starter page for practicing project changes. |
-| `src/styles.css` | Styling for the starter page. |
-| `src/main.js` | Small JavaScript behavior for the starter page. |
-| `scripts/check_repo.py` | Python check for required files and starter-page references. |
+| `Cargo.toml` | Rust package manifest and project metadata. |
+| `Cargo.lock` | Rust dependency lockfile for reproducible local and CI checks. |
+| `src/main.rs` | Small Rust starter program. |
+| `scripts/check_repo.py` | Python check for required files and Rust starter references. |
 | `scripts/doctor.sh` | Shell wrapper for running the repository check locally. |
 | `docs/LOCAL_SETUP.md` | How to clone, open, edit, and commit locally. |
 | `docs/GITHUB_WORKFLOW.md` | How to branch, commit, push, open a pull request, and merge. |
 | `docs/PROJECT_STRUCTURE.md` | A fuller map of the repository structure. |
-| `LICENSE` | The legal permission for using the project. This repo uses MIT. |
+| `LICENSE` | The legal permission for using the project. This repo uses Apache-2.0. |
 | `LEGAL_NOTICES.md` | Plain-language context for the license and public-use boundaries. |
 | `DISCLAIMER.md` | Extra warning that this is experimental and used at your own risk. |
 | `SECURITY.md` | Says this project is not security-reviewed or formally supported. |
@@ -66,18 +66,18 @@ It is not a production app. That is okay. The point is to learn the shape of a c
 
 ## Tiny Practice Plan
 
-1. Open `index.html` in a browser.
-2. Edit one sentence in `index.html` or `README.md`.
+1. Open `src/main.rs` in an editor.
+2. Edit the status message or one sentence in `README.md`.
 3. Run `git status` to see what changed.
-4. Run `git add index.html` or `git add README.md`.
-5. Run `git commit -m "Practice starter edit"`.
+4. Run `git add src/main.rs` or `git add README.md`.
+5. Run `git commit -m "Practice Rust starter edit"`.
 6. Run `git push`.
 7. Refresh GitHub and look for the new commit.
 
 ## What To Try Next
 
 - Create a new branch.
-- Edit `src/styles.css`.
+- Edit `src/main.rs`.
 - Open a pull request.
 - Check the pull request template.
 - Check the GitHub Actions result.

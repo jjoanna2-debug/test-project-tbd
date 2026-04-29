@@ -4,13 +4,14 @@ This guide explains how to open and edit this repository on your computer.
 
 ## Requirements
 
-You only need:
+You need:
 
-- a web browser;
 - Git, if you want to clone and push changes;
+- Rust and Cargo, if you want to run the Rust starter locally;
+- Python 3, if you want to run the repository doctor check;
 - a code editor, such as VS Code, Cursor, Zed, or another editor.
 
-No package manager, build tool, framework, server, or production service is required.
+No framework, server, external service, or production dependency is required.
 
 ## Clone the Repository
 
@@ -19,16 +20,13 @@ git clone https://github.com/jjoanna2-debug/test-project-tbd.git
 cd test-project-tbd
 ```
 
-## Open the Starter Page
-
-Open `index.html` directly in your browser.
+## Open the Starter Project
 
 You can also open the full folder in your code editor and edit:
 
 ```text
-index.html
-src/styles.css
-src/main.js
+Cargo.toml
+src/main.rs
 scripts/check_repo.py
 scripts/doctor.sh
 ```
@@ -37,9 +35,9 @@ scripts/doctor.sh
 
 For example:
 
-1. Change one sentence in `index.html`.
+1. Change the status message in `src/main.rs`.
 2. Save the file.
-3. Refresh the browser.
+3. Run `cargo test` if Rust is installed.
 4. Check the change.
 
 ## Run the Doctor Check
@@ -52,8 +50,8 @@ bash scripts/doctor.sh
 
 ```bash
 git status
-git add index.html
-git commit -m "Practice starter page edit"
+git add src/main.rs
+git commit -m "Practice Rust starter edit"
 git push
 ```
 

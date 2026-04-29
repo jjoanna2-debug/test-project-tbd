@@ -1,6 +1,6 @@
-# GitHub Learning Lab
+# Codex-Style Staging Lab
 
-A small public sandbox for learning GitHub basics: project structure, commits, branches, pull requests, checks, and simple static-site files.
+A small Rust-first staging area for learning GitHub, tooling, automation, repository hygiene, and future app or CLI ideas.
 
 ## Repository
 
@@ -28,26 +28,26 @@ For hands-on setup and workflow notes, read:
 - [docs/GITHUB_WORKFLOW.md](docs/GITHUB_WORKFLOW.md)
 - [docs/PROJECT_STRUCTURE.md](docs/PROJECT_STRUCTURE.md)
 
-## Starter page
+## Starter project
 
-This repository includes a small static starter page:
+This repository now uses a small Rust starter instead of a static web page:
 
 ```text
-index.html
-src/styles.css
-src/main.js
+Cargo.toml
+Cargo.lock
+src/main.rs
 scripts/check_repo.py
 scripts/doctor.sh
 ```
 
-Open `index.html` in a browser to view it locally. Edit the HTML, CSS, JavaScript, Python, or shell files to practice commits, branches, and pull requests.
+Edit the Rust, Python, or shell files to practice commits, branches, pull requests, and checks. The Rust code is intentionally tiny for now; it is a staging point, not a finished product.
 
 ## Current scope
 
 - Repository setup
 - Beginner onboarding
 - README structure
-- Starter HTML/CSS/JavaScript files
+- Rust starter project
 - Small Python and shell repository checks
 - License and disclaimer hygiene
 - GitHub workflow practice
@@ -67,7 +67,7 @@ Do not use this repository with production credentials, secrets, private keys, A
 
 ## Policies and project files
 
-- [LICENSE](LICENSE) — MIT License terms
+- [LICENSE](LICENSE) — Apache License 2.0 terms
 - [LEGAL_NOTICES.md](LEGAL_NOTICES.md) — plain-language license and public-use boundaries
 - [DISCLAIMER.md](DISCLAIMER.md) — warranty, liability, professional-advice, and risk disclaimer
 - [SECURITY.md](SECURITY.md) — security policy and no-support expectations
@@ -86,6 +86,7 @@ This repository includes:
 - issue templates for bugs, features, and documentation tasks;
 - a pull request template;
 - a basic GitHub Actions workflow;
+- a small Rust test;
 - small Python and shell scripts for local checks;
 - monthly Dependabot checks for GitHub Actions;
 - CODEOWNERS review visibility;
@@ -97,7 +98,7 @@ This repository includes a temporary sponsorship notice. Sponsorship or financia
 
 ## Next steps
 
-- Edit the starter page
+- Edit the Rust starter
 - Create a branch
 - Make commits
 - Open a pull request
@@ -107,7 +108,7 @@ This repository includes a temporary sponsorship notice. Sponsorship or financia
 
 ## License
 
-This project is licensed under the MIT License. See [LICENSE](LICENSE) for the full license text and [LEGAL_NOTICES.md](LEGAL_NOTICES.md) for plain-language context.
+This project is licensed under the Apache License 2.0. See [LICENSE](LICENSE) for the full license text and [LEGAL_NOTICES.md](LEGAL_NOTICES.md) for plain-language context.
 
 ## Disclaimer
 

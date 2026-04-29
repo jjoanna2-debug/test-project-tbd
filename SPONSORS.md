@@ -16,7 +16,7 @@ Financial support does not purchase software, services, advice, support, access,
 
 ## Repository Terms Still Apply
 
-All repository use remains subject to the [MIT License](LICENSE), [DISCLAIMER.md](DISCLAIMER.md), [SECURITY.md](SECURITY.md), [SUPPORT.md](SUPPORT.md), [CONTRIBUTING.md](CONTRIBUTING.md), and any other applicable repository notices.
+All repository use remains subject to the [Apache License 2.0](LICENSE), [DISCLAIMER.md](DISCLAIMER.md), [SECURITY.md](SECURITY.md), [SUPPORT.md](SUPPORT.md), [CONTRIBUTING.md](CONTRIBUTING.md), and any other applicable repository notices.
 
 This sponsorship notice does not replace or modify the license, disclaimer, security policy, support policy, or contribution rules.
 

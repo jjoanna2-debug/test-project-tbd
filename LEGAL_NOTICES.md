@@ -6,15 +6,15 @@ It is not legal advice. If you need legal advice, ask a qualified lawyer.
 
 ## License Summary
 
-This repository uses the [MIT License](LICENSE).
+This repository uses the [Apache License 2.0](LICENSE).
 
-The MIT License generally allows people to use, copy, modify, merge, publish, distribute, sublicense, and sell copies of the software, as long as they include the copyright notice and license text.
+Apache-2.0 is a permissive open-source license. In general, it allows use, copying, modification, distribution, and sublicensing, subject to the license conditions.
 
-The MIT License also says the software is provided "as is" and without warranty, and that the authors or copyright holders are not liable for claims, damages, or other liability arising from the software or its use.
+Unlike MIT, Apache-2.0 includes explicit patent-license language and more detailed redistribution conditions. It also says the work is provided on an "as is" basis and limits liability.
 
 ## Why the License Text Is Not Rewritten
 
-The `LICENSE` file intentionally uses the standard MIT License text.
+The `LICENSE` file intentionally uses the standard Apache License 2.0 text.
 
 Changing standard license language can create ambiguity. Extra context belongs in separate files such as this one, [DISCLAIMER.md](DISCLAIMER.md), [SECURITY.md](SECURITY.md), [SUPPORT.md](SUPPORT.md), [CONTRIBUTING.md](CONTRIBUTING.md), and [SPONSORS.md](SPONSORS.md).
 
@@ -65,4 +65,4 @@ If sensitive information is exposed, rotating or revoking the affected secret is
 - [CONTRIBUTING.md](CONTRIBUTING.md) explains contribution boundaries.
 - [SPONSORS.md](SPONSORS.md) explains temporary sponsorship boundaries.
 
-If there is a conflict between informal explanation and the MIT License, the MIT License controls to the extent required by applicable law.
+If there is a conflict between informal explanation and the Apache License 2.0, the Apache License 2.0 controls to the extent required by applicable law.

@@ -15,8 +15,8 @@ git checkout -b practice/my-first-change
 Edit a small file, such as:
 
 ```text
-index.html
-src/styles.css
+Cargo.toml
+src/main.rs
 README.md
 ```
 
@@ -32,11 +32,11 @@ git diff
 ## 4. Commit the Change
 
 ```bash
-git add index.html
+git add src/main.rs
 git commit -m "Practice first branch change"
 ```
 
-Replace `index.html` with the file you actually changed.
+Replace `src/main.rs` with the file you actually changed.
 
 ## 5. Push the Branch
 

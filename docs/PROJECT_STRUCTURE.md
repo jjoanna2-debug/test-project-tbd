@@ -8,8 +8,9 @@ This document explains the current repository layout.
 | --- | --- |
 | `README.md` | Main project overview and entry point. |
 | `START_HERE.md` | Beginner guide for understanding the repository. |
-| `index.html` | Small starter page for practicing basic project changes. |
-| `LICENSE` | MIT License text. |
+| `Cargo.toml` | Rust package manifest and project metadata. |
+| `Cargo.lock` | Rust dependency lockfile. |
+| `LICENSE` | Apache License 2.0 text. |
 | `LEGAL_NOTICES.md` | Plain-language legal and public-use context. |
 | `DISCLAIMER.md` | Warranty, liability, reliance, and use-at-your-own-risk notice. |
 | `SECURITY.md` | Security expectations and unsupported status. |
@@ -35,14 +36,13 @@ This document explains the current repository layout.
 
 | Path | Purpose |
 | --- | --- |
-| `src/styles.css` | Styles for the starter page. |
-| `src/main.js` | Small JavaScript behavior for the starter page. |
+| `src/main.rs` | Small Rust starter program. |
 
 ## Scripts
 
 | Path | Purpose |
 | --- | --- |
-| `scripts/check_repo.py` | Python check for required files and starter-page references. |
+| `scripts/check_repo.py` | Python check for required files and Rust starter references. |
 | `scripts/doctor.sh` | Shell wrapper for the local repository check. |
 
 ## GitHub Configuration

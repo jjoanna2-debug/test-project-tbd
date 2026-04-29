@@ -1,6 +1,6 @@
 # Roadmap
 
-This roadmap keeps the repository focused while it grows from a clean test project into a small learning sandbox.
+This roadmap keeps the repository focused while it grows from a clean test project into a small Codex-style staging lab.
 
 ## Phase 1 — Repository Foundations
 
@@ -15,7 +15,7 @@ Status: complete
 
 Status: complete
 
-- Add a minimal starter page.
+- Add a minimal Rust starter.
 - Keep the code small, readable, and beginner-friendly.
 - Avoid production credentials, personal data, secrets, or external service dependencies.
 
@@ -34,6 +34,7 @@ Status: planned
 Status: in progress
 
 - Keep a simple GitHub Actions workflow.
+- Run Rust, Python, and shell checks where available.
 - Validate required repository files.
 - Keep automation safe, simple, and non-production.
 
@@ -41,10 +42,8 @@ Status: in progress
 
 Status: optional
 
-- Enable GitHub Pages manually if desired.
-- Add screenshots or examples.
 - Add labels and milestone planning.
-- Expand the starter page into a small learning demo.
+- Expand the Rust starter into a small CLI or automation tool.
 
 ## Boundaries
 
