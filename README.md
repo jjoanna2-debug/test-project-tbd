@@ -18,9 +18,14 @@ This repository is used for experimenting with GitHub workflows and basic projec
 
 It is not a production system, commercial product, managed service, professional recommendation, security tool, or operational dependency.
 
+## Start here
+
+If you are new to GitHub, read [START_HERE.md](START_HERE.md) first. It explains the files in this repository, the basic GitHub words, and a tiny practice plan.
+
 ## Current scope
 
 - Repository setup
+- Beginner onboarding
 - README structure
 - License and disclaimer hygiene
 - GitHub workflow practice
