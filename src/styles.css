@@ -12,6 +12,9 @@
 }
 
 body {
+  background:
+    linear-gradient(135deg, rgba(14, 165, 233, 0.08), transparent 34%),
+    linear-gradient(315deg, rgba(16, 185, 129, 0.1), transparent 38%);
   margin: 0;
   min-height: 100vh;
 }
@@ -30,7 +33,7 @@ button {
 .hero {
   width: min(100%, 44rem);
   border: 1px solid rgba(24, 24, 27, 0.12);
-  border-radius: 1.5rem;
+  border-radius: 1rem;
   background: rgba(255, 255, 255, 0.82);
   box-shadow: 0 1.5rem 4rem rgba(24, 24, 27, 0.08);
   padding: clamp(2rem, 5vw, 4rem);
@@ -49,7 +52,7 @@ h1 {
   margin: 0;
   font-size: clamp(2.5rem, 8vw, 5rem);
   line-height: 0.95;
-  letter-spacing: -0.06em;
+  letter-spacing: 0;
 }
 
 .lede {
@@ -68,9 +71,13 @@ h1 {
   cursor: pointer;
   font-weight: 700;
   padding: 0.85rem 1.15rem;
+  transition:
+    transform 160ms ease,
+    box-shadow 160ms ease;
 }
 
 #practice-button:hover {
+  box-shadow: 0 0.75rem 1.5rem rgba(24, 24, 27, 0.16);
   transform: translateY(-1px);
 }
 
@@ -90,6 +97,12 @@ h1 {
   :root {
     background: #09090b;
     color: #fafafa;
+  }
+
+  body {
+    background:
+      linear-gradient(135deg, rgba(14, 165, 233, 0.12), transparent 34%),
+      linear-gradient(315deg, rgba(16, 185, 129, 0.12), transparent 38%);
   }
 
   .hero {

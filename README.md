@@ -1,6 +1,6 @@
-# Test Project — TBD
+# GitHub Learning Lab
 
-A beginner-friendly public test repository for learning GitHub basics, project structure, commits, branches, pull requests, and simple static-site files.
+A small public sandbox for learning GitHub basics: project structure, commits, branches, pull requests, checks, and simple static-site files.
 
 ## Repository
 
@@ -28,9 +28,9 @@ For hands-on setup and workflow notes, read:
 - [docs/GITHUB_WORKFLOW.md](docs/GITHUB_WORKFLOW.md)
 - [docs/PROJECT_STRUCTURE.md](docs/PROJECT_STRUCTURE.md)
 
-## Tiny starter project
+## Starter page
 
-This repository includes a very small static starter page:
+This repository includes a small static starter page:
 
 ```text
 index.html
@@ -52,7 +52,6 @@ Open `index.html` in a browser to view it locally. Edit the HTML, CSS, or JavaSc
 - Issue and pull request templates
 - Basic GitHub Actions smoke checks
 - Monthly Dependabot checks for GitHub Actions
-- Temporary sponsorship notice
 
 ## Important notices
 
@@ -71,7 +70,6 @@ Do not use this repository with production credentials, secrets, private keys, A
 - [SUPPORT.md](SUPPORT.md) — support and maintenance boundaries
 - [CONTRIBUTING.md](CONTRIBUTING.md) — contribution rules and sensitive-information restrictions
 - [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) — participation and moderation expectations
-- [SPONSORS.md](SPONSORS.md) — temporary sponsorship notice and no-benefits clarification
 - [CHANGELOG.md](CHANGELOG.md) — chronological repository change notes
 - [ROADMAP.md](ROADMAP.md) — future learning path and project ideas
 - [docs/PROJECT_STRUCTURE.md](docs/PROJECT_STRUCTURE.md) — current file layout
@@ -86,10 +84,6 @@ This repository includes:
 - monthly Dependabot checks for GitHub Actions;
 - CODEOWNERS review visibility;
 - `.editorconfig` and `.gitattributes` for cleaner editing and diffs.
-
-## Sponsorship
-
-This repository includes a temporary sponsorship notice. Sponsorship or financial support is voluntary and does not create support, maintenance, consulting, service-level, feature, priority, warranty, or commercial obligations. See [SPONSORS.md](SPONSORS.md).
 
 ## Next steps
 

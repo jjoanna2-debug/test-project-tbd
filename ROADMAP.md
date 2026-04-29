@@ -8,7 +8,7 @@ Status: complete
 
 - Maintain a clear README.
 - Keep beginner onboarding in `START_HERE.md`.
-- Keep license, legal notices, disclaimer, security, support, contribution, conduct, sponsorship, and funding files aligned.
+- Keep license, legal notices, disclaimer, security, support, contribution, and conduct files aligned.
 - Use issue and pull request templates for basic workflow practice.
 
 ## Phase 2 — First Project Files
@@ -44,8 +44,8 @@ Status: optional
 - Enable GitHub Pages manually if desired.
 - Add screenshots or examples.
 - Add labels and milestone planning.
-- Expand the tiny starter page into a small learning demo.
+- Expand the starter page into a small learning demo.
 
 ## Boundaries
 
-This roadmap does not create support, maintenance, delivery, feature, sponsorship, or service obligations. It is only a learning plan for this repository.
+This roadmap does not create support, maintenance, delivery, feature, or service obligations. It is only a learning plan for this repository.

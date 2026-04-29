@@ -10,11 +10,11 @@ This project follows a simple chronological changelog. It is a learning reposito
 
 - Starter public repository structure.
 - Beginner onboarding documentation.
-- Tiny static starter page with HTML, CSS, and JavaScript.
+- Small static starter page with HTML, CSS, and JavaScript.
 - Project structure documentation in `docs/PROJECT_STRUCTURE.md`.
 - Local setup guide in `docs/LOCAL_SETUP.md`.
 - GitHub workflow guide in `docs/GITHUB_WORKFLOW.md`.
-- License, legal notices, disclaimer, security, support, contribution, conduct, and sponsorship policy files.
+- License, legal notices, disclaimer, security, support, contribution, and conduct files.
 - Basic issue templates for bugs, feature requests, and documentation tasks.
 - Pull request template.
 - Basic GitHub Actions repository smoke test.

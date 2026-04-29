@@ -8,7 +8,7 @@ This document explains the current repository layout.
 | --- | --- |
 | `README.md` | Main project overview and entry point. |
 | `START_HERE.md` | Beginner guide for understanding the repository. |
-| `index.html` | Tiny starter page for practicing basic project changes. |
+| `index.html` | Small starter page for practicing basic project changes. |
 | `LICENSE` | MIT License text. |
 | `LEGAL_NOTICES.md` | Plain-language legal and public-use context. |
 | `DISCLAIMER.md` | Warranty, liability, reliance, and use-at-your-own-risk notice. |
@@ -16,7 +16,6 @@ This document explains the current repository layout.
 | `SUPPORT.md` | Support and maintenance boundaries. |
 | `CONTRIBUTING.md` | Contribution rules and sensitive-information restrictions. |
 | `CODE_OF_CONDUCT.md` | Participation and moderation expectations. |
-| `SPONSORS.md` | Temporary sponsorship notice. |
 | `CHANGELOG.md` | Chronological change notes. |
 | `ROADMAP.md` | Learning roadmap and future ideas. |
 | `.gitignore` | Files Git should ignore. |
@@ -42,7 +41,6 @@ This document explains the current repository layout.
 
 | Path | Purpose |
 | --- | --- |
-| `.github/FUNDING.yml` | Placeholder funding configuration. |
 | `.github/dependabot.yml` | Monthly Dependabot checks for GitHub Actions. |
 | `.github/CODEOWNERS` | Default review visibility for repository changes. |
 | `.github/PULL_REQUEST_TEMPLATE.md` | Pull request checklist. |

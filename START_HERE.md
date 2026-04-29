@@ -23,7 +23,7 @@ It is not a production app. That is okay. The point is to learn the shape of a c
 | --- | --- |
 | `README.md` | The front page of the project. Start here when visiting the repo. |
 | `START_HERE.md` | A beginner-friendly guide to what is going on. |
-| `index.html` | A tiny starter page for practicing project changes. |
+| `index.html` | A small starter page for practicing project changes. |
 | `src/styles.css` | Styling for the starter page. |
 | `src/main.js` | Small JavaScript behavior for the starter page. |
 | `docs/LOCAL_SETUP.md` | How to clone, open, edit, and commit locally. |
@@ -36,10 +36,8 @@ It is not a production app. That is okay. The point is to learn the shape of a c
 | `SUPPORT.md` | Explains that there is no support or maintenance promise. |
 | `CONTRIBUTING.md` | Rules for opening issues, pull requests, or contributions. |
 | `CODE_OF_CONDUCT.md` | Participation and moderation expectations. |
-| `SPONSORS.md` | Temporary sponsorship notice and no-benefits clarification. |
 | `CHANGELOG.md` | Notes meaningful repository changes over time. |
 | `ROADMAP.md` | Shows possible next learning steps. |
-| `.github/FUNDING.yml` | Placeholder funding configuration for future sponsor links. |
 | `.github/dependabot.yml` | Monthly Dependabot checks for GitHub Actions. |
 | `.github/PULL_REQUEST_TEMPLATE.md` | Checklist shown when opening pull requests. |
 | `.github/ISSUE_TEMPLATE/` | Issue forms for bugs, features, and documentation tasks. |
