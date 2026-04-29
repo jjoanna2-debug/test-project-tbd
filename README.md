@@ -1,4 +1,4 @@
-# Testing10
+# Testing
 
 This is my first GitHub repository.
 
