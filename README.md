@@ -30,6 +30,7 @@ If you are new to GitHub, read [START_HERE.md](START_HERE.md) first. It explains
 - License and disclaimer hygiene
 - GitHub workflow practice
 - Basic public-repository policy files
+- Temporary sponsorship notice
 
 ## Important notices
 
@@ -47,6 +48,11 @@ Do not use this repository with production credentials, secrets, private keys, A
 - [SECURITY.md](SECURITY.md) — security policy and no-support expectations
 - [SUPPORT.md](SUPPORT.md) — support and maintenance boundaries
 - [CONTRIBUTING.md](CONTRIBUTING.md) — contribution rules and sensitive-information restrictions
+- [SPONSORS.md](SPONSORS.md) — temporary sponsorship notice and no-benefits clarification
+
+## Sponsorship
+
+This repository includes a temporary sponsorship notice. Sponsorship or financial support is voluntary and does not create support, maintenance, consulting, service-level, feature, priority, warranty, or commercial obligations. See [SPONSORS.md](SPONSORS.md).
 
 ## Next steps
 
