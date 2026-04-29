@@ -1,0 +1,70 @@
+name: Basic Checks
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  repository-smoke-test:
+    name: Repository smoke test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Verify required files
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          required_files=(
+            "README.md"
+            "START_HERE.md"
+            "LICENSE"
+            "LEGAL_NOTICES.md"
+            "DISCLAIMER.md"
+            "SECURITY.md"
+            "SUPPORT.md"
+            "CONTRIBUTING.md"
+            "CODE_OF_CONDUCT.md"
+            "SPONSORS.md"
+            "CHANGELOG.md"
+            "ROADMAP.md"
+          )
+
+          for file in "${required_files[@]}"; do
+            if [[ ! -f "$file" ]]; then
+              echo "Missing required file: $file"
+              exit 1
+            fi
+          done
+
+      - name: Check for obvious committed secrets
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if grep -RInE "(api[_-]?key|secret|password|private[_-]?key|token)\s*=\s*['\"][^'\"]+['\"]" . \
+            --exclude-dir=.git \
+            --exclude=DISCLAIMER.md \
+            --exclude=SECURITY.md \
+            --exclude=CONTRIBUTING.md \
+            --exclude=LEGAL_NOTICES.md \
+            --exclude=README.md \
+            --exclude=basic-checks.yml; then
+            echo "Potential secret-like assignment found. Review before merging."
+            exit 1
+          fi
+
+      - name: Print repository status
+        shell: bash
+        run: |
+          echo "Basic repository checks passed."
