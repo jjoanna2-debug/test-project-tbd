@@ -33,6 +33,8 @@ Because this is a learning repository with no formal support obligation, there i
 
 If you choose to report a security issue, do not include secrets, credentials, private data, exploit payloads against third-party systems, or information that could harm others.
 
+If you accidentally expose a secret, token, password, private key, or credential, revoke or rotate it immediately. Deleting a file or commit is not always enough once information has been pushed to a public repository.
+
 ## No Security Warranty
 
 This repository is provided "as is" and may contain incomplete, outdated, insecure, vulnerable, placeholder, or experimental material. See [DISCLAIMER.md](DISCLAIMER.md) and [LICENSE](LICENSE) for the applicable disclaimer and license terms.

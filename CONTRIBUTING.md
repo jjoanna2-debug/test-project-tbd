@@ -4,6 +4,8 @@
 
 This repository is a personal learning and testing project. Contributions are not guaranteed to be reviewed, accepted, merged, maintained, supported, or responded to.
 
+The public GitHub contributors list may show accounts that authored or co-authored commits. That list is public and controlled by GitHub's commit attribution rules.
+
 ## Before Contributing
 
 By opening an issue, pull request, discussion, comment, or other contribution, you confirm that:

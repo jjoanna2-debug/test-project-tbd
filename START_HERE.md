@@ -23,6 +23,7 @@ It is not a real app yet. That is okay. The point is to learn the shape of a cle
 | `README.md` | The front page of the project. Start here when visiting the repo. |
 | `START_HERE.md` | A beginner-friendly guide to what is going on. |
 | `LICENSE` | The legal permission for using the project. This repo uses MIT. |
+| `LEGAL_NOTICES.md` | Plain-language context for the license and public-use boundaries. |
 | `DISCLAIMER.md` | Extra warning that this is experimental and used at your own risk. |
 | `SECURITY.md` | Says this project is not security-reviewed or formally supported. |
 | `SUPPORT.md` | Explains that there is no support or maintenance promise. |

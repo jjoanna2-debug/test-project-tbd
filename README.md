@@ -35,11 +35,14 @@ If you are new to GitHub, read [START_HERE.md](START_HERE.md) first. It explains
 
 This repository is provided for learning, testing, and experimentation only. Use of this repository or its contents is voluntary and entirely at your own risk.
 
+This repository is not production software, not professional advice, not a managed service, not a security product, not audited, not supported, and not guaranteed to be accurate, complete, secure, maintained, or suitable for any purpose.
+
 Do not use this repository with production credentials, secrets, private keys, API tokens, personal data, confidential information, customer data, regulated data, business-critical workflows, or security-sensitive systems.
 
 ## Policies
 
 - [LICENSE](LICENSE) — MIT License terms
+- [LEGAL_NOTICES.md](LEGAL_NOTICES.md) — plain-language license and public-use boundaries
 - [DISCLAIMER.md](DISCLAIMER.md) — warranty, liability, professional-advice, and risk disclaimer
 - [SECURITY.md](SECURITY.md) — security policy and no-support expectations
 - [SUPPORT.md](SUPPORT.md) — support and maintenance boundaries
@@ -54,7 +57,7 @@ Do not use this repository with production credentials, secrets, private keys, A
 
 ## License
 
-This project is licensed under the MIT License. See [LICENSE](LICENSE) for the full license text.
+This project is licensed under the MIT License. See [LICENSE](LICENSE) for the full license text and [LEGAL_NOTICES.md](LEGAL_NOTICES.md) for plain-language context.
 
 ## Disclaimer
 

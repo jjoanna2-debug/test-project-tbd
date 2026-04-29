@@ -6,11 +6,15 @@ This repository is a personal learning, testing, and experimentation project. It
 
 By accessing, copying, modifying, distributing, running, relying on, or otherwise using any part of this repository, you do so voluntarily and entirely at your own risk.
 
+If you do not agree with these terms, do not use, copy, modify, distribute, run, rely on, or otherwise interact with this repository or its contents.
+
 ## No Warranty
 
 This repository and all files, code, documentation, examples, configurations, comments, workflows, and related materials are provided on an "as is" and "as available" basis, without warranties, representations, guarantees, promises, or conditions of any kind, whether express, implied, statutory, or otherwise.
 
 Without limitation, no warranty is given that this repository or its contents are accurate, complete, secure, error-free, uninterrupted, maintained, suitable for any particular purpose, fit for production use, compatible with any system, compliant with any law or regulation, or free from defects, vulnerabilities, harmful components, or data-loss risks.
+
+The author does not warrant that any issue, pull request, discussion, comment, recommendation, example, or suggested change is correct, safe, complete, current, or appropriate for your circumstances.
 
 ## No Professional Advice
 
@@ -30,6 +34,8 @@ You are solely responsible for:
 - protecting your own data, credentials, devices, accounts, infrastructure, and users;
 - making appropriate backups and recovery plans before use; and
 - determining whether this repository or any part of it is suitable for your intended purpose.
+
+You are also solely responsible for removing, rotating, revoking, or remediating any secret, credential, token, key, data, or other sensitive material that you expose through your own use, fork, clone, issue, pull request, discussion, or other communication.
 
 ## Security Notice
 
@@ -53,4 +59,4 @@ This includes, without limitation, loss of profits, revenue, business, opportuni
 
 ## License Relationship
 
-This disclaimer supplements and clarifies the risk allocation already reflected in the [MIT License](LICENSE). It does not replace the MIT License. If there is any conflict between this disclaimer and the MIT License, the MIT License controls to the extent required by applicable law.
+This disclaimer supplements and clarifies the risk allocation already reflected in the [MIT License](LICENSE). It does not replace the MIT License. See [LEGAL_NOTICES.md](LEGAL_NOTICES.md) for plain-language context. If there is any conflict between this disclaimer and the MIT License, the MIT License controls to the extent required by applicable law.
