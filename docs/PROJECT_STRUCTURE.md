@@ -23,6 +23,14 @@ This document explains the current repository layout.
 | `.gitattributes` | Git text and binary handling rules. |
 | `.editorconfig` | Editor formatting defaults. |
 
+## Documentation
+
+| Path | Purpose |
+| --- | --- |
+| `docs/PROJECT_STRUCTURE.md` | Current repository layout. |
+| `docs/LOCAL_SETUP.md` | How to clone, open, edit, and commit locally. |
+| `docs/GITHUB_WORKFLOW.md` | Branch, commit, push, pull request, and merge workflow. |
+
 ## Source Files
 
 | Path | Purpose |
