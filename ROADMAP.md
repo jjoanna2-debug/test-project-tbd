@@ -4,18 +4,18 @@ This roadmap keeps the repository focused while it grows from a clean test proje
 
 ## Phase 1 — Repository Foundations
 
-Status: in progress
+Status: complete
 
 - Maintain a clear README.
 - Keep beginner onboarding in `START_HERE.md`.
-- Keep license, disclaimer, security, support, contribution, sponsorship, and conduct files aligned.
+- Keep license, legal notices, disclaimer, security, support, contribution, conduct, sponsorship, and funding files aligned.
 - Use issue and pull request templates for basic workflow practice.
 
 ## Phase 2 — First Project Files
 
-Status: planned
+Status: complete
 
-- Add a minimal starter page or script.
+- Add a minimal starter page.
 - Keep the code small, readable, and beginner-friendly.
 - Avoid production credentials, personal data, secrets, or external service dependencies.
 
@@ -31,20 +31,20 @@ Status: planned
 
 ## Phase 4 — Automation Basics
 
-Status: planned
+Status: in progress
 
-- Add a simple GitHub Actions workflow.
-- Validate documentation formatting where possible.
+- Keep a simple GitHub Actions workflow.
+- Validate required repository files.
 - Keep automation safe, simple, and non-production.
 
 ## Phase 5 — Future Ideas
 
 Status: optional
 
-- Add a small `docs/` folder.
-- Add a simple website through GitHub Pages.
+- Enable GitHub Pages manually if desired.
 - Add screenshots or examples.
 - Add labels and milestone planning.
+- Expand the tiny starter page into a small learning demo.
 
 ## Boundaries
 
