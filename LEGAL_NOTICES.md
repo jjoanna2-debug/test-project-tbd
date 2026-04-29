@@ -22,6 +22,8 @@ Changing standard license language can create ambiguity. Extra context belongs i
 
 The appendix at the bottom of the Apache License is generic instruction text from the official license. The placeholder line `Copyright [yyyy] [name of copyright owner]` is not your repository's copyright notice. For this repository, use [NOTICE](NOTICE).
 
+The `LICENSE` file is kept as the standard Apache License 2.0 text so GitHub can correctly detect the license.
+
 ## Public Repository Boundaries
 
 This repository is public, but public does not mean:

@@ -113,6 +113,8 @@ The repository Sponsor button points to `jjoanna2-debug` through `.github/FUNDIN
 
 This project is licensed under the Apache License 2.0. See [LICENSE](LICENSE) for the full license text and [LEGAL_NOTICES.md](LEGAL_NOTICES.md) for plain-language context.
 
+Copyright and project attribution are listed in [NOTICE](NOTICE).
+
 ## Disclaimer
 
 This repository is provided on an "as is" and "as available" basis for learning, testing, and experimentation purposes only. See [DISCLAIMER.md](DISCLAIMER.md) for additional clarification.
