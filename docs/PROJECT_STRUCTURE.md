@@ -35,6 +35,8 @@ This document explains the current repository layout.
 | Path | Purpose |
 | --- | --- |
 | `.github/FUNDING.yml` | Placeholder funding configuration. |
+| `.github/dependabot.yml` | Monthly Dependabot checks for GitHub Actions. |
+| `.github/CODEOWNERS` | Default review visibility for repository changes. |
 | `.github/PULL_REQUEST_TEMPLATE.md` | Pull request checklist. |
 | `.github/ISSUE_TEMPLATE/config.yml` | Issue template configuration. |
 | `.github/ISSUE_TEMPLATE/bug_report.yml` | Bug report form. |
