@@ -16,6 +16,7 @@ REQUIRED_FILES = [
     "docs/LOCAL_SETUP.md",
     "docs/GITHUB_WORKFLOW.md",
     "LICENSE",
+    "NOTICE",
     "LEGAL_NOTICES.md",
     "DISCLAIMER.md",
     "SECURITY.md",

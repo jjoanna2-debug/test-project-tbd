@@ -12,6 +12,7 @@ This project follows a simple chronological changelog. It is a learning reposito
 - Beginner onboarding documentation.
 - Rust starter project.
 - Small Python and shell checks for repository structure.
+- Apache-2.0 `NOTICE` file for copyright attribution.
 - Project structure documentation in `docs/PROJECT_STRUCTURE.md`.
 - Local setup guide in `docs/LOCAL_SETUP.md`.
 - GitHub workflow guide in `docs/GITHUB_WORKFLOW.md`.
@@ -30,6 +31,7 @@ This project follows a simple chronological changelog. It is a learning reposito
 - Updated README and starter guide to reflect the expanded repository structure.
 - Expanded the basic GitHub Actions smoke test to verify the current file layout.
 - Replaced the static web starter with a Rust-first staging project.
+- Configured GitHub Sponsors funding metadata for `jjoanna2-debug`.
 
 ### Notes
 

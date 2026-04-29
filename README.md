@@ -68,6 +68,7 @@ Do not use this repository with production credentials, secrets, private keys, A
 ## Policies and project files
 
 - [LICENSE](LICENSE) — Apache License 2.0 terms
+- [NOTICE](NOTICE) — copyright and project attribution notice
 - [LEGAL_NOTICES.md](LEGAL_NOTICES.md) — plain-language license and public-use boundaries
 - [DISCLAIMER.md](DISCLAIMER.md) — warranty, liability, professional-advice, and risk disclaimer
 - [SECURITY.md](SECURITY.md) — security policy and no-support expectations
@@ -95,6 +96,8 @@ This repository includes:
 ## Sponsorship
 
 This repository includes a temporary sponsorship notice. Sponsorship or financial support is voluntary and does not create support, maintenance, consulting, service-level, feature, priority, warranty, or commercial obligations. See [SPONSORS.md](SPONSORS.md).
+
+The repository Sponsor button points to `jjoanna2-debug` through `.github/FUNDING.yml`.
 
 ## Next steps
 

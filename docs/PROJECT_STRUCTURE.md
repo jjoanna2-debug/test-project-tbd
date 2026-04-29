@@ -11,6 +11,7 @@ This document explains the current repository layout.
 | `Cargo.toml` | Rust package manifest and project metadata. |
 | `Cargo.lock` | Rust dependency lockfile. |
 | `LICENSE` | Apache License 2.0 text. |
+| `NOTICE` | Copyright and project attribution notice. |
 | `LEGAL_NOTICES.md` | Plain-language legal and public-use context. |
 | `DISCLAIMER.md` | Warranty, liability, reliance, and use-at-your-own-risk notice. |
 | `SECURITY.md` | Security expectations and unsupported status. |

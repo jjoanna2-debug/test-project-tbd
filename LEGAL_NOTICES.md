@@ -10,13 +10,17 @@ This repository uses the [Apache License 2.0](LICENSE).
 
 Apache-2.0 is a permissive open-source license. In general, it allows use, copying, modification, distribution, and sublicensing, subject to the license conditions.
 
-Unlike MIT, Apache-2.0 includes explicit patent-license language and more detailed redistribution conditions. It also says the work is provided on an "as is" basis and limits liability.
+Apache-2.0 includes explicit patent-license language and detailed redistribution conditions. It also says the work is provided on an "as is" basis and limits liability.
+
+The `NOTICE` file contains this repository's current copyright and attribution notice.
 
 ## Why the License Text Is Not Rewritten
 
 The `LICENSE` file intentionally uses the standard Apache License 2.0 text.
 
 Changing standard license language can create ambiguity. Extra context belongs in separate files such as this one, [DISCLAIMER.md](DISCLAIMER.md), [SECURITY.md](SECURITY.md), [SUPPORT.md](SUPPORT.md), [CONTRIBUTING.md](CONTRIBUTING.md), and [SPONSORS.md](SPONSORS.md).
+
+The appendix at the bottom of the Apache License is generic instruction text from the official license. The placeholder line `Copyright [yyyy] [name of copyright owner]` is not your repository's copyright notice. For this repository, use [NOTICE](NOTICE).
 
 ## Public Repository Boundaries
 
@@ -59,6 +63,7 @@ If sensitive information is exposed, rotating or revoking the affected secret is
 ## Relationship to Other Files
 
 - [LICENSE](LICENSE) contains the actual open-source license.
+- [NOTICE](NOTICE) contains the repository copyright and attribution notice.
 - [DISCLAIMER.md](DISCLAIMER.md) explains warranty, liability, reliance, and use-at-your-own-risk boundaries.
 - [SECURITY.md](SECURITY.md) explains security expectations and unsupported status.
 - [SUPPORT.md](SUPPORT.md) explains that there is no formal support or maintenance promise.

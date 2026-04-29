@@ -33,6 +33,7 @@ It is not a production app. That is okay. The point is to learn the shape of a c
 | `docs/GITHUB_WORKFLOW.md` | How to branch, commit, push, open a pull request, and merge. |
 | `docs/PROJECT_STRUCTURE.md` | A fuller map of the repository structure. |
 | `LICENSE` | The legal permission for using the project. This repo uses Apache-2.0. |
+| `NOTICE` | Copyright and project attribution notice. |
 | `LEGAL_NOTICES.md` | Plain-language context for the license and public-use boundaries. |
 | `DISCLAIMER.md` | Extra warning that this is experimental and used at your own risk. |
 | `SECURITY.md` | Says this project is not security-reviewed or formally supported. |

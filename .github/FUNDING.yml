@@ -8,8 +8,9 @@
 #   or guaranteed benefits are currently offered.
 # - See SPONSORS.md for the temporary sponsorship notice.
 
-# Uncomment and update the relevant provider only when ready.
-# github: [jjoanna2-debug]
+github: [jjoanna2-debug]
+
+# Add external funding providers only when ready.
 # patreon: username
 # open_collective: username
 # ko_fi: username
