@@ -1,6 +1,6 @@
 # Test Project — TBD
 
-A beginner-friendly public test repository for learning GitHub basics, project structure, commits, branches, and pull requests.
+A beginner-friendly public test repository for learning GitHub basics, project structure, commits, branches, pull requests, and simple static-site files.
 
 ## Repository
 
@@ -22,14 +22,31 @@ It is not a production system, commercial product, managed service, professional
 
 If you are new to GitHub, read [START_HERE.md](START_HERE.md) first. It explains the files in this repository, the basic GitHub words, and a tiny practice plan.
 
+For the current file layout, read [docs/PROJECT_STRUCTURE.md](docs/PROJECT_STRUCTURE.md).
+
+## Tiny starter project
+
+This repository includes a very small static starter page:
+
+```text
+index.html
+src/styles.css
+src/main.js
+```
+
+Open `index.html` in a browser to view it locally. Edit the HTML, CSS, or JavaScript files to practice commits, branches, and pull requests.
+
 ## Current scope
 
 - Repository setup
 - Beginner onboarding
 - README structure
+- Starter HTML/CSS/JavaScript files
 - License and disclaimer hygiene
 - GitHub workflow practice
 - Basic public-repository policy files
+- Issue and pull request templates
+- Basic GitHub Actions smoke checks
 - Temporary sponsorship notice
 
 ## Important notices
@@ -40,7 +57,7 @@ This repository is not production software, not professional advice, not a manag
 
 Do not use this repository with production credentials, secrets, private keys, API tokens, personal data, confidential information, customer data, regulated data, business-critical workflows, or security-sensitive systems.
 
-## Policies
+## Policies and project files
 
 - [LICENSE](LICENSE) — MIT License terms
 - [LEGAL_NOTICES.md](LEGAL_NOTICES.md) — plain-language license and public-use boundaries
@@ -48,7 +65,21 @@ Do not use this repository with production credentials, secrets, private keys, A
 - [SECURITY.md](SECURITY.md) — security policy and no-support expectations
 - [SUPPORT.md](SUPPORT.md) — support and maintenance boundaries
 - [CONTRIBUTING.md](CONTRIBUTING.md) — contribution rules and sensitive-information restrictions
+- [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) — participation and moderation expectations
 - [SPONSORS.md](SPONSORS.md) — temporary sponsorship notice and no-benefits clarification
+- [CHANGELOG.md](CHANGELOG.md) — chronological repository change notes
+- [ROADMAP.md](ROADMAP.md) — future learning path and project ideas
+- [docs/PROJECT_STRUCTURE.md](docs/PROJECT_STRUCTURE.md) — current file layout
+
+## GitHub workflow helpers
+
+This repository includes:
+
+- issue templates for bugs, features, and documentation tasks;
+- a pull request template;
+- a basic GitHub Actions workflow;
+- CODEOWNERS review visibility;
+- `.editorconfig` and `.gitattributes` for cleaner editing and diffs.
 
 ## Sponsorship
 
@@ -56,10 +87,13 @@ This repository includes a temporary sponsorship notice. Sponsorship or financia
 
 ## Next steps
 
-- Add project files
+- Edit the starter page
+- Create a branch
 - Make commits
-- Test branches
-- Learn pull requests
+- Open a pull request
+- Review the GitHub Actions result
+- Merge the pull request
+- Read the changelog and roadmap
 
 ## License
 
