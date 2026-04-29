@@ -26,6 +26,8 @@ It is not a production app. That is okay. The point is to learn the shape of a c
 | `index.html` | A tiny starter page for practicing project changes. |
 | `src/styles.css` | Styling for the starter page. |
 | `src/main.js` | Small JavaScript behavior for the starter page. |
+| `docs/LOCAL_SETUP.md` | How to clone, open, edit, and commit locally. |
+| `docs/GITHUB_WORKFLOW.md` | How to branch, commit, push, open a pull request, and merge. |
 | `docs/PROJECT_STRUCTURE.md` | A fuller map of the repository structure. |
 | `LICENSE` | The legal permission for using the project. This repo uses MIT. |
 | `LEGAL_NOTICES.md` | Plain-language context for the license and public-use boundaries. |
@@ -38,6 +40,7 @@ It is not a production app. That is okay. The point is to learn the shape of a c
 | `CHANGELOG.md` | Notes meaningful repository changes over time. |
 | `ROADMAP.md` | Shows possible next learning steps. |
 | `.github/FUNDING.yml` | Placeholder funding configuration for future sponsor links. |
+| `.github/dependabot.yml` | Monthly Dependabot checks for GitHub Actions. |
 | `.github/PULL_REQUEST_TEMPLATE.md` | Checklist shown when opening pull requests. |
 | `.github/ISSUE_TEMPLATE/` | Issue forms for bugs, features, and documentation tasks. |
 | `.github/workflows/basic-checks.yml` | Basic automated checks for the repository. |
@@ -56,6 +59,7 @@ It is not a production app. That is okay. The point is to learn the shape of a c
 - **Push:** send your local commits to GitHub.
 - **Pull:** bring GitHub changes down to your computer.
 - **Workflow:** an automated GitHub Actions process.
+- **Dependabot:** GitHub's automated dependency update helper.
 
 ## Tiny Practice Plan
 
