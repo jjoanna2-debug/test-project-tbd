@@ -22,7 +22,11 @@ It is not a production system, commercial product, managed service, professional
 
 If you are new to GitHub, read [START_HERE.md](START_HERE.md) first. It explains the files in this repository, the basic GitHub words, and a tiny practice plan.
 
-For the current file layout, read [docs/PROJECT_STRUCTURE.md](docs/PROJECT_STRUCTURE.md).
+For hands-on setup and workflow notes, read:
+
+- [docs/LOCAL_SETUP.md](docs/LOCAL_SETUP.md)
+- [docs/GITHUB_WORKFLOW.md](docs/GITHUB_WORKFLOW.md)
+- [docs/PROJECT_STRUCTURE.md](docs/PROJECT_STRUCTURE.md)
 
 ## Tiny starter project
 
