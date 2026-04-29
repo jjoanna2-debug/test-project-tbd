@@ -12,17 +12,22 @@ This project follows a simple chronological changelog. It is a learning reposito
 - Beginner onboarding documentation.
 - Tiny static starter page with HTML, CSS, and JavaScript.
 - Project structure documentation in `docs/PROJECT_STRUCTURE.md`.
+- Local setup guide in `docs/LOCAL_SETUP.md`.
+- GitHub workflow guide in `docs/GITHUB_WORKFLOW.md`.
 - License, legal notices, disclaimer, security, support, contribution, conduct, and sponsorship policy files.
 - Basic issue templates for bugs, feature requests, and documentation tasks.
 - Pull request template.
 - Basic GitHub Actions repository smoke test.
+- Monthly Dependabot checks for GitHub Actions.
 - `CODEOWNERS`, `.editorconfig`, and `.gitattributes` for repository hygiene.
 - Roadmap for future learning steps.
+- Practice issues for branch workflow, screenshots/examples, and future GitHub Pages.
 
 ### Changed
 
 - Improved repository documentation and public-use boundaries.
 - Updated README and starter guide to reflect the expanded repository structure.
+- Expanded the basic GitHub Actions smoke test to verify the current file layout.
 
 ### Notes
 
