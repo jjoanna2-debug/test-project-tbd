@@ -1,4 +1,4 @@
-# Codex-Style Staging Lab
+# Rust Staging Lab
 
 A small Rust-first staging area for learning GitHub, tooling, automation, repository hygiene, and future app or CLI ideas.
 

@@ -1,6 +1,6 @@
 # Roadmap
 
-This roadmap keeps the repository focused while it grows from a clean test project into a small Codex-style staging lab.
+This roadmap keeps the repository focused while it grows from a clean test project into a small Rust-first staging lab.
 
 ## Phase 1 — Repository Foundations
 
