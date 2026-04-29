@@ -12,7 +12,7 @@ This is a public test project for learning the basics:
 - how commits work;
 - how branches work;
 - how pull requests work;
-- how public repo policy files work.
+- how public repository policy files work.
 
 It is not a real app yet. That is okay. The point is to learn the shape of a clean repository before building something bigger.
 
@@ -28,6 +28,8 @@ It is not a real app yet. That is okay. The point is to learn the shape of a cle
 | `SECURITY.md` | Says this project is not security-reviewed or formally supported. |
 | `SUPPORT.md` | Explains that there is no support or maintenance promise. |
 | `CONTRIBUTING.md` | Rules for opening issues, pull requests, or contributions. |
+| `SPONSORS.md` | Temporary sponsorship notice and no-benefits clarification. |
+| `.github/FUNDING.yml` | Placeholder funding configuration for future sponsor links. |
 | `.gitignore` | Tells Git which local junk files should stay out of the repo. |
 
 ## Your First GitHub Words
