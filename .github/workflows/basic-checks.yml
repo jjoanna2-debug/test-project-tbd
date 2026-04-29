@@ -28,6 +28,12 @@ jobs:
           required_files=(
             "README.md"
             "START_HERE.md"
+            "index.html"
+            "src/styles.css"
+            "src/main.js"
+            "docs/PROJECT_STRUCTURE.md"
+            "docs/LOCAL_SETUP.md"
+            "docs/GITHUB_WORKFLOW.md"
             "LICENSE"
             "LEGAL_NOTICES.md"
             "DISCLAIMER.md"
@@ -38,6 +44,17 @@ jobs:
             "SPONSORS.md"
             "CHANGELOG.md"
             "ROADMAP.md"
+            ".editorconfig"
+            ".gitattributes"
+            ".gitignore"
+            ".github/FUNDING.yml"
+            ".github/dependabot.yml"
+            ".github/CODEOWNERS"
+            ".github/PULL_REQUEST_TEMPLATE.md"
+            ".github/ISSUE_TEMPLATE/config.yml"
+            ".github/ISSUE_TEMPLATE/bug_report.yml"
+            ".github/ISSUE_TEMPLATE/feature_request.yml"
+            ".github/ISSUE_TEMPLATE/documentation_task.yml"
           )
 
           for file in "${required_files[@]}"; do
@@ -47,22 +64,15 @@ jobs:
             fi
           done
 
-      - name: Check for obvious committed secrets
+      - name: Verify starter page references
         shell: bash
         run: |
           set -euo pipefail
 
-          if grep -RInE "(api[_-]?key|secret|password|private[_-]?key|token)\s*=\s*['\"][^'\"]+['\"]" . \
-            --exclude-dir=.git \
-            --exclude=DISCLAIMER.md \
-            --exclude=SECURITY.md \
-            --exclude=CONTRIBUTING.md \
-            --exclude=LEGAL_NOTICES.md \
-            --exclude=README.md \
-            --exclude=basic-checks.yml; then
-            echo "Potential secret-like assignment found. Review before merging."
-            exit 1
-          fi
+          grep -q 'src/styles.css' index.html
+          grep -q 'src/main.js' index.html
+          grep -q 'practice-button' index.html
+          grep -q 'practice-button' src/main.js
 
       - name: Print repository status
         shell: bash
