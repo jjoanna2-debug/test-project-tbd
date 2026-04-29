@@ -13,7 +13,8 @@ This is a public test project for learning the basics:
 - how branches work;
 - how pull requests work;
 - how public repository policy files work;
-- how a tiny static HTML/CSS/JavaScript project is structured.
+- how a small static HTML/CSS/JavaScript project is structured.
+- how small Python and shell checks can support a repository.
 
 It is not a production app. That is okay. The point is to learn the shape of a clean repository before building something bigger.
 
@@ -26,6 +27,8 @@ It is not a production app. That is okay. The point is to learn the shape of a c
 | `index.html` | A small starter page for practicing project changes. |
 | `src/styles.css` | Styling for the starter page. |
 | `src/main.js` | Small JavaScript behavior for the starter page. |
+| `scripts/check_repo.py` | Python check for required files and starter-page references. |
+| `scripts/doctor.sh` | Shell wrapper for running the repository check locally. |
 | `docs/LOCAL_SETUP.md` | How to clone, open, edit, and commit locally. |
 | `docs/GITHUB_WORKFLOW.md` | How to branch, commit, push, open a pull request, and merge. |
 | `docs/PROJECT_STRUCTURE.md` | A fuller map of the repository structure. |

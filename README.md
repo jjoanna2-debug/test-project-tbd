@@ -36,9 +36,11 @@ This repository includes a small static starter page:
 index.html
 src/styles.css
 src/main.js
+scripts/check_repo.py
+scripts/doctor.sh
 ```
 
-Open `index.html` in a browser to view it locally. Edit the HTML, CSS, or JavaScript files to practice commits, branches, and pull requests.
+Open `index.html` in a browser to view it locally. Edit the HTML, CSS, JavaScript, Python, or shell files to practice commits, branches, and pull requests.
 
 ## Current scope
 
@@ -46,6 +48,7 @@ Open `index.html` in a browser to view it locally. Edit the HTML, CSS, or JavaSc
 - Beginner onboarding
 - README structure
 - Starter HTML/CSS/JavaScript files
+- Small Python and shell repository checks
 - License and disclaimer hygiene
 - GitHub workflow practice
 - Basic public-repository policy files
@@ -83,6 +86,7 @@ This repository includes:
 - issue templates for bugs, features, and documentation tasks;
 - a pull request template;
 - a basic GitHub Actions workflow;
+- small Python and shell scripts for local checks;
 - monthly Dependabot checks for GitHub Actions;
 - CODEOWNERS review visibility;
 - `.editorconfig` and `.gitattributes` for cleaner editing and diffs.

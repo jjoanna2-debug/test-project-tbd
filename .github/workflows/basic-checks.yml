@@ -31,6 +31,8 @@ jobs:
             "index.html"
             "src/styles.css"
             "src/main.js"
+            "scripts/check_repo.py"
+            "scripts/doctor.sh"
             "docs/PROJECT_STRUCTURE.md"
             "docs/LOCAL_SETUP.md"
             "docs/GITHUB_WORKFLOW.md"
@@ -73,6 +75,10 @@ jobs:
           grep -q 'src/main.js' index.html
           grep -q 'practice-button' index.html
           grep -q 'practice-button' src/main.js
+
+      - name: Run repository doctor
+        shell: bash
+        run: bash scripts/doctor.sh
 
       - name: Print repository status
         shell: bash

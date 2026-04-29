@@ -11,6 +11,7 @@ This project follows a simple chronological changelog. It is a learning reposito
 - Starter public repository structure.
 - Beginner onboarding documentation.
 - Small static starter page with HTML, CSS, and JavaScript.
+- Small Python and shell checks for repository structure.
 - Project structure documentation in `docs/PROJECT_STRUCTURE.md`.
 - Local setup guide in `docs/LOCAL_SETUP.md`.
 - GitHub workflow guide in `docs/GITHUB_WORKFLOW.md`.

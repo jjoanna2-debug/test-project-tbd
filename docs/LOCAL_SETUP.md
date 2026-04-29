@@ -29,6 +29,8 @@ You can also open the full folder in your code editor and edit:
 index.html
 src/styles.css
 src/main.js
+scripts/check_repo.py
+scripts/doctor.sh
 ```
 
 ## Make a Small Practice Change
@@ -39,6 +41,12 @@ For example:
 2. Save the file.
 3. Refresh the browser.
 4. Check the change.
+
+## Run the Doctor Check
+
+```bash
+bash scripts/doctor.sh
+```
 
 ## Commit the Change
 

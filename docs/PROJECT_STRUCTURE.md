@@ -36,7 +36,14 @@ This document explains the current repository layout.
 | Path | Purpose |
 | --- | --- |
 | `src/styles.css` | Styles for the starter page. |
-| `src/main.js` | Tiny JavaScript behavior for the starter page. |
+| `src/main.js` | Small JavaScript behavior for the starter page. |
+
+## Scripts
+
+| Path | Purpose |
+| --- | --- |
+| `scripts/check_repo.py` | Python check for required files and starter-page references. |
+| `scripts/doctor.sh` | Shell wrapper for the local repository check. |
 
 ## GitHub Configuration
 

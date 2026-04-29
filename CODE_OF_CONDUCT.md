@@ -2,7 +2,7 @@
 
 ## Purpose
 
-This repository is a public learning and testing project. The goal is to keep participation simple, respectful, and safe enough for beginners to learn without turning the issue tracker into a digital food fight, because apparently that requires documentation now.
+This repository is a public learning and testing project. The goal is to keep participation simple, respectful, relevant, and safe enough for beginners to learn.
 
 ## Expected Behavior
 
