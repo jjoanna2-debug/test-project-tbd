@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright 2026 Jean-Claude Joanna
+# SPDX-License-Identifier: Apache-2.0
 """Small repository structure check for the staging lab."""
 
 from pathlib import Path
