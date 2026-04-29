@@ -1,14 +1,21 @@
-# Testing
+# Test Project — TBD
 
-This is my first GitHub repository.
+A beginner-friendly test repository for learning GitHub basics, project structure, commits, branches, and pull requests.
 
 ## Purpose
 
-Testing GitHub, commits, branches, and basic project structure.
+This repository is used for experimenting with GitHub workflows and basic project setup.
+
+## Current scope
+
+- Repository setup
+- README structure
+- License and disclaimer hygiene
+- GitHub workflow practice
 
 ## Next steps
 
-- Add files
+- Add project files
 - Make commits
 - Test branches
 - Learn pull requests
