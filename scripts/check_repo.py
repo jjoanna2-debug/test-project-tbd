@@ -12,6 +12,8 @@ REQUIRED_FILES = [
     "Cargo.toml",
     "Cargo.lock",
     "src/main.rs",
+    "scripts/check_repo.py",
+    "scripts/doctor.sh",
     "docs/PROJECT_STRUCTURE.md",
     "docs/LOCAL_SETUP.md",
     "docs/GITHUB_WORKFLOW.md",
