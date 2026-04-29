@@ -16,7 +16,7 @@ The MIT License also says the software is provided "as is" and without warranty,
 
 The `LICENSE` file intentionally uses the standard MIT License text.
 
-Changing standard license language can create ambiguity. Extra context belongs in separate files such as this one, [DISCLAIMER.md](DISCLAIMER.md), [SECURITY.md](SECURITY.md), [SUPPORT.md](SUPPORT.md), and [CONTRIBUTING.md](CONTRIBUTING.md).
+Changing standard license language can create ambiguity. Extra context belongs in separate files such as this one, [DISCLAIMER.md](DISCLAIMER.md), [SECURITY.md](SECURITY.md), [SUPPORT.md](SUPPORT.md), [CONTRIBUTING.md](CONTRIBUTING.md), and [SPONSORS.md](SPONSORS.md).
 
 ## Public Repository Boundaries
 
@@ -32,6 +32,12 @@ This repository is public, but public does not mean:
 - a service, product, or warranty.
 
 Use this repository only for learning, testing, and experimentation unless you independently review, test, secure, and validate anything you use.
+
+## Sponsorship Boundaries
+
+Any sponsorship, donation, tip, funding, or financial contribution connected to this repository is voluntary and does not create a support, maintenance, consulting, service-level, feature, priority, warranty, partnership, agency, or commercial obligation.
+
+See [SPONSORS.md](SPONSORS.md) for the temporary sponsorship notice.
 
 ## No Sensitive Information
 
@@ -57,5 +63,6 @@ If sensitive information is exposed, rotating or revoking the affected secret is
 - [SECURITY.md](SECURITY.md) explains security expectations and unsupported status.
 - [SUPPORT.md](SUPPORT.md) explains that there is no formal support or maintenance promise.
 - [CONTRIBUTING.md](CONTRIBUTING.md) explains contribution boundaries.
+- [SPONSORS.md](SPONSORS.md) explains temporary sponsorship boundaries.
 
 If there is a conflict between informal explanation and the MIT License, the MIT License controls to the extent required by applicable law.

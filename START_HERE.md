@@ -36,8 +36,10 @@ It is not a production app. That is okay. The point is to learn the shape of a c
 | `SUPPORT.md` | Explains that there is no support or maintenance promise. |
 | `CONTRIBUTING.md` | Rules for opening issues, pull requests, or contributions. |
 | `CODE_OF_CONDUCT.md` | Participation and moderation expectations. |
+| `SPONSORS.md` | Temporary sponsorship notice and no-benefits clarification. |
 | `CHANGELOG.md` | Notes meaningful repository changes over time. |
 | `ROADMAP.md` | Shows possible next learning steps. |
+| `.github/FUNDING.yml` | Placeholder funding configuration for future sponsor links. |
 | `.github/dependabot.yml` | Monthly Dependabot checks for GitHub Actions. |
 | `.github/PULL_REQUEST_TEMPLATE.md` | Checklist shown when opening pull requests. |
 | `.github/ISSUE_TEMPLATE/` | Issue forms for bugs, features, and documentation tasks. |
