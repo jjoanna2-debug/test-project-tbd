@@ -12,9 +12,10 @@ This is a public test project for learning the basics:
 - how commits work;
 - how branches work;
 - how pull requests work;
-- how public repository policy files work.
+- how public repository policy files work;
+- how a tiny static HTML/CSS/JavaScript project is structured.
 
-It is not a real app yet. That is okay. The point is to learn the shape of a clean repository before building something bigger.
+It is not a production app. That is okay. The point is to learn the shape of a clean repository before building something bigger.
 
 ## What Each File Does
 
@@ -22,15 +23,28 @@ It is not a real app yet. That is okay. The point is to learn the shape of a cle
 | --- | --- |
 | `README.md` | The front page of the project. Start here when visiting the repo. |
 | `START_HERE.md` | A beginner-friendly guide to what is going on. |
+| `index.html` | A tiny starter page for practicing project changes. |
+| `src/styles.css` | Styling for the starter page. |
+| `src/main.js` | Small JavaScript behavior for the starter page. |
+| `docs/PROJECT_STRUCTURE.md` | A fuller map of the repository structure. |
 | `LICENSE` | The legal permission for using the project. This repo uses MIT. |
 | `LEGAL_NOTICES.md` | Plain-language context for the license and public-use boundaries. |
 | `DISCLAIMER.md` | Extra warning that this is experimental and used at your own risk. |
 | `SECURITY.md` | Says this project is not security-reviewed or formally supported. |
 | `SUPPORT.md` | Explains that there is no support or maintenance promise. |
 | `CONTRIBUTING.md` | Rules for opening issues, pull requests, or contributions. |
+| `CODE_OF_CONDUCT.md` | Participation and moderation expectations. |
 | `SPONSORS.md` | Temporary sponsorship notice and no-benefits clarification. |
+| `CHANGELOG.md` | Notes meaningful repository changes over time. |
+| `ROADMAP.md` | Shows possible next learning steps. |
 | `.github/FUNDING.yml` | Placeholder funding configuration for future sponsor links. |
+| `.github/PULL_REQUEST_TEMPLATE.md` | Checklist shown when opening pull requests. |
+| `.github/ISSUE_TEMPLATE/` | Issue forms for bugs, features, and documentation tasks. |
+| `.github/workflows/basic-checks.yml` | Basic automated checks for the repository. |
+| `.github/CODEOWNERS` | Default review visibility for repository changes. |
 | `.gitignore` | Tells Git which local junk files should stay out of the repo. |
+| `.gitattributes` | Keeps text and binary file handling consistent. |
+| `.editorconfig` | Keeps editor formatting consistent. |
 
 ## Your First GitHub Words
 
@@ -41,21 +55,25 @@ It is not a real app yet. That is okay. The point is to learn the shape of a cle
 - **Clone:** download the repo to your computer.
 - **Push:** send your local commits to GitHub.
 - **Pull:** bring GitHub changes down to your computer.
+- **Workflow:** an automated GitHub Actions process.
 
 ## Tiny Practice Plan
 
-1. Edit one sentence in `README.md`.
-2. Run `git status` to see what changed.
-3. Run `git add README.md`.
-4. Run `git commit -m "Practice README edit"`.
-5. Run `git push`.
-6. Refresh GitHub and look for the new commit.
+1. Open `index.html` in a browser.
+2. Edit one sentence in `index.html` or `README.md`.
+3. Run `git status` to see what changed.
+4. Run `git add index.html` or `git add README.md`.
+5. Run `git commit -m "Practice starter edit"`.
+6. Run `git push`.
+7. Refresh GitHub and look for the new commit.
 
 ## What To Try Next
 
 - Create a new branch.
-- Add a tiny file like `notes.md`.
+- Edit `src/styles.css`.
 - Open a pull request.
+- Check the pull request template.
+- Check the GitHub Actions result.
 - Merge the pull request.
 - Look at the commit history.
 
