@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Support policy
+    url: https://github.com/jjoanna2-debug/test-project-tbd/blob/main/SUPPORT.md
+    about: Read before asking for help or support.
+  - name: Security policy
+    url: https://github.com/jjoanna2-debug/test-project-tbd/blob/main/SECURITY.md
+    about: Read before reporting or discussing security issues.
