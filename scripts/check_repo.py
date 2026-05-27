@@ -54,7 +54,11 @@ def main() -> int:
     missing = [path for path in REQUIRED_FILES if not (ROOT / path).is_file()]
 
     for path, expected_values in SOURCE_REFERENCES.items():
-        content = (ROOT / path).read_text(encoding="utf-8")
+        source_path = ROOT / path
+        if not source_path.is_file():
+            continue
+
+        content = source_path.read_text(encoding="utf-8")
         for expected in expected_values:
             if expected not in content:
                 missing.append(f"{path} reference: {expected}")
