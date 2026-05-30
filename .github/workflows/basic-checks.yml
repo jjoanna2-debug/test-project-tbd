@@ -22,7 +22,10 @@ jobs:
 
       - name: Check Rust project
         shell: bash
-        run: cargo test
+        run: |
+          cargo fmt --check
+          cargo clippy --all-targets -- -D warnings
+          cargo test
 
       - name: Run repository doctor
         shell: bash
