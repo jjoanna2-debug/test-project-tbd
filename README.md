@@ -97,7 +97,7 @@ This repository includes:
 
 This repository includes a temporary sponsorship notice. Sponsorship or financial support is voluntary and does not create support, maintenance, consulting, service-level, feature, priority, warranty, or commercial obligations. See [SPONSORS.md](SPONSORS.md).
 
-The repository Sponsor button points to `jjoanna2-debug` through `.github/FUNDING.yml`.
+A placeholder `.github/FUNDING.yml` exists for a possible Sponsor button, but live GitHub metadata currently reports no active funding links for this repository.
 
 ## Next steps
 

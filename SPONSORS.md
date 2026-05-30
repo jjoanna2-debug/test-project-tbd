@@ -4,7 +4,7 @@
 
 This is a temporary sponsorship placeholder for this public learning and testing repository.
 
-The repository Sponsor button is configured through `.github/FUNDING.yml` and points to the `jjoanna2-debug` GitHub Sponsors account.
+A placeholder `.github/FUNDING.yml` exists for a possible Sponsor button. Live GitHub metadata currently reports no active funding links for this repository, so do not treat sponsorship as available unless GitHub shows an active Sponsor button.
 
 At this stage, this repository does not offer sponsorship tiers, paid support, consulting, service-level commitments, private maintenance, guaranteed responses, feature commitments, commercial deliverables, or any other benefit in exchange for sponsorship or financial support.
 
