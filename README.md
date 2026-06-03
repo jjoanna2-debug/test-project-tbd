@@ -55,7 +55,7 @@ Edit the Rust, Python, or shell files to practice commits, branches, pull reques
 - Issue and pull request templates
 - Basic GitHub Actions smoke checks
 - Monthly Dependabot checks for GitHub Actions
-- Temporary sponsorship notice
+- Funding status note
 
 ## Important notices
 
@@ -75,7 +75,7 @@ Do not use this repository with production credentials, secrets, private keys, A
 - [SUPPORT.md](SUPPORT.md) — support and maintenance boundaries
 - [CONTRIBUTING.md](CONTRIBUTING.md) — contribution rules and sensitive-information restrictions
 - [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) — participation and moderation expectations
-- [SPONSORS.md](SPONSORS.md) — temporary sponsorship notice and no-benefits clarification
+- [SPONSORS.md](SPONSORS.md) — funding status and no-benefits clarification
 - [CHANGELOG.md](CHANGELOG.md) — chronological repository change notes
 - [ROADMAP.md](ROADMAP.md) — future learning path and project ideas
 - [docs/PROJECT_STRUCTURE.md](docs/PROJECT_STRUCTURE.md) — current file layout
@@ -93,11 +93,11 @@ This repository includes:
 - CODEOWNERS review visibility;
 - `.editorconfig` and `.gitattributes` for cleaner editing and diffs.
 
-## Sponsorship
+## Funding status
 
-This repository includes a temporary sponsorship notice. Sponsorship or financial support is voluntary and does not create support, maintenance, consulting, service-level, feature, priority, warranty, or commercial obligations. See [SPONSORS.md](SPONSORS.md).
+This repository does not currently expose active GitHub funding links. If funding is enabled later, any support will remain voluntary and will not create support, maintenance, consulting, service-level, feature, priority, warranty, or commercial obligations. See [SPONSORS.md](SPONSORS.md).
 
-A placeholder `.github/FUNDING.yml` exists for a possible Sponsor button, but live GitHub metadata currently reports no active funding links for this repository.
+A placeholder `.github/FUNDING.yml` exists for future funding metadata only.
 
 ## Next steps
 

@@ -1,10 +1,10 @@
 # Sponsors
 
-## Temporary Sponsorship Notice
+## Funding Status Notice
 
-This is a temporary sponsorship placeholder for this public learning and testing repository.
+This repository does not currently expose active GitHub funding links.
 
-A placeholder `.github/FUNDING.yml` exists for a possible Sponsor button. Live GitHub metadata currently reports no active funding links for this repository, so do not treat sponsorship as available unless GitHub shows an active Sponsor button.
+A placeholder `.github/FUNDING.yml` exists for future funding metadata only. Do not treat sponsorship as available unless GitHub shows an active Sponsor button.
 
 At this stage, this repository does not offer sponsorship tiers, paid support, consulting, service-level commitments, private maintenance, guaranteed responses, feature commitments, commercial deliverables, or any other benefit in exchange for sponsorship or financial support.
 
@@ -20,7 +20,7 @@ Financial support does not purchase software, services, advice, support, access,
 
 All repository use remains subject to the [Apache License 2.0](LICENSE), [DISCLAIMER.md](DISCLAIMER.md), [SECURITY.md](SECURITY.md), [SUPPORT.md](SUPPORT.md), [CONTRIBUTING.md](CONTRIBUTING.md), and any other applicable repository notices.
 
-This sponsorship notice does not replace or modify the license, disclaimer, security policy, support policy, or contribution rules.
+This funding notice does not replace or modify the license, disclaimer, security policy, support policy, or contribution rules.
 
 ## Sensitive Information
 
@@ -28,4 +28,4 @@ Do not include secrets, credentials, private keys, API tokens, passwords, person
 
 ## Future Changes
 
-This sponsorship notice may be updated, removed, or replaced at any time as the repository evolves.
+This funding notice may be updated, removed, or replaced at any time as the repository evolves.

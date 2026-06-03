@@ -31,7 +31,7 @@ This project follows a simple chronological changelog. It is a learning reposito
 - Updated README and starter guide to reflect the expanded repository structure.
 - Expanded the basic GitHub Actions smoke test to verify the current file layout.
 - Replaced the static web starter with a Rust-first staging project.
-- Configured GitHub Sponsors funding metadata for `jjoanna2-debug`.
+- Clarified that funding metadata is inactive until GitHub exposes active funding links.
 
 ### Notes
 

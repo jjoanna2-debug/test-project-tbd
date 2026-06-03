@@ -3,12 +3,13 @@
 # This file enables GitHub's Sponsor button only when valid funding
 # accounts are configured and available for this repository.
 #
-# Temporary placeholder:
+# Inactive placeholder:
 # - No sponsorship tiers, paid support, consulting, service-level commitments,
 #   or guaranteed benefits are currently offered.
-# - See SPONSORS.md for the temporary sponsorship notice.
+# - See SPONSORS.md for the funding status notice.
 
-github: [jjoanna2-debug]
+# No active funding providers are configured right now.
+# Add `github: [jjoanna2-debug]` only after GitHub Sponsors is active.
 
 # Add external funding providers only when ready.
 # patreon: username
