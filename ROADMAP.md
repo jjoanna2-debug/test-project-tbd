@@ -34,7 +34,7 @@ Status: planned
 Status: in progress
 
 - Keep a simple GitHub Actions workflow.
-- Run Rust, Python, and shell checks where available.
+- Run Rust and shell checks where available.
 - Validate required repository files.
 - Keep automation safe, simple, and non-production.
 

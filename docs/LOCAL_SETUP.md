@@ -8,7 +8,6 @@ You need:
 
 - Git, if you want to clone and push changes;
 - Rust and Cargo, if you want to run the Rust starter locally;
-- Python 3, if you want to run the repository doctor check;
 - a code editor, such as VS Code, Cursor, Zed, or another editor.
 
 No framework, server, external service, or production dependency is required.
@@ -27,7 +26,7 @@ You can also open the full folder in your code editor and edit:
 ```text
 Cargo.toml
 src/main.rs
-scripts/check_repo.py
+src/bin/check_repo.rs
 scripts/doctor.sh
 ```
 

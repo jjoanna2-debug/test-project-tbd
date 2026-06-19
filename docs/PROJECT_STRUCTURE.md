@@ -39,13 +39,13 @@ This document explains the current repository layout.
 | Path | Purpose |
 | --- | --- |
 | `src/main.rs` | Small Rust starter program. |
+| `src/bin/check_repo.rs` | Rust repository doctor for structure, evidence, secret-pattern, and workflow checks. |
 
 ## Scripts
 
 | Path | Purpose |
 | --- | --- |
-| `scripts/check_repo.py` | Python check for required files, Rust starter references, redacted evidence artifact names, common secret patterns, sensitive filenames, and workflow hardening. |
-| `scripts/doctor.sh` | Shell wrapper for the local repository check. |
+| `scripts/doctor.sh` | Shell wrapper for the Rust repository doctor. |
 
 ## GitHub Configuration
 

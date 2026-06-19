@@ -7,6 +7,6 @@ repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
 cd "$repo_root"
 
-python3 scripts/check_repo.py
+cargo run --locked --bin check_repo
 
 echo "Doctor check passed."

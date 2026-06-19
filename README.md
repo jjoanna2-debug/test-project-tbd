@@ -36,11 +36,11 @@ This repository now uses a small Rust starter instead of a static web page:
 Cargo.toml
 Cargo.lock
 src/main.rs
-scripts/check_repo.py
+src/bin/check_repo.rs
 scripts/doctor.sh
 ```
 
-Edit the Rust, Python, or shell files to practice commits, branches, pull requests, and checks. The Rust code is intentionally tiny for now; it is a staging point, not a finished product.
+Edit the Rust or shell files to practice commits, branches, pull requests, and checks. The Rust code is intentionally small for now; it is a staging point, not a finished product.
 
 ## Current scope
 
@@ -48,7 +48,7 @@ Edit the Rust, Python, or shell files to practice commits, branches, pull reques
 - Beginner onboarding
 - README structure
 - Rust starter project
-- Small Python and shell repository checks
+- Rust and shell repository checks
 - License and disclaimer hygiene
 - GitHub workflow practice
 - Basic public-repository policy files
@@ -89,7 +89,7 @@ This repository includes:
 - a pull request template;
 - a basic GitHub Actions workflow;
 - a small Rust test;
-- small Python and shell scripts for local checks;
+- Rust and shell local checks;
 - weekly Dependabot checks for GitHub Actions and Cargo;
 - public-repository hardening checks for secrets, redacted evidence artifacts, and GitHub workflow safety;
 - CODEOWNERS review visibility;

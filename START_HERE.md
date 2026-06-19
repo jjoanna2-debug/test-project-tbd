@@ -14,7 +14,7 @@ This is a public staging project for learning the basics:
 - how pull requests work;
 - how public repository policy files work;
 - how a small Rust project is structured.
-- how small Python and shell checks can support a repository.
+- how small Rust and shell checks can support a repository.
 
 It is not a production app. That is okay. The point is to learn the shape of a clean repository before building something bigger.
 
@@ -27,7 +27,7 @@ It is not a production app. That is okay. The point is to learn the shape of a c
 | `Cargo.toml` | Rust package manifest, project metadata, toolchain floor, and lint policy. |
 | `Cargo.lock` | Rust dependency lockfile for reproducible local and CI checks. |
 | `src/main.rs` | Small Rust starter program. |
-| `scripts/check_repo.py` | Python check for required files, Rust starter references, common secret patterns, workflow hardening, and redacted evidence artifact names. |
+| `src/bin/check_repo.rs` | Rust check for required files, Rust starter references, common secret patterns, workflow hardening, and redacted evidence artifact names. |
 | `scripts/doctor.sh` | Shell wrapper for running the repository check locally. |
 | `docs/LOCAL_SETUP.md` | How to clone, open, edit, and commit locally. |
 | `docs/GITHUB_WORKFLOW.md` | How to branch, commit, push, open a pull request, and merge. |

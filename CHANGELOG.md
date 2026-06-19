@@ -11,7 +11,7 @@ This project follows a simple chronological changelog. It is a learning reposito
 - Starter public repository structure.
 - Beginner onboarding documentation.
 - Rust starter project.
-- Small Python and shell checks for repository structure.
+- Rust and shell checks for repository structure.
 - Apache-2.0 `NOTICE` file for copyright attribution.
 - Project structure documentation in `docs/PROJECT_STRUCTURE.md`.
 - Local setup guide in `docs/LOCAL_SETUP.md`.
@@ -25,6 +25,7 @@ This project follows a simple chronological changelog. It is a learning reposito
 - Roadmap for future learning steps.
 - Practice issues for branch workflow and future project direction.
 - Repository doctor checks for common secret patterns, sensitive filenames, workflow permissions, pinned GitHub Actions, and explicitly redacted evidence artifacts.
+- Rust-native repository doctor binary so the repo remains Rust-first.
 
 ### Changed
 
