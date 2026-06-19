@@ -15,6 +15,7 @@ Describe what this pull request changes.
 ## Checklist
 
 - [ ] I reviewed my changes before submitting.
+- [ ] I ran `bash scripts/doctor.sh` or checked the GitHub Actions result.
 - [ ] I did not include secrets, credentials, tokens, passwords, private keys, personal data, customer data, or confidential information.
 - [ ] I kept the change relevant to this learning repository.
 - [ ] I updated documentation if needed.

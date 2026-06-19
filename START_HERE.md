@@ -24,10 +24,10 @@ It is not a production app. That is okay. The point is to learn the shape of a c
 | --- | --- |
 | `README.md` | The front page of the project. Start here when visiting the repo. |
 | `START_HERE.md` | A beginner-friendly guide to what is going on. |
-| `Cargo.toml` | Rust package manifest and project metadata. |
+| `Cargo.toml` | Rust package manifest, project metadata, toolchain floor, and lint policy. |
 | `Cargo.lock` | Rust dependency lockfile for reproducible local and CI checks. |
 | `src/main.rs` | Small Rust starter program. |
-| `scripts/check_repo.py` | Python check for required files and Rust starter references. |
+| `scripts/check_repo.py` | Python check for required files, Rust starter references, common secret patterns, workflow hardening, and redacted evidence artifact names. |
 | `scripts/doctor.sh` | Shell wrapper for running the repository check locally. |
 | `docs/LOCAL_SETUP.md` | How to clone, open, edit, and commit locally. |
 | `docs/GITHUB_WORKFLOW.md` | How to branch, commit, push, open a pull request, and merge. |
@@ -44,7 +44,7 @@ It is not a production app. That is okay. The point is to learn the shape of a c
 | `CHANGELOG.md` | Notes meaningful repository changes over time. |
 | `ROADMAP.md` | Shows possible next learning steps. |
 | `.github/FUNDING.yml` | Placeholder funding configuration for future sponsor links. |
-| `.github/dependabot.yml` | Monthly Dependabot checks for GitHub Actions and Cargo. |
+| `.github/dependabot.yml` | Weekly Dependabot checks for GitHub Actions and Cargo. |
 | `.github/PULL_REQUEST_TEMPLATE.md` | Checklist shown when opening pull requests. |
 | `.github/ISSUE_TEMPLATE/` | Issue forms for bugs, features, and documentation tasks. |
 | `.github/workflows/basic-checks.yml` | Basic automated checks for the repository. |
@@ -52,6 +52,7 @@ It is not a production app. That is okay. The point is to learn the shape of a c
 | `.gitignore` | Tells Git which local junk files should stay out of the repo. |
 | `.gitattributes` | Keeps text and binary file handling consistent. |
 | `.editorconfig` | Keeps editor formatting consistent. |
+| `.markdownlint.json` | Keeps Markdown linting useful without fighting long policy text. |
 
 ## Your First GitHub Words
 

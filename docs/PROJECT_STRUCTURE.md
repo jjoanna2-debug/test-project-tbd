@@ -8,7 +8,7 @@ This document explains the current repository layout.
 | --- | --- |
 | `README.md` | Main project overview and entry point. |
 | `START_HERE.md` | Beginner guide for understanding the repository. |
-| `Cargo.toml` | Rust package manifest and project metadata. |
+| `Cargo.toml` | Rust package manifest, project metadata, toolchain floor, and lint policy. |
 | `Cargo.lock` | Rust dependency lockfile. |
 | `LICENSE` | Apache License 2.0 text. |
 | `NOTICE` | Copyright and project attribution notice. |
@@ -24,6 +24,7 @@ This document explains the current repository layout.
 | `.gitignore` | Files Git should ignore. |
 | `.gitattributes` | Git text and binary handling rules. |
 | `.editorconfig` | Editor formatting defaults. |
+| `.markdownlint.json` | Markdown linting defaults for repository documentation. |
 
 ## Documentation
 
@@ -43,7 +44,7 @@ This document explains the current repository layout.
 
 | Path | Purpose |
 | --- | --- |
-| `scripts/check_repo.py` | Python check for required files, Rust starter references, and redacted evidence artifact names. |
+| `scripts/check_repo.py` | Python check for required files, Rust starter references, redacted evidence artifact names, common secret patterns, sensitive filenames, and workflow hardening. |
 | `scripts/doctor.sh` | Shell wrapper for the local repository check. |
 
 ## GitHub Configuration
@@ -51,7 +52,7 @@ This document explains the current repository layout.
 | Path | Purpose |
 | --- | --- |
 | `.github/FUNDING.yml` | Placeholder funding configuration. |
-| `.github/dependabot.yml` | Monthly Dependabot checks for GitHub Actions and Cargo. |
+| `.github/dependabot.yml` | Weekly Dependabot checks for GitHub Actions and Cargo. |
 | `.github/CODEOWNERS` | Default review visibility for repository changes. |
 | `.github/PULL_REQUEST_TEMPLATE.md` | Pull request checklist. |
 | `.github/ISSUE_TEMPLATE/config.yml` | Issue template configuration. |

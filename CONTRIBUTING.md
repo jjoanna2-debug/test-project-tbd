@@ -25,6 +25,8 @@ Do not submit:
 - exploit payloads against third-party systems;
 - material that violates another person's rights or applicable law.
 
+The repository doctor runs in CI and rejects common secret patterns, private-key blocks, sensitive filenames such as `.env`, and evidence artifacts that are not explicitly marked as redacted.
+
 ## Pull Requests and Issues
 
 Pull requests and issues should be simple, relevant, and limited to this learning repository. There is no guaranteed review timeline, merge timeline, support obligation, or maintenance commitment.

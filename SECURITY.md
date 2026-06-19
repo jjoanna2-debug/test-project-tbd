@@ -18,6 +18,8 @@ Do not treat anything in this repository as secure, reviewed, production-ready, 
 
 Before using any content from this repository, you are responsible for independently reviewing, testing, validating, hardening, and securing it.
 
+The repository doctor and GitHub Actions smoke test reject common secret patterns, private-key blocks, sensitive filenames, unsafe Rust code, non-redacted evidence artifact names, broad workflow write permissions, and GitHub Actions that are not pinned to full commit SHAs. These checks are guardrails only; they are not a security audit, scanner warranty, or substitute for manual review.
+
 Do not use this repository with:
 
 - production credentials;

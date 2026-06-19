@@ -47,7 +47,9 @@ bash scripts/doctor.sh
 ```
 
 The doctor check verifies the expected repository files and fails if anything
-under `issue-evidence/` is not explicitly marked as redacted.
+under `issue-evidence/` is not explicitly marked as redacted. It also rejects
+common secret patterns, private-key blocks, sensitive filenames, broad workflow
+write permissions, and GitHub Actions that are not pinned to full commit SHAs.
 
 ## Commit the Change
 

@@ -1,6 +1,8 @@
 // Copyright 2026 Jean-Claude Joanna
 // SPDX-License-Identifier: Apache-2.0
 
+#![forbid(unsafe_code)]
+
 fn main() {
     println!("{}", status_message());
 }
