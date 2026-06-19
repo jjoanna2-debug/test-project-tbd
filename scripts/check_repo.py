@@ -49,9 +49,12 @@ SOURCE_REFERENCES = {
     "src/main.rs": ["GitHub staging lab ready."],
 }
 
+EVIDENCE_ROOT = ROOT / "issue-evidence"
+
 
 def main() -> int:
     missing = [path for path in REQUIRED_FILES if not (ROOT / path).is_file()]
+    failures = []
 
     for path, expected_values in SOURCE_REFERENCES.items():
         source_path = ROOT / path
@@ -63,9 +66,24 @@ def main() -> int:
             if expected not in content:
                 missing.append(f"{path} reference: {expected}")
 
-    if missing:
+    if EVIDENCE_ROOT.is_dir():
+        for evidence_path in EVIDENCE_ROOT.rglob("*"):
+            if not evidence_path.is_file():
+                continue
+            relative_path = evidence_path.relative_to(ROOT).as_posix()
+            lower_path = relative_path.lower()
+            if (
+                "redacted" not in lower_path
+                or "unredacted" in lower_path
+                or "nonredacted" in lower_path
+            ):
+                failures.append(f"{relative_path} must be explicitly redacted")
+
+    if missing or failures:
         print("Repository check failed:")
         for item in missing:
+            print(f"- {item}")
+        for item in failures:
             print(f"- {item}")
         return 1
 

@@ -20,7 +20,7 @@ This project follows a simple chronological changelog. It is a learning reposito
 - Basic issue templates for bugs, feature requests, and documentation tasks.
 - Pull request template.
 - Basic GitHub Actions repository smoke test.
-- Monthly Dependabot checks for GitHub Actions.
+- Monthly Dependabot checks for GitHub Actions and Cargo.
 - `CODEOWNERS`, `.editorconfig`, and `.gitattributes` for repository hygiene.
 - Roadmap for future learning steps.
 - Practice issues for branch workflow and future project direction.
@@ -32,6 +32,7 @@ This project follows a simple chronological changelog. It is a learning reposito
 - Expanded the basic GitHub Actions smoke test to verify the current file layout.
 - Replaced the static web starter with a Rust-first staging project.
 - Clarified that funding metadata is inactive until GitHub exposes active funding links.
+- Hardened repository checks for locked Cargo validation and explicitly redacted evidence artifacts.
 
 ### Notes
 

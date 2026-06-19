@@ -54,7 +54,7 @@ Edit the Rust, Python, or shell files to practice commits, branches, pull reques
 - Basic public-repository policy files
 - Issue and pull request templates
 - Basic GitHub Actions smoke checks
-- Monthly Dependabot checks for GitHub Actions
+- Monthly Dependabot checks for GitHub Actions and Cargo
 - Funding status note
 
 ## Important notices
@@ -89,7 +89,7 @@ This repository includes:
 - a basic GitHub Actions workflow;
 - a small Rust test;
 - small Python and shell scripts for local checks;
-- monthly Dependabot checks for GitHub Actions;
+- monthly Dependabot checks for GitHub Actions and Cargo;
 - CODEOWNERS review visibility;
 - `.editorconfig` and `.gitattributes` for cleaner editing and diffs.
 

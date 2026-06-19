@@ -43,7 +43,7 @@ This document explains the current repository layout.
 
 | Path | Purpose |
 | --- | --- |
-| `scripts/check_repo.py` | Python check for required files and Rust starter references. |
+| `scripts/check_repo.py` | Python check for required files, Rust starter references, and redacted evidence artifact names. |
 | `scripts/doctor.sh` | Shell wrapper for the local repository check. |
 
 ## GitHub Configuration
@@ -51,7 +51,7 @@ This document explains the current repository layout.
 | Path | Purpose |
 | --- | --- |
 | `.github/FUNDING.yml` | Placeholder funding configuration. |
-| `.github/dependabot.yml` | Monthly Dependabot checks for GitHub Actions. |
+| `.github/dependabot.yml` | Monthly Dependabot checks for GitHub Actions and Cargo. |
 | `.github/CODEOWNERS` | Default review visibility for repository changes. |
 | `.github/PULL_REQUEST_TEMPLATE.md` | Pull request checklist. |
 | `.github/ISSUE_TEMPLATE/config.yml` | Issue template configuration. |

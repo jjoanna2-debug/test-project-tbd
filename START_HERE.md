@@ -44,7 +44,7 @@ It is not a production app. That is okay. The point is to learn the shape of a c
 | `CHANGELOG.md` | Notes meaningful repository changes over time. |
 | `ROADMAP.md` | Shows possible next learning steps. |
 | `.github/FUNDING.yml` | Placeholder funding configuration for future sponsor links. |
-| `.github/dependabot.yml` | Monthly Dependabot checks for GitHub Actions. |
+| `.github/dependabot.yml` | Monthly Dependabot checks for GitHub Actions and Cargo. |
 | `.github/PULL_REQUEST_TEMPLATE.md` | Checklist shown when opening pull requests. |
 | `.github/ISSUE_TEMPLATE/` | Issue forms for bugs, features, and documentation tasks. |
 | `.github/workflows/basic-checks.yml` | Basic automated checks for the repository. |

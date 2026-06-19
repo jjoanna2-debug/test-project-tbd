@@ -37,7 +37,7 @@ For example:
 
 1. Change the status message in `src/main.rs`.
 2. Save the file.
-3. Run `cargo test` if Rust is installed.
+3. Run `cargo test --locked` if Rust is installed.
 4. Check the change.
 
 ## Run the Doctor Check
@@ -45,6 +45,9 @@ For example:
 ```bash
 bash scripts/doctor.sh
 ```
+
+The doctor check verifies the expected repository files and fails if anything
+under `issue-evidence/` is not explicitly marked as redacted.
 
 ## Commit the Change
 
