@@ -21,13 +21,13 @@ Status: complete
 
 ## Phase 3 — GitHub Workflow Practice
 
-Status: planned
+Status: partially complete
 
-- Create a feature branch.
-- Open a pull request.
-- Review the pull request.
-- Merge the pull request.
-- Read the commit history and compare changes.
+- Basic issue workflow has been practiced.
+- Dependabot pull requests have been reviewed and merged.
+- Continue using feature branches and pull requests for future changes.
+- Review GitHub Actions results before merging pull requests.
+- Read the commit history after each merged change and compare the final diff.
 
 ## Phase 4 — Automation Basics
 
@@ -36,6 +36,7 @@ Status: in progress
 - Keep a simple GitHub Actions workflow.
 - Run Rust and shell checks where available.
 - Validate required repository files.
+- Show what the Rust-native repository doctor checks and what passing output looks like.
 - Keep automation safe, simple, and non-production.
 
 ## Phase 5 — Future Ideas

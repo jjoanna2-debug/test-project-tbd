@@ -35,7 +35,10 @@ This project follows a simple chronological changelog. It is a learning reposito
 - Replaced the static web starter with a Rust-first staging project.
 - Clarified that funding metadata is inactive until GitHub exposes active funding links.
 - Hardened repository checks for locked Cargo validation, unsafe-code rejection, secret-pattern screening, pinned workflow actions, and explicitly redacted evidence artifacts.
+- Reconciled the roadmap with completed issue and pull request practice.
+- Promoted the Rust-native repository doctor in the README with current checks and sample passing output.
 
 ### Notes
 
 - This repository is experimental and provided for learning, testing, and GitHub workflow practice.
+- Earlier closed issues may mention the previous static-page starter. The current repository has pivoted to a Rust-first staging lab with a Rust-native repository doctor.

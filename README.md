@@ -42,13 +42,38 @@ scripts/doctor.sh
 
 Edit the Rust or shell files to practice commits, branches, pull requests, and checks. The Rust code is intentionally small for now; it is a staging point, not a finished product.
 
+## What The Doctor Checks
+
+`src/bin/check_repo.rs` is the main project-specific tool in this repository. It verifies that the public repository stays small, readable, and safe to practice with:
+
+- required project, policy, documentation, GitHub, Rust, and script files exist;
+- expected Rust safety references stay in place;
+- issue evidence artifacts are explicitly marked as redacted;
+- common sensitive filenames are not committed;
+- private-key blocks, GitHub-token shapes, AWS access-key shapes, and generic secret assignments are flagged;
+- GitHub Actions workflows avoid broad write permissions;
+- third-party GitHub Actions are pinned to full commit SHAs.
+
+Run it locally with:
+
+```bash
+bash scripts/doctor.sh
+```
+
+Passing output:
+
+```text
+Repository check passed.
+Doctor check passed.
+```
+
 ## Current scope
 
 - Repository setup
 - Beginner onboarding
 - README structure
 - Rust starter project
-- Rust and shell repository checks
+- Rust-native repository doctor and shell wrapper
 - License and disclaimer hygiene
 - GitHub workflow practice
 - Basic public-repository policy files
