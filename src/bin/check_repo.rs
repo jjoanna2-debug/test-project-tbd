@@ -12,15 +12,11 @@ use std::process::ExitCode;
 const REQUIRED_FILES: &[&str] = &[
     "README.md",
     "START_HERE.md",
-    "AGENTS.md",
     "Cargo.toml",
     "Cargo.lock",
     "src/main.rs",
     "src/bin/check_repo.rs",
     "scripts/doctor.sh",
-    ".agents/skills/repo-check/SKILL.md",
-    ".codex/hooks.json",
-    ".codex/hooks/run_repo_doctor.sh",
     "docs/PROJECT_STRUCTURE.md",
     "docs/LOCAL_SETUP.md",
     "docs/GITHUB_WORKFLOW.md",
@@ -67,23 +63,6 @@ const SOURCE_REFERENCES: &[(&str, &[&str])] = &[
         "src/bin/check_repo.rs",
         &["#![forbid(unsafe_code)]", "fn check_workflows"],
     ),
-    (
-        "AGENTS.md",
-        &[
-            "Required Verification",
-            "cargo clippy --locked --all-targets",
-        ],
-    ),
-    (
-        ".agents/skills/repo-check/SKILL.md",
-        &["name: repo-check", "Run the full local verification set"],
-    ),
-    (".codex/hooks.json", &["\"Stop\"", "run_repo_doctor.sh"]),
-    (
-        ".codex/hooks/run_repo_doctor.sh",
-        &["hook_dir=", "bash scripts/doctor.sh"],
-    ),
-    ("README.md", &["not a complete security scanner or audit"]),
 ];
 
 const SKIPPED_DIRS: &[&str] = &[

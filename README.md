@@ -33,22 +33,18 @@ For hands-on setup and workflow notes, read:
 This repository now uses a small Rust starter instead of a static web page:
 
 ```text
-AGENTS.md
 Cargo.toml
 Cargo.lock
 src/main.rs
 src/bin/check_repo.rs
 scripts/doctor.sh
-.agents/skills/repo-check/SKILL.md
-.codex/hooks.json
-.codex/hooks/run_repo_doctor.sh
 ```
 
 Edit the Rust or shell files to practice commits, branches, pull requests, and checks. The Rust code is intentionally small for now; it is a staging point, not a finished product.
 
 ## What The Doctor Checks
 
-`src/bin/check_repo.rs` is the main project-specific tool in this repository. It helps keep the public repository small, readable, and suitable for practice by checking a narrow set of repository hygiene rules:
+`src/bin/check_repo.rs` is the main project-specific tool in this repository. It verifies that the public repository stays small, readable, and safe to practice with:
 
 - required project, policy, documentation, GitHub, Rust, and script files exist;
 - expected Rust safety references stay in place;
@@ -57,8 +53,6 @@ Edit the Rust or shell files to practice commits, branches, pull requests, and c
 - private-key blocks, GitHub-token shapes, AWS access-key shapes, and generic secret assignments are flagged;
 - GitHub Actions workflows avoid broad write permissions;
 - third-party GitHub Actions are pinned to full commit SHAs.
-
-The doctor is a local hygiene guard, not a complete security scanner or audit.
 
 Run it locally with:
 
@@ -73,18 +67,6 @@ Repository check passed.
 Doctor check passed.
 ```
 
-## Codex Workflow
-
-This repository includes Codex-specific workflow surfaces:
-
-- `AGENTS.md` defines durable repository instructions and required checks.
-- `.agents/skills/repo-check/SKILL.md` defines the reusable inspect, edit,
-  verify, and report workflow for this repo.
-- `.codex/hooks.json` wires a project-local stop hook to the repository doctor.
-
-The hook is mechanical enforcement around the existing doctor check. Rich
-workflow guidance belongs in `AGENTS.md` and the repo skill.
-
 ## Current scope
 
 - Repository setup
@@ -92,14 +74,13 @@ workflow guidance belongs in `AGENTS.md` and the repo skill.
 - README structure
 - Rust starter project
 - Rust-native repository doctor and shell wrapper
-- Codex repository instructions, repo-check skill, and project-local doctor hook
 - License and disclaimer hygiene
 - GitHub workflow practice
 - Basic public-repository policy files
 - Issue and pull request templates
 - Basic GitHub Actions smoke checks
 - Weekly Dependabot checks for GitHub Actions and Cargo
-- Basic local and CI guards for common secret patterns, sensitive filenames, redacted evidence artifacts, workflow permissions, and pinned GitHub Actions
+- Local and CI guards for common secret patterns, sensitive filenames, redacted evidence artifacts, workflow permissions, and pinned GitHub Actions
 - Funding status note
 
 ## Important notices

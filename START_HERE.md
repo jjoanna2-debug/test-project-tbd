@@ -13,7 +13,7 @@ This is a public staging project for learning the basics:
 - how branches work;
 - how pull requests work;
 - how public repository policy files work;
-- how a small Rust project is structured;
+- how a small Rust project is structured.
 - how small Rust and shell checks can support a repository.
 
 It is not a production app. That is okay. The point is to learn the shape of a clean repository before building something bigger.
@@ -24,7 +24,6 @@ It is not a production app. That is okay. The point is to learn the shape of a c
 | --- | --- |
 | `README.md` | The front page of the project. Start here when visiting the repo. |
 | `START_HERE.md` | A beginner-friendly guide to what is going on. |
-| `AGENTS.md` | Codex instructions for this repository. |
 | `Cargo.toml` | Rust package manifest, project metadata, toolchain floor, and lint policy. |
 | `Cargo.lock` | Rust dependency lockfile for reproducible local and CI checks. |
 | `src/main.rs` | Small Rust starter program. |
@@ -50,9 +49,6 @@ It is not a production app. That is okay. The point is to learn the shape of a c
 | `.github/ISSUE_TEMPLATE/` | Issue forms for bugs, features, and documentation tasks. |
 | `.github/workflows/basic-checks.yml` | Basic automated checks for the repository. |
 | `.github/CODEOWNERS` | Default review visibility for repository changes. |
-| `.agents/skills/repo-check/SKILL.md` | Repo-local Codex skill for inspect, edit, verify, and report work. |
-| `.codex/hooks.json` | Project-local Codex hook configuration. |
-| `.codex/hooks/run_repo_doctor.sh` | Hook wrapper that runs the repository doctor. |
 | `.gitignore` | Tells Git which local junk files should stay out of the repo. |
 | `.gitattributes` | Keeps text and binary file handling consistent. |
 | `.editorconfig` | Keeps editor formatting consistent. |

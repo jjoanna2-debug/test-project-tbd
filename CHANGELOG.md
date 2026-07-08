@@ -26,7 +26,6 @@ This project follows a simple chronological changelog. It is a learning reposito
 - Practice issues for branch workflow and future project direction.
 - Repository doctor checks for common secret patterns, sensitive filenames, workflow permissions, pinned GitHub Actions, and explicitly redacted evidence artifacts.
 - Rust-native repository doctor binary so the repo remains Rust-first.
-- Codex repository instructions, repo-check skill, and project-local doctor hook.
 
 ### Changed
 
@@ -38,7 +37,6 @@ This project follows a simple chronological changelog. It is a learning reposito
 - Hardened repository checks for locked Cargo validation, unsafe-code rejection, secret-pattern screening, pinned workflow actions, and explicitly redacted evidence artifacts.
 - Reconciled the roadmap with completed issue and pull request practice.
 - Promoted the Rust-native repository doctor in the README with current checks and sample passing output.
-- Expanded repository structure checks to require the Codex workflow files.
 
 ### Notes
 

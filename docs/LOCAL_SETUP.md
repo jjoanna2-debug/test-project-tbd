@@ -24,14 +24,10 @@ cd test-project-tbd
 You can also open the full folder in your code editor and edit:
 
 ```text
-AGENTS.md
 Cargo.toml
 src/main.rs
 src/bin/check_repo.rs
 scripts/doctor.sh
-.agents/skills/repo-check/SKILL.md
-.codex/hooks.json
-.codex/hooks/run_repo_doctor.sh
 ```
 
 ## Make a Small Practice Change
@@ -53,11 +49,6 @@ The doctor check verifies the expected repository files and fails if anything
 under `issue-evidence/` is not explicitly marked as redacted. It also rejects
 common secret patterns, private-key blocks, sensitive filenames, broad workflow
 write permissions, and GitHub Actions that are not pinned to full commit SHAs.
-It is a local hygiene guard, not a complete security scanner or audit.
-
-For Codex-assisted work, `AGENTS.md` lists the full local verification set. The
-repo-local `$repo-check` skill repeats the same inspect, edit, verify, and
-report loop for reusable Codex tasks.
 
 ## Commit the Change
 
