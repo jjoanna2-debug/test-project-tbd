@@ -8,6 +8,7 @@ This document explains the current repository layout.
 | --- | --- |
 | `README.md` | Main project overview and entry point. |
 | `START_HERE.md` | Beginner guide for understanding the repository. |
+| `AGENTS.md` | Codex instructions for this repository. |
 | `Cargo.toml` | Rust package manifest, project metadata, toolchain floor, and lint policy. |
 | `Cargo.lock` | Rust dependency lockfile. |
 | `LICENSE` | Apache License 2.0 text. |
@@ -47,6 +48,14 @@ This document explains the current repository layout.
 | --- | --- |
 | `scripts/doctor.sh` | Shell wrapper for the Rust repository doctor. |
 
+## Codex Configuration
+
+| Path | Purpose |
+| --- | --- |
+| `.agents/skills/repo-check/SKILL.md` | Repo-local Codex skill for inspect, edit, verify, and report work. |
+| `.codex/hooks.json` | Project-local Codex hook configuration. |
+| `.codex/hooks/run_repo_doctor.sh` | Hook wrapper that runs the repository doctor. |
+
 ## GitHub Configuration
 
 | Path | Purpose |
@@ -63,4 +72,5 @@ This document explains the current repository layout.
 
 ## Current Design Principle
 
-Keep everything small, readable, and beginner-friendly. This repository is for learning GitHub workflows, not for production use.
+Keep everything small, readable, and beginner-friendly. This repository is for
+learning GitHub and Codex workflows, not for production use.

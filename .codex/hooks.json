@@ -1,0 +1,16 @@
+{
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/bin/bash \"$(git rev-parse --show-toplevel)/.codex/hooks/run_repo_doctor.sh\"",
+            "timeout": 120,
+            "statusMessage": "Running repository doctor"
+          }
+        ]
+      }
+    ]
+  }
+}
