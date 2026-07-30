@@ -35,6 +35,10 @@ This project follows a simple chronological changelog. It is a learning reposito
 - Replaced the static web starter with a Rust-first staging project.
 - Clarified that funding metadata is inactive until GitHub exposes active funding links.
 - Hardened repository checks for locked Cargo validation, unsafe-code rejection, secret-pattern screening, pinned workflow actions, and explicitly redacted evidence artifacts.
+- Kept local backup and delegated-work directories out of Git and the repository
+  doctor so preserved external checkouts cannot create false secret findings.
+- Expanded sensitive-filename checks to cover environment variants, credential
+  manifests, private-key files, and key-container formats.
 - Reconciled the roadmap with completed issue and pull request practice.
 - Promoted the Rust-native repository doctor in the README with current checks and sample passing output.
 

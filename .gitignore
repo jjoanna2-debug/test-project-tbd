@@ -42,3 +42,8 @@ venv/
 .cache/
 tmp/
 temp/
+
+# Local recovery and delegated-work areas
+/backups/
+/worktrees/
+/CODEX_STATE_AUDIT_*.md

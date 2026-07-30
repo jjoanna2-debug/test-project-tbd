@@ -69,6 +69,7 @@ const SKIPPED_DIRS: &[&str] = &[
     ".git",
     ".venv",
     "__pycache__",
+    "backups",
     "build",
     "coverage",
     "dist",
@@ -77,6 +78,7 @@ const SKIPPED_DIRS: &[&str] = &[
     "target",
     "tmp",
     "temp",
+    "worktrees",
 ];
 
 const BINARY_SUFFIXES: &[&str] = &["gif", "ico", "jpeg", "jpg", "pdf", "png", "webp"];
@@ -87,11 +89,15 @@ const BLOCKED_FILENAMES: &[&str] = &[
     ".npmrc",
     ".pypirc",
     ".netrc",
+    "credentials.json",
     "id_dsa",
     "id_ecdsa",
     "id_ed25519",
     "id_rsa",
+    "service-account.json",
 ];
+
+const BLOCKED_SECRET_SUFFIXES: &[&str] = &[".jks", ".key", ".keystore", ".p12", ".pfx"];
 
 const PRIVATE_KEY_PREFIX: &str = "-----BEGIN ";
 const PRIVATE_KEY_WORDS: [&str; 2] = ["PRIVATE ", "KEY-----"];
@@ -178,7 +184,7 @@ fn check_sensitive_files(root: &Path, failures: &mut Vec<String>) {
         let relative_path = relative_path(root, &file_path);
 
         if let Some(file_name) = file_path.file_name().and_then(|name| name.to_str()) {
-            if BLOCKED_FILENAMES.contains(&file_name) {
+            if is_blocked_filename(file_name) {
                 failures.push(format!("{relative_path} is a blocked sensitive filename"));
             }
         }
@@ -348,6 +354,15 @@ fn should_skip_dir(root: &Path, path: &Path) -> bool {
         .is_some_and(|first_part| SKIPPED_DIRS.contains(&first_part))
 }
 
+fn is_blocked_filename(file_name: &str) -> bool {
+    let lower_name = file_name.to_ascii_lowercase();
+    BLOCKED_FILENAMES.contains(&lower_name.as_str())
+        || (lower_name.starts_with(".env.") && lower_name != ".env.example")
+        || BLOCKED_SECRET_SUFFIXES
+            .iter()
+            .any(|suffix| lower_name.ends_with(suffix))
+}
+
 fn is_binary_file(path: &Path) -> bool {
     path.extension()
         .and_then(|extension| extension.to_str())
@@ -430,8 +445,9 @@ fn relative_path(root: &Path, path: &Path) -> String {
 mod tests {
     use super::{
         contains_aws_access_key, contains_prefixed_token, has_generic_secret_assignment,
-        is_full_sha,
+        is_blocked_filename, is_full_sha, should_skip_dir,
     };
+    use std::path::Path;
 
     #[test]
     fn detects_github_token_shape() {
@@ -456,5 +472,22 @@ mod tests {
     fn requires_full_lowercase_sha() {
         assert!(is_full_sha("9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0"));
         assert!(!is_full_sha("v4"));
+    }
+
+    #[test]
+    fn blocks_environment_and_key_container_filenames() {
+        assert!(is_blocked_filename(".env.production"));
+        assert!(is_blocked_filename("service-account.json"));
+        assert!(is_blocked_filename("signing.P12"));
+        assert!(!is_blocked_filename(".env.example"));
+        assert!(!is_blocked_filename("public-certificate.pem"));
+    }
+
+    #[test]
+    fn skips_only_reserved_top_level_local_work_areas() {
+        let root = Path::new("/repo");
+        assert!(should_skip_dir(root, &root.join("worktrees/transmission")));
+        assert!(should_skip_dir(root, &root.join("backups/archive")));
+        assert!(!should_skip_dir(root, &root.join("docs/worktrees")));
     }
 }
