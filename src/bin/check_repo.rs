@@ -440,8 +440,8 @@ fn relative_path(root: &Path, path: &Path) -> String {
 #[cfg(test)]
 mod tests {
     use super::{
-        is_binary_file, is_blocked_filename, is_blocked_sensitive_path, is_oversized_text_file,
-        should_skip_dir, MAX_TEXT_FILE_BYTES,
+        MAX_TEXT_FILE_BYTES, is_binary_file, is_blocked_filename, is_blocked_sensitive_path,
+        is_oversized_text_file, should_skip_dir,
     };
     use std::path::Path;
 
