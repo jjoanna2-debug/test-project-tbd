@@ -149,6 +149,7 @@ pub(crate) fn check_secret_content(relative_path: &str, content: &str, failures:
 }
 
 #[cfg(test)]
+#[cfg(test)]
 fn secret_signal_score(content: &str) -> u8 {
     if PREFIXED_SECRET_RULES
         .iter()
@@ -238,6 +239,7 @@ fn highest_secret_assignment_score(content: &str) -> Option<(usize, u8)> {
     highest.filter(|(_, score)| *score >= SECRET_ASSIGNMENT_THRESHOLD)
 }
 
+#[cfg(test)]
 #[cfg(test)]
 fn secret_assignment_score(content: &str) -> u8 {
     highest_secret_assignment_score(content).map_or(0, |(_, score)| score)
