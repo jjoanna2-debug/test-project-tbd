@@ -1,8 +1,11 @@
 blank_issues_enabled: false
 contact_links:
+  - name: Contribution guide
+    url: https://github.com/jjoanna2-debug/test-project-tbd/blob/main/CONTRIBUTING.md
+    about: Read the current branch, validation, evidence, and pull request requirements before contributing.
   - name: Support policy
     url: https://github.com/jjoanna2-debug/test-project-tbd/blob/main/SUPPORT.md
-    about: Read before asking for help or support.
+    about: Review the current no-support and no-maintenance status before requesting assistance.
   - name: Security policy
     url: https://github.com/jjoanna2-debug/test-project-tbd/blob/main/SECURITY.md
-    about: Read before reporting or discussing security issues.
+    about: Review current guardrails, coverage limits, reporting boundaries, and secret-exposure steps.

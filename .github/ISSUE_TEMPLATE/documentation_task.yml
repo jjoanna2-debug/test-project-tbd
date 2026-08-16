@@ -1,5 +1,5 @@
-name: Documentation task
-description: Suggest a small documentation cleanup or learning-note improvement.
+name: Documentation correction
+description: Report stale, inaccurate, missing, contradictory, or unclear repository documentation.
 title: "Docs: "
 labels:
   - documentation
@@ -7,28 +7,68 @@ body:
   - type: markdown
     attributes:
       value: |
-        Use this for README, guide, policy, or beginner-onboarding improvements. Do not include secrets, credentials, tokens, private keys, personal data, customer data, or confidential information.
-  - type: textarea
-    id: change
+        Use this form when documentation no longer matches the implemented repository, current date, workflow, policy, file layout, release status, or roadmap. Cite the repository source of truth rather than relying on memory dressed as confidence.
+
+  - type: input
+    id: location
     attributes:
-      label: Requested documentation change
-      description: What should be added, removed, clarified, or corrected?
-      placeholder: Describe the documentation improvement.
+      label: Document and location
+      description: Identify the file and heading, line range, or section.
+      placeholder: README.md, Evidence Asset Releases
     validations:
       required: true
+
   - type: textarea
-    id: reason
+    id: current
     attributes:
-      label: Why it helps
-      description: Explain why this makes the repository clearer or easier to use.
+      label: Current text or omission
+      description: Quote the stale or inaccurate statement, or explain what is missing.
+    validations:
+      required: true
+
+  - type: textarea
+    id: source
+    attributes:
+      label: Current source of truth
+      description: Point to the implemented file, workflow, package metadata, repository setting, tag, release, commit, or other evidence that establishes the correction.
+      placeholder: Cargo.toml, src/bin/check_repo.rs, .github/workflows/basic-checks.yml, release tag, or commit SHA.
+    validations:
+      required: true
+
+  - type: textarea
+    id: correction
+    attributes:
+      label: Required correction
+      description: Describe the exact outcome, replacement, deletion, or clarification needed.
+    validations:
+      required: true
+
+  - type: input
+    id: as_of
+    attributes:
+      label: Verified date
+      description: State the date on which the source of truth was checked.
+      placeholder: YYYY-MM-DD
+    validations:
+      required: true
+
+  - type: textarea
+    id: related
+    attributes:
+      label: Related documents
+      description: List other files that may repeat or contradict the same stale statement.
+      placeholder: START_HERE.md, ROADMAP.md, SECURITY.md
     validations:
       required: false
+
   - type: checkboxes
     id: checklist
     attributes:
-      label: Checklist
+      label: Submission checks
       options:
-        - label: I checked that this is relevant to this learning repository.
+        - label: I checked the current repository rather than relying only on an older issue, pull request, or memory.
           required: true
-        - label: I did not include secrets, credentials, tokens, private keys, personal data, customer data, or confidential information.
+        - label: I identified related documents that may require the same correction.
+          required: true
+        - label: I did not include secrets, credentials, personal data, confidential information, or unredacted evidence.
           required: true

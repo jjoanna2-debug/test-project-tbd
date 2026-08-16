@@ -1,5 +1,5 @@
 name: Feature request
-description: Suggest a small improvement for this learning repository.
+description: Propose a focused, testable improvement to the Rust staging lab.
 title: "Feature: "
 labels:
   - enhancement
@@ -7,41 +7,90 @@ body:
   - type: markdown
     attributes:
       value: |
-        Suggest simple, beginner-friendly improvements only. Do not include secrets, credentials, tokens, private keys, personal data, customer data, or confidential information.
+        Start with the problem, not the preferred implementation. The repository favors small, dependency-conscious, measurable changes over framework-shaped enthusiasm.
+
   - type: textarea
-    id: idea
+    id: problem
     attributes:
-      label: Idea
-      description: What would you like to add or improve?
-      placeholder: Describe the idea clearly.
+      label: Problem
+      description: Describe the current limitation, maintenance cost, false positive, false negative, workflow gap, or learning obstacle.
+      placeholder: The current repository cannot or does not...
     validations:
       required: true
-  - type: textarea
-    id: reason
-    attributes:
-      label: Why it helps
-      description: Explain how this helps the repository as a learning project.
-    validations:
-      required: false
+
   - type: dropdown
     id: area
     attributes:
-      label: Area
+      label: Primary area
       options:
-        - Documentation
-        - Beginner onboarding
-        - Repository hygiene
-        - GitHub workflow practice
-        - Starter project/code
+        - Rust starter or future CLI
+        - Repository inventory or resource bounds
+        - Secret classifier and calibration
+        - GitHub Actions policy classifier
+        - Protected CI workflow
+        - Dependabot automation
+        - Documentation or beginner onboarding
+        - Policy, contribution, or evidence handling
         - Other
     validations:
       required: true
-  - type: checkboxes
-    id: safety
+
+  - type: textarea
+    id: proposal
     attributes:
-      label: Safety checklist
+      label: Proposed outcome
+      description: Describe the behavior or result that should exist after implementation.
+      placeholder: After this change, the repository should...
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      description: List observable conditions that would make the proposal complete and verifiable.
+      placeholder: |
+        - Given...
+        - When...
+        - Then...
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Explain simpler options, configuration-only options, or reasons not to make the change.
+    validations:
+      required: false
+
+  - type: textarea
+    id: measurement
+    attributes:
+      label: Measurement or regression coverage
+      description: State how value and non-regression would be measured, especially for performance or classifier changes.
+      placeholder: Tests, precision/recall cases, timing, memory bound, CI behavior, or another measurable signal.
+    validations:
+      required: false
+
+  - type: textarea
+    id: risks
+    attributes:
+      label: Risks and maintenance cost
+      description: Identify dependencies, permissions, compatibility changes, false-positive risk, false-negative risk, or ongoing maintenance.
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Proposal checks
       options:
-        - label: I did not include secrets, credentials, tokens, private keys, personal data, customer data, or confidential information.
+        - label: This proposal is relevant to the current repository roadmap or explains why the roadmap should change.
           required: true
-        - label: I understand this suggestion does not create any obligation to implement it.
+        - label: I considered whether the result can be achieved without a new dependency, script, workflow, or configuration layer.
+          required: true
+        - label: I did not include secrets, credentials, personal data, confidential information, or unredacted evidence.
+          required: true
+        - label: I understand that submission does not create an implementation, review, support, or maintenance obligation.
           required: true
