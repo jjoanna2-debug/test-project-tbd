@@ -25,6 +25,7 @@ const REQUIRED_FILES: &[&str] = &[
     "src/main.rs",
     "src/bin/check_repo.rs",
     "src/bin/check_repo/secrets.rs",
+    "src/bin/check_repo/secrets/corpus.rs",
     "src/bin/check_repo/workflows.rs",
     "scripts/doctor.sh",
     "docs/PROJECT_STRUCTURE.md",
@@ -117,7 +118,17 @@ const SOURCE_REFERENCES: &[(&str, &[&str])] = &[
         "src/bin/check_repo/secrets.rs",
         &[
             "pub(crate) fn check_secret_content",
+            "fn secret_signal_score",
             "fn secret_assignment_score",
+            "fn calibration_metrics",
+        ],
+    ),
+    (
+        "src/bin/check_repo/secrets/corpus.rs",
+        &[
+            "pub(super) fn assignment_cases",
+            "pub(super) fn provider_positive_probes",
+            "pub(super) fn multiline_positive_probes",
         ],
     ),
     (
