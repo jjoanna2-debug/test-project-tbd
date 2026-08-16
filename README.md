@@ -2,7 +2,7 @@
 
 Documentation snapshot: **2026-08-16**.
 
-A compact Rust-first staging area for learning GitHub, repository automation, defensive tooling, and future CLI ideas. The repository is deliberately small, but its checks are real: protected CI, deterministic repository inspection, bounded filesystem work, contextual GitHub Actions policy checks, and a scored secret-signal classifier.
+A compact Rust-first staging area for learning GitHub, repository automation, defensive tooling, and future CLI ideas. The repository is deliberately small, but its checks are real: protected CI, deterministic repository inspection, bounded filesystem work, contextual GitHub Actions policy checks, and a calibrated secret-signal classifier.
 
 ## Current Snapshot
 
@@ -47,6 +47,7 @@ rust-toolchain.toml
 src/main.rs
 src/bin/check_repo.rs
 src/bin/check_repo/secrets.rs
+src/bin/check_repo/secrets/corpus.rs
 src/bin/check_repo/workflows.rs
 scripts/doctor.sh
 docs/
@@ -84,15 +85,35 @@ The doctor:
 
 The doctor rejects common credential stores, live environment files, private-key filenames, key containers, and password-manager databases. It detects private-key blocks, AWS access-key shapes, and provider-specific token shapes for GitHub, GitLab, OpenAI, Slack, Stripe, npm, Google, and SendGrid.
 
-Generic secret assignments are scored using:
+Generic assignments are parsed from quoted, unquoted, multiline, escaped, YAML literal-block, and YAML folded-block forms. Colon assignments are accepted only when the left side is a valid configuration key, preventing Rust type annotations, Markdown code, and quoted test literals from being misread as credentials.
 
-- secret-bearing key semantics;
+Secret values are scored using:
+
+- exact secret-bearing key semantics;
 - value length;
 - character-class diversity;
 - distinct-character diversity;
-- placeholder, environment-reference, redaction, and low-entropy suppression.
+- provider-token plausibility;
+- placeholder, environment-reference, example-host, repeated-pattern, sequential-pattern, prose, redaction, and low-entropy suppression.
 
-Only the strongest generic assignment finding per file is emitted, which avoids turning one bad fixture into a choir of identical alarms.
+Parsing is bounded to 4,096 bytes and 32 lines per candidate value. Only the strongest generic assignment finding per file is emitted, which avoids turning one bad fixture into a choir of identical alarms.
+
+### Calibrated regression corpus
+
+`src/bin/check_repo/secrets/corpus.rs` maintains a dedicated labeled corpus with realistic positives and hard negatives. It covers provider-token probes, multiline values, YAML blocks, escaped strings, comments, placeholders, documentation examples, misleading key names, repeated patterns, sequential patterns, public examples, and environment references.
+
+Provider-shaped probes are assembled at runtime so the repository does not store credential-like literals merely to test that it can detect them.
+
+The protected tests require the maintained corpus to meet all of these floors at the active threshold:
+
+| Metric | Required floor |
+| --- | --- |
+| Average precision | `0.98` |
+| Precision | `0.95` |
+| Recall | `0.95` |
+| F1 | `0.95` |
+
+These figures are regression guarantees for this repository's maintained internal corpus. They are not claims about an external production dataset.
 
 ### GitHub Actions policy
 
@@ -104,12 +125,6 @@ Workflow checks are context-aware rather than blind substring searches. The doct
 - `persist-credentials: false` on `actions/checkout` steps;
 - full commit-SHA pins for third-party GitHub Actions;
 - immutable SHA-256 digests for Docker actions.
-
-### Classifier regression metric
-
-The secret-assignment classifier includes a labeled positive-and-negative test corpus with an internal average-precision floor of `0.95`.
-
-That figure is a regression guard for the repository's own test corpus. It is not a claim about performance on an external production dataset. A respectable distinction, despite the internet's ongoing campaign against those.
 
 ## Run Locally
 
@@ -150,7 +165,7 @@ The workflow disables incremental compilation, treats compiler and rustdoc warni
 
 New commits cancel older in-progress runs for the same pull request or ref. CI therefore validates the current revision rather than financing an archaeological survey of superseded commits.
 
-The doctor also asserts the important workflow and Dependabot settings. Removing merge-queue coverage, stale-run cancellation, all-target checks, documentation compilation, direct doctor execution, or grouped dependency-update policy causes the repository gate to fail.
+The doctor also asserts the important toolchain, workflow, and Dependabot settings. Removing merge-queue coverage, stale-run cancellation, all-target checks, documentation compilation, direct doctor execution, or grouped dependency-update policy causes the repository gate to fail.
 
 ## Dependency Automation
 
@@ -181,18 +196,17 @@ Start with [START_HERE.md](START_HERE.md) for the beginner map. The current oper
 
 Use a branch and pull request for changes to `main`. The current workflow is documented in [docs/GITHUB_WORKFLOW.md](docs/GITHUB_WORKFLOW.md).
 
-## Current Engineering Priorities
+## Optional Future Direction
 
-The next useful work is not another layer of decorative repository furniture. It is:
+The completed baseline does not require another framework or another folder of ceremony. Future work should begin only when a concrete consumer exists. Useful candidates include:
 
-- expanding the labeled classifier corpus with more realistic positive and hard-negative cases;
-- measuring precision and recall at the current score threshold alongside average precision;
-- improving diagnostics without increasing duplicate-noise volume;
-- keeping scanner resource limits and workflow invariants explicit and tested;
-- growing the Rust starter only when a concrete CLI or automation use case exists;
-- preserving the zero-runtime-dependency baseline unless a dependency provides clear, measured value.
+- structured findings for CI annotations or machine consumption;
+- benchmarks for large-but-valid repositories within the existing resource limits;
+- reusable library boundaries if a second binary or caller appears;
+- corpus maintenance when provider formats or realistic hard negatives change;
+- dependencies only where measured value exceeds maintenance and supply-chain cost.
 
-See [ROADMAP.md](ROADMAP.md) for the current phase status.
+See [ROADMAP.md](ROADMAP.md) for the completed phase status and optional direction.
 
 ## Important Boundaries
 
