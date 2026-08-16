@@ -329,7 +329,35 @@ fn find_assignment_separator(line: &str) -> Option<usize> {
         return Some(index);
     }
 
-    line.find(':')
+    let separator_index = line.find(':')?;
+    is_colon_assignment_key(&line[..separator_index]).then_some(separator_index)
+}
+
+fn is_colon_assignment_key(key_part: &str) -> bool {
+    let mut candidate = key_part.trim();
+    if let Some(rest) = candidate.strip_prefix("- ") {
+        candidate = rest.trim_start();
+    }
+    candidate = candidate
+        .trim_start_matches(|character| matches!(character, '{' | '[' | ','))
+        .trim();
+
+    let first = candidate.as_bytes().first().copied();
+    let last = candidate.as_bytes().last().copied();
+    let first_is_quote = first == Some(b'"') || first == Some(39);
+    let last_is_quote = last == Some(b'"') || last == Some(39);
+    if first_is_quote || last_is_quote {
+        if first != last || candidate.len() < 2 {
+            return false;
+        }
+        candidate = &candidate[1..candidate.len() - 1];
+    }
+
+    !candidate.is_empty()
+        && candidate.len() <= 128
+        && candidate.chars().all(|character| {
+            character.is_ascii_alphanumeric() || matches!(character, '_' | '-' | '.')
+        })
 }
 
 fn secret_key_score(key_part: &str) -> u8 {
