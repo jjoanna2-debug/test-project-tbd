@@ -119,12 +119,18 @@ These figures are regression guarantees for this repository's maintained interna
 
 Workflow checks are context-aware rather than blind substring searches. The doctor enforces:
 
-- explicit top-level workflow permissions;
-- no `write-all` or `contents: write` grants;
-- no `pull_request_target` trigger;
-- `persist-credentials: false` on `actions/checkout` steps;
-- full commit-SHA pins for third-party GitHub Actions;
-- immutable SHA-256 digests for Docker actions.
+- mandatory top-level permissions;
+- read-only or empty token permission maps, with every `write` scope rejected at workflow and job level;
+- an event allowlist limited to `push`, `pull_request`, `merge_group`, `workflow_dispatch`, and `schedule`;
+- rejection of privileged pull-request context, issue-comment, workflow-completion, repository-dispatch, and other unapproved trigger surfaces;
+- rejection of YAML anchors, aliases, and merge keys so authorization cannot be hidden through indirection;
+- `persist-credentials: false` on every `actions/checkout` step;
+- rejection of `allow-unsafe-pr-checkout: true`;
+- full lowercase commit-SHA pins for third-party GitHub Actions;
+- lowercase SHA-256 digests for Docker actions;
+- checkout-step tracking that remains correct when inputs contain nested YAML lists.
+
+A future workflow needing a different trigger or token permission must update the policy, tests, risk analysis, and current documentation explicitly. The repository does not inherit authority merely because a YAML key exists for it.
 
 ## Run Locally
 
@@ -165,7 +171,7 @@ The workflow disables incremental compilation, treats compiler and rustdoc warni
 
 New commits cancel older in-progress runs for the same pull request or ref. CI therefore validates the current revision rather than financing an archaeological survey of superseded commits.
 
-The doctor also asserts the important toolchain, workflow, and Dependabot settings. Removing merge-queue coverage, stale-run cancellation, all-target checks, documentation compilation, direct doctor execution, or grouped dependency-update policy causes the repository gate to fail.
+The doctor also asserts the important toolchain, workflow, and Dependabot settings. Removing merge-queue coverage, stale-run cancellation, all-target checks, documentation compilation, direct doctor execution, read-only workflow boundaries, immutable references, or grouped dependency-update policy causes the repository gate to fail.
 
 ## Dependency Automation
 

@@ -27,6 +27,7 @@ All notable changes to this repository are recorded here. The project follows a 
 - Exact `rust-toolchain.toml` selection for Rust `1.97.1`, Clippy, and Rustfmt.
 - Dedicated test-only classifier corpus with realistic positives, hard negatives, provider probes, multiline assignments, YAML blocks, escaped values, documentation examples, placeholders, and misleading key names.
 - Calibration gates for average precision, precision, recall, and F1 at the active classifier threshold.
+- Workflow-policy regression tests for read-only permissions, trigger allowlisting, YAML indirection, checkout safety, nested inputs, and immutable references.
 
 ### Changed
 
@@ -53,12 +54,18 @@ All notable changes to this repository are recorded here. The project follows a 
 - Rejected repeated, sequential, low-diversity, placeholder, example-host, environment-reference, redacted, and prose fixtures before they can inflate classifier confidence.
 - Restricted colon assignment parsing to valid configuration keys so Rust type annotations, Markdown code, and unbalanced quoted literals do not produce false findings.
 - Raised the maintained calibration floors to `0.98` average precision and `0.95` precision, recall, and F1.
-- Made workflow permission checks context-aware and required Docker actions to use immutable SHA-256 digests.
-- Enforced explicit top-level workflow token permissions, rejected `pull_request_target`, and required checkout steps to disable persisted credentials.
+- Made workflow permission checks context-aware and required immutable Docker action digests.
+- Replaced the `contents: write` special case with rejection of every workflow or job permission scope set to `write`.
+- Added an explicit workflow-trigger allowlist for `push`, `pull_request`, `merge_group`, `workflow_dispatch`, and `schedule`.
+- Rejected privileged pull-request context, issue-comment, workflow-completion, repository-dispatch, and other unapproved trigger surfaces.
+- Rejected YAML anchors, aliases, and merge keys so workflow authorization cannot be hidden through indirection.
+- Required checkout credentials to remain disabled and rejected unsafe pull-request checkout mode.
+- Required full lowercase commit SHAs for third-party Actions and lowercase SHA-256 digests for Docker actions.
+- Corrected checkout-step tracking so nested input lists do not terminate checkout policy validation.
 - Expanded the protected Rust gate to all targets and features, direct doctor execution, merge-queue groups, pushes to `main`, and manual dispatches.
 - Added concurrency that cancels superseded runs for the same pull request or ref.
 - Grouped routine Dependabot minor and patch updates by ecosystem on a fixed Europe/Lisbon schedule while leaving major updates isolated for review.
-- Made the repository doctor assert durable toolchain, CI, classifier, and Dependabot guarantees so later edits cannot silently remove the automation baseline.
+- Made the repository doctor assert durable toolchain, CI, classifier, workflow, and Dependabot guarantees so later edits cannot silently remove the automation baseline.
 - Reconciled the roadmap with completed repository, workflow, automation, doctor, and classifier-calibration phases.
 - Distinguished the `codex-issue-22773-assets` and `codex-issue-23192-assets` evidence bundles from software releases, package versions, supported builds, and compatibility commitments.
 - Reconciled security, support, contribution, conduct, funding, legal, disclaimer, and attribution documents with the implemented repository and evidence surfaces.
@@ -79,6 +86,7 @@ All notable changes to this repository are recorded here. The project follows a 
 - Tightened release-asset wording so redaction is claimed only where release metadata verifies it; the local doctor does not attest assets outside the checked-out tree.
 - Updated the README, beginner map, local setup, workflow guide, and structure map for the exact Rust 2024 toolchain and six-step quality gate.
 - Replaced the classifier roadmap's “in progress” status with the implemented calibration contract and optional future maintenance direction.
+- Documented the workflow event allowlist, universal write-permission rejection, indirection ban, checkout safety rules, and lowercase immutable-reference contract.
 
 ### Notes
 

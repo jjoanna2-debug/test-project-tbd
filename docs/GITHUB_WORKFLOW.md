@@ -98,15 +98,34 @@ The workflow currently runs on:
 - merge-queue `checks_requested` groups;
 - manual `workflow_dispatch` runs.
 
-The job has read-only repository contents permission, uses a full commit-SHA pin for `actions/checkout`, disables persisted checkout credentials, disables incremental compilation, and treats compiler and rustdoc warnings as failures. The repository toolchain file keeps local and hosted validation on the same exact Rust release.
+The job has read-only repository contents permission, uses a full lowercase commit-SHA pin for `actions/checkout`, disables persisted checkout credentials, disables incremental compilation, and treats compiler and rustdoc warnings as failures. The repository toolchain file keeps local and hosted validation on the same exact Rust release.
 
-## 9. Superseded Runs
+## 9. Workflow Security Contract
+
+Every workflow is scanned by the Rust repository doctor. The current contract is intentionally narrow:
+
+- top-level `permissions` is mandatory;
+- `read-all`, an empty map, or explicit read-only permission maps are accepted;
+- every permission scope with value `write` is rejected at workflow and job level;
+- `write-all` is rejected;
+- allowed event surfaces are limited to `push`, `pull_request`, `merge_group`, `workflow_dispatch`, and `schedule`;
+- privileged pull-request context, issue comments, workflow completions, repository dispatches, and other unapproved triggers are rejected;
+- YAML anchors, aliases, and merge keys are rejected so authorization remains visible without resolving indirection;
+- `actions/checkout` must set `persist-credentials: false`;
+- `allow-unsafe-pr-checkout: true` is rejected;
+- external Actions must use full lowercase commit SHAs;
+- Docker actions must use lowercase SHA-256 digests;
+- nested lists inside a checkout input do not terminate checkout-step validation.
+
+A future workflow requiring a new trigger or token permission must change the policy, regression tests, security documentation, and risk analysis in the same pull request. Authority is never inherited merely because YAML accepts it.
+
+## 10. Superseded Runs
 
 The workflow concurrency key is based on the workflow plus the pull request number or Git ref. A newer commit cancels an older in-progress run for the same pull request or ref.
 
 A canceled obsolete run is not a quality failure. It means a newer revision has replaced it and will receive the authoritative result.
 
-## 10. Review Before Merge
+## 11. Review Before Merge
 
 Before merging:
 
@@ -115,12 +134,13 @@ Before merging:
 3. Resolve review comments and stale conversations.
 4. Confirm documentation matches the implemented behavior.
 5. Confirm no secrets, credentials, personal data, confidential information, or unredacted evidence entered the branch.
+6. Confirm workflow triggers and permissions remain within the repository contract.
 
-## 11. Merge Queue
+## 12. Merge Queue
 
 When the merge queue is used, GitHub creates a proposed merge-group commit and runs the same `Repository smoke test` against that combined state. This catches failures caused by interaction with newer `main` changes instead of trusting an earlier pull-request result.
 
-## 12. After Merge
+## 13. After Merge
 
 ```bash
 git switch main

@@ -37,7 +37,7 @@ This document maps the current repository layout and the responsibility of each 
 | `src/bin/check_repo.rs` | Main repository-doctor binary: required-file policy, source invariants, iterative bounded inventory, text-read limits, sensitive paths, redacted evidence, and classifier orchestration. |
 | `src/bin/check_repo/secrets.rs` | Private-key, provider-token, AWS-key, bounded assignment parsing, calibrated generic secret scoring, and metric enforcement. |
 | `src/bin/check_repo/secrets/corpus.rs` | Maintained labeled calibration corpus with realistic positives, hard negatives, provider probes, multiline values, YAML blocks, escaped strings, placeholders, and misleading key names. |
-| `src/bin/check_repo/workflows.rs` | Context-aware GitHub Actions permissions, trigger, checkout-credential, SHA-pin, and Docker-digest enforcement. |
+| `src/bin/check_repo/workflows.rs` | Context-aware GitHub Actions trigger allowlisting, read-only permission enforcement, YAML-indirection rejection, checkout safety, lowercase SHA pins, and Docker-digest enforcement. |
 
 The package has no runtime dependencies. `unsafe_code` is forbidden. Clippy `all` and `pedantic` are enabled, while debug macros and unfinished `todo!` or `unimplemented!` paths are denied. CI promotes warnings to failures.
 
@@ -54,12 +54,27 @@ The maintained corpus covers:
 
 The test harness requires at least `0.98` average precision and `0.95` precision, recall, and F1 at the active threshold. These are internal regression floors, not external production-performance claims.
 
+## Workflow Policy Contract
+
+The workflow classifier enforces:
+
+- mandatory top-level permissions;
+- read-only or empty permission maps, with every `write` scope rejected at workflow and job level;
+- an explicit event allowlist for `push`, `pull_request`, `merge_group`, `workflow_dispatch`, and `schedule`;
+- rejection of YAML anchors, aliases, and merge keys;
+- checkout credentials disabled and unsafe pull-request checkout mode rejected;
+- full lowercase commit-SHA pins for third-party Actions;
+- lowercase SHA-256 digests for Docker actions;
+- correct checkout-step tracking when inputs contain nested YAML lists.
+
+The policy rejects indirection rather than resolving it. Authorization remains visible, deterministic, and locally reviewable in each workflow file.
+
 ## Documentation
 
 | Path | Current responsibility |
 | --- | --- |
 | `docs/LOCAL_SETUP.md` | Tool requirements, clone, branch, complete local gate, push, PR, and post-merge cleanup. |
-| `docs/GITHUB_WORKFLOW.md` | Protected branch-to-merge contract, exact toolchain, current CI steps, events, concurrency, merge queue, and dependency automation. |
+| `docs/GITHUB_WORKFLOW.md` | Protected branch-to-merge contract, exact toolchain, CI steps, event allowlist, read-only permissions, concurrency, merge queue, and dependency automation. |
 | `docs/PROJECT_STRUCTURE.md` | This current layout map. |
 
 ## Local Helper
@@ -112,10 +127,11 @@ The current design is:
 - deterministic;
 - resource-bounded;
 - calibrated against a maintained labeled corpus;
+- read-only and allowlisted at the GitHub Actions boundary;
 - fail-closed on unreadable or ambiguous repository state;
 - protected by CI;
 - self-enforcing for critical toolchain, workflow, classifier, and Dependabot invariants;
 - explicit about the difference between internal regression metrics and external production claims;
 - explicit about the difference between evidence-asset tags and software releases.
 
-Update this file whenever a maintained path, toolchain, calibration contract, release-asset bundle, or material responsibility is added, removed, renamed, or changed.
+Update this file whenever a maintained path, toolchain, calibration contract, workflow trust boundary, release-asset bundle, or material responsibility is added, removed, renamed, or changed.
