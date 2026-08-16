@@ -5,11 +5,17 @@ updates:
     schedule:
       interval: "weekly"
       day: "monday"
-    open-pull-requests-limit: 2
+      time: "06:00"
+      timezone: "Europe/Lisbon"
     groups:
-      github-actions:
+      routine-actions:
+        applies-to: "version-updates"
         patterns:
           - "*"
+        update-types:
+          - "minor"
+          - "patch"
+    open-pull-requests-limit: 2
     commit-message:
       prefix: "chore"
 
@@ -18,10 +24,16 @@ updates:
     schedule:
       interval: "weekly"
       day: "monday"
-    open-pull-requests-limit: 2
+      time: "06:00"
+      timezone: "Europe/Lisbon"
     groups:
-      cargo-dependencies:
+      routine-rust:
+        applies-to: "version-updates"
         patterns:
           - "*"
+        update-types:
+          - "minor"
+          - "patch"
+    open-pull-requests-limit: 2
     commit-message:
       prefix: "chore"
