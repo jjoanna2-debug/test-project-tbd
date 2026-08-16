@@ -26,9 +26,9 @@ The `codex-issue-22773-assets` release metadata explicitly identifies redacted s
 
 The repository doctor and protected `Repository smoke test` currently enforce or verify:
 
-- required repository, source, policy, documentation, workflow, and automation invariants;
-- Rust formatting, strict all-target/all-feature Clippy, and locked all-target/all-feature tests;
-- forbidden unsafe Rust;
+- required repository, source, policy, documentation, workflow, toolchain, and automation invariants;
+- Rust formatting, compilation, strict all-target/all-feature Clippy, locked all-target/all-feature tests, and documentation compilation;
+- exact Rust `1.97.1`, Edition 2024, and forbidden unsafe Rust;
 - one deterministic repository inventory;
 - iterative traversal capped at 20,000 visited entries;
 - rejection of repository symlinks;
@@ -36,7 +36,11 @@ The repository doctor and protected `Repository smoke test` currently enforce or
 - explicit failures for unreadable directories, entries, metadata, and files;
 - sensitive filenames, root credential stores, key containers, password-manager databases, and live environment files;
 - private-key blocks, AWS access-key shapes, provider token shapes, and scored generic secret assignments;
-- placeholder, environment-reference, redaction, and low-entropy suppression;
+- quoted, unquoted, escaped, multiline, YAML literal-block, and YAML folded-block assignments within explicit line and byte limits;
+- exact secret-key semantics and valid configuration-key grammar;
+- placeholder, environment-reference, example-host, redaction, prose, repeated-pattern, sequential-pattern, and low-diversity suppression;
+- a maintained labeled corpus covering realistic positives, hard negatives, provider probes, documentation examples, comments, multiline values, YAML blocks, escaped strings, and misleading key names;
+- internal calibration floors of `0.98` average precision and `0.95` precision, recall, and F1 at the active threshold;
 - explicitly redacted names for in-tree evidence artifacts;
 - explicit top-level workflow permissions;
 - rejection of `write-all`, `contents: write`, and `pull_request_target`;
@@ -45,7 +49,9 @@ The repository doctor and protected `Repository smoke test` currently enforce or
 - SHA-256 digests for Docker actions;
 - protected workflow and Dependabot configuration invariants.
 
-These controls are guardrails only. They are not proof that the repository is secure, vulnerability-free, complete, correctly configured on every platform, or suitable for sensitive use.
+Provider-shaped calibration probes are constructed at runtime so the repository does not store credential-like literals solely for testing.
+
+These controls are guardrails only. The calibration metrics describe the maintained internal corpus. They do not prove that the repository is secure, vulnerability-free, complete, correctly configured on every platform, or suitable for sensitive use.
 
 ## Coverage Boundaries
 
@@ -57,7 +63,8 @@ The repository doctor inspects the current checked-out filesystem tree. It does 
 - external services, accounts, or deployment environments;
 - live repository settings that are not represented by checked files;
 - secrets already copied, cached, indexed, downloaded, or exposed elsewhere;
-- every possible credential format, obfuscation, encoding, or vulnerability class.
+- every possible credential format, obfuscation, encoding, or vulnerability class;
+- external production datasets or provider-side validity.
 
 Release assets require separate review before publication because they are not present in the checked-out repository tree.
 
