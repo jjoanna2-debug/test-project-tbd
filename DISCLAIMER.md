@@ -1,62 +1,99 @@
 # Disclaimer
 
+Status reviewed: **2026-08-16**.
+
 ## Important Notice
 
-This repository is a personal learning, testing, and experimentation project. It is not a production system, commercial product, professional service, managed service, security tool, legal document, compliance framework, or operational recommendation.
+This repository is a personal learning, testing, and experimentation project. It is not a production system, commercial product, managed service, security product, compliance framework, professional service, or operational recommendation.
 
-By accessing, copying, modifying, distributing, running, relying on, or otherwise using any part of this repository, you do so voluntarily and entirely at your own risk.
-
-If you do not agree with these terms, do not use, copy, modify, distribute, run, rely on, or otherwise interact with this repository or its contents.
+Any access, copying, modification, distribution, execution, adaptation, publication, or reliance is voluntary and entirely at the user's own risk.
 
 ## No Warranty
 
-This repository and all files, code, documentation, examples, configurations, comments, workflows, and related materials are provided on an "as is" and "as available" basis, without warranties, representations, guarantees, promises, or conditions of any kind, whether express, implied, statutory, or otherwise.
+The repository and all code, documentation, examples, configurations, comments, workflows, tests, issue forms, release notes, tags, and evidence assets are provided on an "as is" and "as available" basis, without warranties, representations, guarantees, promises, or conditions of any kind.
 
-Without limitation, no warranty is given that this repository or its contents are accurate, complete, secure, error-free, uninterrupted, maintained, suitable for any particular purpose, fit for production use, compatible with any system, compliant with any law or regulation, or free from defects, vulnerabilities, harmful components, or data-loss risks.
+No warranty is given that any material is:
 
-The author does not warrant that any issue, pull request, discussion, comment, recommendation, example, or suggested change is correct, safe, complete, current, or appropriate for your circumstances.
+- accurate, complete, current, secure, or error-free;
+- maintained, supported, compatible, or continuously available;
+- suitable for a particular purpose or environment;
+- fit for production, enterprise, regulated, safety-critical, privacy-sensitive, or security-sensitive use;
+- compliant with any law, regulation, policy, contract, license, or standard;
+- free from defects, vulnerabilities, harmful components, false positives, false negatives, or data-loss risk.
+
+## Automated Checks and Metrics
+
+A passing `Repository smoke test`, repository-doctor result, unit test, lint result, or formatting check means only that the checked revision satisfied the implemented rules at that time.
+
+It does not constitute:
+
+- a security audit or penetration test;
+- production certification;
+- legal or regulatory compliance;
+- vulnerability-free status;
+- complete secret detection;
+- support, warranty, or maintenance;
+- validation of Git history, forks, release assets, external services, repository settings, or deployment environments.
+
+The classifier's average-precision floor of `0.95` applies only to the repository's internal labeled regression corpus. It is not a claim about external production performance, generalization, or fitness for secret scanning in another repository.
 
 ## No Professional Advice
 
-Nothing in this repository constitutes legal, financial, security, engineering, compliance, business, medical, or other professional advice. Any material in this repository is provided only for general learning and experimentation. You are solely responsible for obtaining appropriate professional advice before relying on, adapting, or deploying anything from this repository.
+Nothing in this repository constitutes legal, financial, security, engineering, compliance, business, medical, or other professional advice. Repository material is provided only for general learning and experimentation.
 
-## No Production Use Representation
+Users are responsible for obtaining appropriate advice before relying on, adapting, publishing, or deploying anything.
 
-This repository is not represented as ready or safe for production, enterprise, commercial, regulated, safety-critical, security-sensitive, or privacy-sensitive use. Do not use this repository with live systems, confidential information, credentials, personal data, customer data, production infrastructure, or business-critical workflows unless you have independently reviewed, tested, secured, and validated it.
+## No Production-Use Representation
+
+The repository is not represented as ready or safe for live systems. Do not use it with:
+
+- credentials, access tokens, private keys, or secrets;
+- personal, customer, confidential, regulated, or production data;
+- production infrastructure or business-critical workflows;
+- systems where defects, downtime, incorrect detection, data exposure, or data loss could cause harm.
 
 ## User Responsibility
 
-You are solely responsible for:
+Users are solely responsible for:
 
-- reviewing, testing, validating, and securing anything you use from this repository;
-- ensuring compatibility with your systems, tools, dependencies, and workflows;
-- complying with all applicable laws, regulations, policies, licenses, contracts, and third-party rights;
-- protecting your own data, credentials, devices, accounts, infrastructure, and users;
-- making appropriate backups and recovery plans before use; and
-- determining whether this repository or any part of it is suitable for your intended purpose.
+- reviewing, testing, validating, securing, and adapting repository material;
+- determining compatibility with their systems, tools, dependencies, workflows, and risk tolerance;
+- complying with applicable laws, regulations, contracts, licenses, policies, and third-party rights;
+- protecting data, credentials, accounts, devices, infrastructure, and users;
+- maintaining backups, recovery plans, monitoring, and incident-response procedures;
+- rotating or revoking exposed credentials and assessing downstream impact;
+- reviewing screenshots, logs, exports, and other evidence before publication.
 
-You are also solely responsible for removing, rotating, revoking, or remediating any secret, credential, token, key, data, or other sensitive material that you expose through your own use, fork, clone, issue, pull request, discussion, or other communication.
+## Tags, Releases, and Evidence Assets
+
+The tags `codex-issue-22773-assets` and `codex-issue-23192-assets` identify evidence-asset bundles for external issue reports. They are not supported software releases, versioned products, stable builds, or compatibility statements.
+
+GitHub Release assets are outside the checked-out repository tree and are not automatically inspected by the local repository doctor. Publication of an asset does not guarantee complete redaction, accuracy, continued availability, or suitability for reuse.
 
 ## Security Notice
 
-This repository may contain incomplete, experimental, outdated, insecure, placeholder, or intentionally simplified material. It may not follow security best practices. It must not be treated as reviewed, audited, hardened, supported, or vulnerability-free.
+The repository may contain incomplete, experimental, outdated, insecure, placeholder, or intentionally simplified material. It must not be treated as audited, hardened, supported, or vulnerability-free.
 
-Never commit secrets, passwords, tokens, API keys, private keys, personal data, confidential information, or production credentials to this repository or to any fork, issue, pull request, discussion, or related communication.
+Never publish secrets, credentials, private information, confidential material, or unredacted evidence in this repository, a fork, issue, pull request, discussion, comment, release, or related communication.
 
 ## Third-Party Material
 
-This repository may reference or interact with third-party software, services, libraries, websites, platforms, tools, or documentation. The author does not control and is not responsible for any third-party material, behavior, availability, security, terms, policies, licenses, or consequences arising from their use.
+The repository may reference or interact with third-party software, services, libraries, websites, platforms, tools, issue trackers, or documentation. The author does not control and is not responsible for third-party behavior, availability, security, terms, policies, licenses, changes, or consequences.
 
 ## No Support or Maintenance Obligation
 
-The author has no obligation to provide support, updates, fixes, patches, maintenance, monitoring, review, response, compatibility updates, security updates, or continued availability. Issues, pull requests, questions, reports, or requests may be ignored, closed, modified, or deleted at the author's discretion.
+The author has no obligation to provide support, review, updates, fixes, patches, maintenance, monitoring, security response, compatibility work, continued availability, or any response timeline.
+
+Issues, pull requests, discussions, reports, and requests may be ignored, closed, changed, locked, or deleted at the author's discretion.
 
 ## Limitation of Liability
 
-To the maximum extent permitted by applicable law, the author shall not be liable for any claim, damage, loss, liability, cost, expense, or consequence of any kind arising from or related to this repository or its contents, whether direct, indirect, incidental, special, consequential, exemplary, punitive, or otherwise.
+To the maximum extent permitted by applicable law, the author shall not be liable for any claim, damage, loss, liability, cost, expense, or consequence arising from or related to the repository or its contents, whether direct, indirect, incidental, special, consequential, exemplary, punitive, or otherwise.
 
-This includes, without limitation, loss of profits, revenue, business, opportunity, goodwill, data, files, credentials, systems, access, privacy, security, reputation, or service availability; business interruption; device, account, infrastructure, or software damage; security incidents; compliance issues; legal exposure; or reliance on any material in this repository.
+This includes loss of profits, revenue, business, opportunity, goodwill, data, files, credentials, systems, access, privacy, security, reputation, or service availability; business interruption; device, account, infrastructure, or software damage; security incidents; compliance issues; legal exposure; or reliance on repository material.
 
 ## License Relationship
 
-This disclaimer supplements and clarifies the risk allocation already reflected in the [Apache License 2.0](LICENSE). It does not replace the Apache License 2.0. See [LEGAL_NOTICES.md](LEGAL_NOTICES.md) for plain-language context. If there is any conflict between this disclaimer and the Apache License 2.0, the Apache License 2.0 controls to the extent required by applicable law.
+This disclaimer supplements and clarifies the risk allocation reflected in the [Apache License 2.0](LICENSE). It does not replace the license. See [LEGAL_NOTICES.md](LEGAL_NOTICES.md) for plain-language context.
+
+If this disclaimer conflicts with the Apache License 2.0, the license controls to the extent required by applicable law.
