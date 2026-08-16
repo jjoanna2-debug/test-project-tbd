@@ -42,19 +42,14 @@ jobs:
 
           path = Path("src/bin/check_repo/secrets.rs")
           content = path.read_text()
-          old = '''        let cases = corpus::assignment_cases();
-          assert!(cases.len() >= 64, "calibration corpus is too small");
-          '''
-          new = '''        let cases = corpus::assignment_cases();
-          let case_names = cases.iter().map(|case| case.name).collect::<Vec<_>>();
-          assert!(
-              cases.len() >= 64,
-              "calibration corpus is too small: {case_names:?}"
-          );
-          '''
-          if old not in content:
-              raise SystemExit("calibration assertion marker not found")
-          path.write_text(content.replace(old, new))
+          marker = "let cases = corpus::assignment_cases();\n"
+          insertion = (
+              marker
+              + "        let case_names = cases.iter().map(|case| case.name).collect::<Vec<_>>();\n"
+          )
+          if marker not in content:
+              raise SystemExit("calibration case marker not found")
+          path.write_text(content.replace(marker, insertion, 1))
           PY
 
           cargo fmt
