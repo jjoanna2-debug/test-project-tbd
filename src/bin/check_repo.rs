@@ -115,6 +115,7 @@ const BINARY_SUFFIXES: &[&str] = &[
     "zip",
 ];
 const MAX_TEXT_FILE_BYTES: u64 = 4 * 1024 * 1024;
+const MAX_SCAN_ENTRIES: usize = 20_000;
 
 const BLOCKED_FILENAMES: &[&str] = &[
     ".env",
@@ -268,60 +269,65 @@ fn check_evidence_artifact(relative_path: &str, failures: &mut Vec<String>) {
 
 fn repo_files_under(root: &Path, directory: &Path, failures: &mut Vec<String>) -> Vec<PathBuf> {
     let mut files = Vec::new();
-    collect_repo_files(root, directory, failures, &mut files);
-    files.sort_unstable();
-    files
-}
+    let mut directories = vec![directory.to_path_buf()];
+    let mut scanned_entries = 0usize;
 
-fn collect_repo_files(
-    root: &Path,
-    directory: &Path,
-    failures: &mut Vec<String>,
-    files: &mut Vec<PathBuf>,
-) {
-    let entries = match fs::read_dir(directory) {
-        Ok(entries) => entries,
-        Err(error) => {
-            failures.push(format!(
-                "{} could not be read: {error}",
-                relative_path(root, directory)
-            ));
-            return;
-        }
-    };
-
-    for entry in entries {
-        let Ok(entry) = entry else {
-            failures.push(format!(
-                "{} contains an unreadable directory entry",
-                relative_path(root, directory)
-            ));
-            continue;
-        };
-
-        let path = entry.path();
-        let Ok(file_type) = entry.file_type() else {
-            failures.push(format!(
-                "{} file type could not be read",
-                relative_path(root, &path)
-            ));
-            continue;
-        };
-
-        if file_type.is_dir() {
-            if should_skip_dir(root, &path) {
+    while let Some(current_directory) = directories.pop() {
+        let entries = match fs::read_dir(&current_directory) {
+            Ok(entries) => entries,
+            Err(error) => {
+                failures.push(format!(
+                    "{} could not be read: {error}",
+                    relative_path(root, &current_directory)
+                ));
                 continue;
             }
-            collect_repo_files(root, &path, failures, files);
-        } else if file_type.is_file() {
-            files.push(path);
-        } else if file_type.is_symlink() {
-            failures.push(format!(
-                "{} is a symlink and will not be followed",
-                relative_path(root, &path)
-            ));
+        };
+
+        for entry in entries {
+            scanned_entries += 1;
+            if scanned_entries > MAX_SCAN_ENTRIES {
+                failures.push(format!(
+                    "repository scan exceeds the {MAX_SCAN_ENTRIES} entry limit"
+                ));
+                directories.clear();
+                break;
+            }
+
+            let Ok(entry) = entry else {
+                failures.push(format!(
+                    "{} contains an unreadable directory entry",
+                    relative_path(root, &current_directory)
+                ));
+                continue;
+            };
+
+            let path = entry.path();
+            let Ok(file_type) = entry.file_type() else {
+                failures.push(format!(
+                    "{} file type could not be read",
+                    relative_path(root, &path)
+                ));
+                continue;
+            };
+
+            if file_type.is_dir() {
+                if !should_skip_dir(root, &path) {
+                    directories.push(path);
+                }
+            } else if file_type.is_file() {
+                files.push(path);
+            } else if file_type.is_symlink() {
+                failures.push(format!(
+                    "{} is a symlink and will not be followed",
+                    relative_path(root, &path)
+                ));
+            }
         }
     }
+
+    files.sort_unstable();
+    files
 }
 
 fn should_skip_dir(root: &Path, path: &Path) -> bool {
