@@ -54,6 +54,11 @@ This project follows a simple chronological changelog. It is a learning reposito
 - Enforced explicit top-level workflow token permissions, rejected
   `pull_request_target`, and required checkout steps to disable persisted
   credentials.
+- Rejected non-binary repository text over 4 MiB before loading content,
+  reported metadata failures explicitly, and applied the same bound to
+  required-file reference checks.
+- Replaced recursive filesystem walking with an iterative traversal capped at
+  20,000 directory entries.
 - Expanded the protected Rust gate to all targets and features, direct doctor
   execution, merge-queue commits, and manual dispatches while canceling stale
   runs for the same pull request or ref.
