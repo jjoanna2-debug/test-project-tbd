@@ -151,9 +151,8 @@ fn inline_permissions_grant_contents_write(value: &str) -> bool {
     };
 
     inner.split(',').any(|entry| {
-        yaml_key_value(entry).is_some_and(|(key, value)| {
-            key == "contents" && trim_yaml_scalar(value) == "write"
-        })
+        yaml_key_value(entry)
+            .is_some_and(|(key, value)| key == "contents" && trim_yaml_scalar(value) == "write")
     })
 }
 
