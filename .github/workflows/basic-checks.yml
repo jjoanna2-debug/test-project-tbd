@@ -1,20 +1,35 @@
-name: Assignment Grammar Repair
+name: Basic Checks
 
 on:
   push:
     branches:
-      - codex/complete-classifier-calibration
+      - main
+  pull_request:
+    branches:
+      - main
+  merge_group:
+    types:
+      - checks_requested
+  workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
-  group: assignment-grammar-repair-${{ github.ref }}
+  group: basic-checks-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
 env:
+  CARGO_INCREMENTAL: "0"
   CARGO_TERM_COLOR: always
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
+  RUST_BACKTRACE: "1"
+  RUSTFLAGS: -D warnings
+  RUSTDOCFLAGS: -D warnings
+
+defaults:
+  run:
+    shell: bash
 
 jobs:
   repository-smoke-test:
@@ -23,67 +38,26 @@ jobs:
     timeout-minutes: 10
 
     steps:
-      - name: Check out working branch
+      - name: Check out repository
+        # Pinned to actions/checkout v7.0.1.
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
-          ref: ${{ github.ref_name }}
-          persist-credentials: true
+          persist-credentials: false
 
-      - name: Tighten colon assignment grammar
-        env:
-          BRANCH_NAME: ${{ github.ref_name }}
-        run: |
-          python3 - <<'PY'
-          from pathlib import Path
+      - name: Check formatting
+        run: cargo fmt --check
 
-          path = Path("src/bin/check_repo/secrets.rs")
-          content = path.read_text()
-          old = '''    line.find(':')
-          }
+      - name: Check all targets
+        run: cargo check --locked --all-targets --all-features
 
-          fn secret_key_score'''
-          new = '''    let separator_index = line.find(':')?;
-              is_colon_assignment_key(&line[..separator_index]).then_some(separator_index)
-          }
+      - name: Lint all targets
+        run: cargo clippy --locked --all-targets --all-features -- -D warnings
 
-          fn is_colon_assignment_key(key_part: &str) -> bool {
-              let mut candidate = key_part.trim();
-              if let Some(rest) = candidate.strip_prefix("- ") {
-                  candidate = rest.trim_start();
-              }
-              candidate = candidate
-                  .trim_start_matches(|character| matches!(character, '{' | '[' | ','))
-                  .trim();
+      - name: Test all targets
+        run: cargo test --locked --all-targets --all-features
 
-              let first = candidate.as_bytes().first().copied();
-              let last = candidate.as_bytes().last().copied();
-              let first_is_quote = first == Some(b'"') || first == Some(39);
-              let last_is_quote = last == Some(b'"') || last == Some(39);
-              if first_is_quote || last_is_quote {
-                  if first != last || candidate.len() < 2 {
-                      return false;
-                  }
-                  candidate = &candidate[1..candidate.len() - 1];
-              }
+      - name: Check documentation build
+        run: cargo doc --locked --no-deps --document-private-items
 
-              !candidate.is_empty()
-                  && candidate.len() <= 128
-                  && candidate.chars().all(|character| {
-                      character.is_ascii_alphanumeric() || matches!(character, '_' | '-' | '.')
-                  })
-          }
-
-          fn secret_key_score'''
-          if old not in content:
-              raise SystemExit("colon assignment marker not found")
-          path.write_text(content.replace(old, new, 1))
-          PY
-
-          cargo fmt
-          cargo test --locked --all-targets --all-features
-
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add src/bin/check_repo/secrets.rs
-          git commit -m "fix: tighten colon assignment grammar"
-          git push origin "HEAD:${BRANCH_NAME}"
+      - name: Run repository doctor
+        run: cargo run --quiet --locked --bin check_repo
