@@ -41,20 +41,24 @@ jobs:
           content = content.replace('r#"\non:', 'r"\non:')
           content = content.replace('\n"#;', '\n";')
 
-          marker = '''            ));
-          }
-
-          check_yaml_policy(
-          '''
-          replacement = '''            ));
-              continue;
-          }
-
-          check_yaml_policy(
-          '''
-          if marker not in content:
-              raise SystemExit("indirection continuation marker not found")
-          path.write_text(content.replace(marker, replacement, 1))
+          old = (
+              "        if contains_yaml_indirection(trimmed_line) {\n"
+              "            failures.push(format!(\n"
+              "                \"{relative_path}:{line_number} must not use YAML anchors, aliases, or merge keys\"\n"
+              "            ));\n"
+              "        }\n"
+          )
+          new = (
+              "        if contains_yaml_indirection(trimmed_line) {\n"
+              "            failures.push(format!(\n"
+              "                \"{relative_path}:{line_number} must not use YAML anchors, aliases, or merge keys\"\n"
+              "            ));\n"
+              "            continue;\n"
+              "        }\n"
+          )
+          if old not in content:
+              raise SystemExit("indirection block not found")
+          path.write_text(content.replace(old, new, 1))
           PY
 
           cargo fmt
