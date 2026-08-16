@@ -3,11 +3,18 @@
 
 #![forbid(unsafe_code)]
 
+#[path = "check_repo/secrets.rs"]
+mod secrets;
+#[path = "check_repo/workflows.rs"]
+mod workflows;
+
+use secrets::check_secret_content;
 use std::env;
 use std::fs;
 use std::io;
 use std::path::{Path, PathBuf};
 use std::process::ExitCode;
+use workflows::check_workflow_content;
 
 const REQUIRED_FILES: &[&str] = &[
     "README.md",
@@ -16,6 +23,8 @@ const REQUIRED_FILES: &[&str] = &[
     "Cargo.lock",
     "src/main.rs",
     "src/bin/check_repo.rs",
+    "src/bin/check_repo/secrets.rs",
+    "src/bin/check_repo/workflows.rs",
     "scripts/doctor.sh",
     "docs/PROJECT_STRUCTURE.md",
     "docs/LOCAL_SETUP.md",
@@ -61,7 +70,25 @@ const SOURCE_REFERENCES: &[(&str, &[&str])] = &[
     ),
     (
         "src/bin/check_repo.rs",
-        &["#![forbid(unsafe_code)]", "fn check_workflow_content"],
+        &[
+            "#![forbid(unsafe_code)]",
+            "check_repo/secrets.rs",
+            "check_repo/workflows.rs",
+        ],
+    ),
+    (
+        "src/bin/check_repo/secrets.rs",
+        &[
+            "pub(crate) fn check_secret_content",
+            "fn secret_assignment_score",
+        ],
+    ),
+    (
+        "src/bin/check_repo/workflows.rs",
+        &[
+            "pub(crate) fn check_workflow_content",
+            "fn is_pinned_docker_reference",
+        ],
     ),
 ];
 
@@ -81,7 +108,12 @@ const SKIPPED_DIRS: &[&str] = &[
     "worktrees",
 ];
 
-const BINARY_SUFFIXES: &[&str] = &["gif", "ico", "jpeg", "jpg", "pdf", "png", "webp"];
+const BINARY_SUFFIXES: &[&str] = &[
+    "7z", "a", "avi", "bmp", "class", "dmg", "doc", "docx", "dylib", "eot", "exe", "flac", "gif",
+    "gz", "ico", "jar", "jpeg", "jpg", "m4a", "mov", "mp3", "mp4", "o", "otf", "pdf", "png",
+    "ppt", "pptx", "so", "tar", "tiff", "ttf", "wav", "webm", "webp", "woff", "woff2", "xls",
+    "xlsx", "zip",
+];
 
 const BLOCKED_FILENAMES: &[&str] = &[
     ".env",
@@ -97,10 +129,21 @@ const BLOCKED_FILENAMES: &[&str] = &[
     "service-account.json",
 ];
 
-const BLOCKED_SECRET_SUFFIXES: &[&str] = &[".jks", ".key", ".keystore", ".p12", ".pfx"];
+const BLOCKED_SECRET_SUFFIXES: &[&str] = &[
+    ".jks",
+    ".key",
+    ".kdbx",
+    ".keystore",
+    ".p12",
+    ".pfx",
+];
 
-const PRIVATE_KEY_PREFIX: &str = "-----BEGIN ";
-const PRIVATE_KEY_WORDS: [&str; 2] = ["PRIVATE ", "KEY-----"];
+const BLOCKED_SENSITIVE_PATHS: &[&str] = &[
+    ".aws/credentials",
+    ".config/gcloud/application_default_credentials.json",
+    ".docker/config.json",
+    ".kube/config",
+];
 
 fn main() -> ExitCode {
     let root = match env::current_dir() {
@@ -172,6 +215,10 @@ fn check_repository_files(root: &Path, files: &[PathBuf], failures: &mut Vec<Str
 
         check_evidence_artifact(&relative_path, failures);
 
+        if is_blocked_sensitive_path(&relative_path) {
+            failures.push(format!("{relative_path} is a blocked sensitive path"));
+        }
+
         if let Some(file_name) = file_path.file_name().and_then(|name| name.to_str()) {
             if is_blocked_filename(file_name) {
                 failures.push(format!("{relative_path} is a blocked sensitive filename"));
@@ -208,77 +255,6 @@ fn check_evidence_artifact(relative_path: &str, failures: &mut Vec<String>) {
         || lower_path.contains("nonredacted")
     {
         failures.push(format!("{relative_path} must be explicitly redacted"));
-    }
-}
-
-fn check_secret_content(relative_path: &str, content: &str, failures: &mut Vec<String>) {
-    let private_key_suffix = PRIVATE_KEY_WORDS.concat();
-    if content.contains(PRIVATE_KEY_PREFIX) && content.contains(&private_key_suffix) {
-        failures.push(format!(
-            "{relative_path} appears to contain private key block"
-        ));
-    }
-
-    if contains_prefixed_token(content, &["ghp_", "gho_", "ghu_", "ghs_", "ghr_"], 30) {
-        failures.push(format!("{relative_path} appears to contain GitHub token"));
-    }
-
-    if contains_prefixed_token(content, &["github_pat_"], 20) {
-        failures.push(format!(
-            "{relative_path} appears to contain GitHub fine-grained token"
-        ));
-    }
-
-    if contains_aws_access_key(content) {
-        failures.push(format!(
-            "{relative_path} appears to contain AWS access key id"
-        ));
-    }
-
-    if has_generic_secret_assignment(content) {
-        failures.push(format!(
-            "{relative_path} appears to contain generic secret assignment"
-        ));
-    }
-}
-
-fn check_workflow_content(relative_path: &str, content: &str, failures: &mut Vec<String>) {
-    if content.contains("write-all") {
-        failures.push(format!(
-            "{relative_path} must not use write-all permissions"
-        ));
-    }
-
-    for (line_number, line) in content.lines().enumerate() {
-        let trimmed_line = line.trim();
-        if trimmed_line == "contents: write" {
-            failures.push(format!("{relative_path} must not grant contents: write"));
-        }
-
-        let step_line = trimmed_line.strip_prefix("- ").unwrap_or(trimmed_line);
-        let Some(action_ref) = step_line.strip_prefix("uses:") else {
-            continue;
-        };
-
-        let action_ref = action_ref.split_whitespace().next().unwrap_or("");
-        if action_ref.starts_with("./") || action_ref.starts_with("docker://") {
-            continue;
-        }
-
-        let Some((_, ref_name)) = action_ref.rsplit_once('@') else {
-            failures.push(format!(
-                "{relative_path}:{} action is unpinned",
-                line_number + 1
-            ));
-            continue;
-        };
-
-        if !is_full_sha(ref_name) {
-            failures.push(format!(
-                "{relative_path}:{} action must be pinned to a full SHA",
-                line_number + 1
-            ));
-        }
     }
 }
 
@@ -348,13 +324,25 @@ fn should_skip_dir(root: &Path, path: &Path) -> bool {
         .is_some_and(|first_part| SKIPPED_DIRS.contains(&first_part))
 }
 
+fn is_blocked_sensitive_path(relative_path: &str) -> bool {
+    let lower_path = relative_path.to_ascii_lowercase();
+    BLOCKED_SENSITIVE_PATHS.contains(&lower_path.as_str())
+}
+
 fn is_blocked_filename(file_name: &str) -> bool {
     let lower_name = file_name.to_ascii_lowercase();
     BLOCKED_FILENAMES.contains(&lower_name.as_str())
-        || (lower_name.starts_with(".env.") && lower_name != ".env.example")
+        || (lower_name.starts_with(".env.") && !is_environment_template(&lower_name))
         || BLOCKED_SECRET_SUFFIXES
             .iter()
             .any(|suffix| lower_name.ends_with(suffix))
+}
+
+fn is_environment_template(file_name: &str) -> bool {
+    matches!(
+        file_name.rsplit('.').next(),
+        Some("dist" | "example" | "sample" | "template")
+    )
 }
 
 fn is_binary_file(path: &Path) -> bool {
@@ -375,71 +363,6 @@ fn is_workflow_file(relative_path: &str, path: &Path) -> bool {
         )
 }
 
-fn contains_prefixed_token(content: &str, prefixes: &[&str], minimum_tail_len: usize) -> bool {
-    content
-        .split(|character: char| !(character.is_ascii_alphanumeric() || character == '_'))
-        .any(|token| {
-            prefixes.iter().any(|prefix| {
-                token.starts_with(prefix) && token.len() >= prefix.len() + minimum_tail_len
-            })
-        })
-}
-
-fn contains_aws_access_key(content: &str) -> bool {
-    content
-        .split(|character: char| !character.is_ascii_alphanumeric())
-        .any(|token| {
-            token.len() == 20
-                && (token.starts_with("AKIA") || token.starts_with("ASIA"))
-                && token
-                    .chars()
-                    .all(|character| character.is_ascii_uppercase() || character.is_ascii_digit())
-        })
-}
-
-fn has_generic_secret_assignment(content: &str) -> bool {
-    content.lines().any(|line| {
-        let lower_line = line.to_ascii_lowercase();
-        let has_secret_key = ["api_key", "api-key", "secret", "token", "password"]
-            .iter()
-            .any(|keyword| lower_line.contains(keyword));
-
-        if !has_secret_key {
-            return false;
-        }
-
-        let Some(separator_index) = line.find(['=', ':']) else {
-            return false;
-        };
-
-        let assignment_value = line[separator_index + 1..].trim_start();
-        let Some(quote) = assignment_value.chars().next() else {
-            return false;
-        };
-
-        if quote != '"' && quote != '\'' {
-            return false;
-        }
-
-        let Some(end_index) = assignment_value[1..].find(quote) else {
-            return false;
-        };
-
-        let value = &assignment_value[1..=end_index];
-        value.len() >= 20
-            && value
-                .chars()
-                .all(|character| character.is_ascii_alphanumeric() || "_./+=:-".contains(character))
-    })
-}
-
-fn is_full_sha(ref_name: &str) -> bool {
-    ref_name.len() == 40
-        && ref_name
-            .chars()
-            .all(|character| character.is_ascii_digit() || ('a'..='f').contains(&character))
-}
-
 fn relative_path(root: &Path, path: &Path) -> String {
     path.strip_prefix(root)
         .unwrap_or(path)
@@ -450,43 +373,33 @@ fn relative_path(root: &Path, path: &Path) -> String {
 #[cfg(test)]
 mod tests {
     use super::{
-        contains_aws_access_key, contains_prefixed_token, has_generic_secret_assignment,
-        is_blocked_filename, is_full_sha, should_skip_dir,
+        is_binary_file, is_blocked_filename, is_blocked_sensitive_path, should_skip_dir,
     };
     use std::path::Path;
 
     #[test]
-    fn detects_github_token_shape() {
-        let probe = format!("token = 'ghp_{}'", "a".repeat(36));
-        assert!(contains_prefixed_token(&probe, &["ghp_"], 30));
-    }
-
-    #[test]
-    fn detects_aws_access_key_shape() {
-        let probe = ["AKIA", "ABCDEFGHIJKLMNOP"].concat();
-        assert!(contains_aws_access_key(&probe));
-    }
-
-    #[test]
-    fn detects_generic_secret_assignment() {
-        let keyword = ["pass", "word"].concat();
-        let probe = format!("{keyword} = '{}'", "abcdefghijklmnopqrstuvwxyz");
-        assert!(has_generic_secret_assignment(&probe));
-    }
-
-    #[test]
-    fn requires_full_lowercase_sha() {
-        assert!(is_full_sha("9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0"));
-        assert!(!is_full_sha("v4"));
-    }
-
-    #[test]
-    fn blocks_environment_and_key_container_filenames() {
+    fn distinguishes_sensitive_files_from_templates() {
         assert!(is_blocked_filename(".env.production"));
         assert!(is_blocked_filename("service-account.json"));
         assert!(is_blocked_filename("signing.P12"));
+        assert!(is_blocked_filename("vault.kdbx"));
         assert!(!is_blocked_filename(".env.example"));
+        assert!(!is_blocked_filename(".env.production.sample"));
         assert!(!is_blocked_filename("public-certificate.pem"));
+    }
+
+    #[test]
+    fn blocks_root_credential_paths() {
+        assert!(is_blocked_sensitive_path(".aws/credentials"));
+        assert!(is_blocked_sensitive_path(".KUBE/config"));
+        assert!(!is_blocked_sensitive_path("docs/.aws/credentials"));
+    }
+
+    #[test]
+    fn recognizes_binary_extensions_case_insensitively() {
+        assert!(is_binary_file(Path::new("archive.ZIP")));
+        assert!(is_binary_file(Path::new("fixture.DOCX")));
+        assert!(!is_binary_file(Path::new("README.md")));
     }
 
     #[test]
