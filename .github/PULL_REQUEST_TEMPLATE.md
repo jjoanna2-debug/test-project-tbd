@@ -17,11 +17,12 @@ List the files or subsystems intentionally changed. State anything deliberately 
 Check every command that applies:
 
 - [ ] `cargo fmt --check`
+- [ ] `cargo check --locked --all-targets --all-features`
 - [ ] `cargo clippy --locked --all-targets --all-features -- -D warnings`
 - [ ] `cargo test --locked --all-targets --all-features`
+- [ ] `cargo doc --locked --no-deps --document-private-items`
 - [ ] `cargo run --quiet --locked --bin check_repo`
 - [ ] `git diff --check`
-- [ ] Documentation-only review completed where executable checks are not relevant
 
 Describe any additional test cases, failure-path checks, or manual verification:
 

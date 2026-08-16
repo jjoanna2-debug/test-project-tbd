@@ -22,7 +22,7 @@ It is not a production app or supported security product. The point is to learn 
 | Item | Current value |
 | --- | --- |
 | Rust package | `test-project-tbd` `0.1.0` |
-| Rust requirement | `1.85` or newer, Edition 2021 |
+| Rust toolchain | Pinned `1.97.1`, Edition 2024 |
 | Runtime dependencies | None |
 | Default branch | Protected `main` |
 | Required check | `Repository smoke test` |
@@ -34,8 +34,9 @@ It is not a production app or supported security product. The point is to learn 
 | --- | --- |
 | `README.md` | Current project overview, checks, automation, and boundaries. |
 | `START_HERE.md` | This beginner-friendly map. |
-| `Cargo.toml` | Package metadata, Rust-version floor, and lint policy. |
+| `Cargo.toml` | Package metadata, Rust 2024 edition, exact toolchain floor, and lint policy. |
 | `Cargo.lock` | Reproducible dependency lockfile. |
+| `rust-toolchain.toml` | Exact Rust, Clippy, and Rustfmt selection for local work and CI. |
 | `src/main.rs` | Minimal Rust starter program. |
 | `src/bin/check_repo.rs` | Repository inventory, bounded traversal and reads, required-file checks, and classifier orchestration. |
 | `src/bin/check_repo/secrets.rs` | Provider token signatures and scored secret-assignment classification. |
@@ -49,7 +50,7 @@ It is not a production app or supported security product. The point is to learn 
 | `SECURITY.md` | Security expectations, implemented guardrails, and unsupported status. |
 | `SUPPORT.md` | No-support and no-maintenance boundaries. |
 | `CONTRIBUTING.md` | Contribution requirements and current validation commands. |
-| `.github/workflows/basic-checks.yml` | Protected formatting, lint, test, and doctor gate. |
+| `.github/workflows/basic-checks.yml` | Protected formatting, compilation, lint, test, documentation, and doctor gate. |
 | `.github/dependabot.yml` | Scheduled and grouped GitHub Actions and Cargo updates. |
 | `.github/ISSUE_TEMPLATE/` | Structured bug, feature, and documentation forms. |
 | `.github/PULL_REQUEST_TEMPLATE.md` | Pull request scope, verification, risk, and documentation checklist. |
@@ -84,8 +85,10 @@ Edit `src/main.rs` or one relevant documentation file, then run:
 
 ```bash
 cargo fmt --check
+cargo check --locked --all-targets --all-features
 cargo clippy --locked --all-targets --all-features -- -D warnings
 cargo test --locked --all-targets --all-features
+cargo doc --locked --no-deps --document-private-items
 bash scripts/doctor.sh
 ```
 

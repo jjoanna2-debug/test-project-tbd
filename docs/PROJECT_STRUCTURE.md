@@ -10,8 +10,9 @@ This document maps the current repository layout and the responsibility of each 
 | --- | --- |
 | `README.md` | Current project snapshot, architecture, checks, automation, priorities, evidence-release status, and boundaries. |
 | `START_HERE.md` | Beginner map and safe first branch-to-PR exercise. |
-| `Cargo.toml` | Package metadata, version `0.1.0`, Edition 2021, Rust `1.85` floor, license, publish setting, and lint policy. |
+| `Cargo.toml` | Package metadata, version `0.1.0`, Edition 2024, Rust `1.97.1`, repository metadata, publish setting, and lint policy. |
 | `Cargo.lock` | Locked dependency state for reproducible local and CI commands. |
+| `rust-toolchain.toml` | Exact Rust `1.97.1` toolchain with the minimal profile, Clippy, and Rustfmt. |
 | `LICENSE` | Standard Apache License 2.0 text. |
 | `NOTICE` | Current copyright and repository attribution. |
 | `LEGAL_NOTICES.md` | Plain-language license and public-use context. |
@@ -37,14 +38,14 @@ This document maps the current repository layout and the responsibility of each 
 | `src/bin/check_repo/secrets.rs` | Private-key, provider-token, AWS-key, and scored generic secret-assignment classification with labeled regression tests. |
 | `src/bin/check_repo/workflows.rs` | Context-aware GitHub Actions permissions, trigger, checkout-credential, SHA-pin, and Docker-digest enforcement. |
 
-The package has no runtime dependencies. `unsafe_code` is forbidden, and Clippy `all` plus `pedantic` are enabled as warnings before CI promotes warnings to failures.
+The package has no runtime dependencies. `unsafe_code` is forbidden. Clippy `all` and `pedantic` are enabled, while debug macros and unfinished `todo!` or `unimplemented!` paths are denied. CI promotes warnings to failures.
 
 ## Documentation
 
 | Path | Current responsibility |
 | --- | --- |
 | `docs/LOCAL_SETUP.md` | Tool requirements, clone, branch, complete local gate, push, PR, and post-merge cleanup. |
-| `docs/GITHUB_WORKFLOW.md` | Protected branch-to-merge contract, current CI steps, events, concurrency, merge queue, and dependency automation. |
+| `docs/GITHUB_WORKFLOW.md` | Protected branch-to-merge contract, exact toolchain, current CI steps, events, concurrency, merge queue, and dependency automation. |
 | `docs/PROJECT_STRUCTURE.md` | This current layout map. |
 
 ## Local Helper
@@ -59,11 +60,11 @@ CI runs the Rust doctor directly rather than placing a shell wrapper between Git
 
 | Path | Current responsibility |
 | --- | --- |
-| `.github/workflows/basic-checks.yml` | Required `Repository smoke test` for pull requests, pushes to `main`, merge groups, and manual dispatch; includes stale-run cancellation and read-only checkout. |
+| `.github/workflows/basic-checks.yml` | Required `Repository smoke test` for pull requests, pushes to `main`, merge groups, and manual dispatch; validates formatting, compilation, linting, tests, documentation, and repository policy with stale-run cancellation and read-only checkout. |
 | `.github/dependabot.yml` | Monday 06:00 Europe/Lisbon GitHub Actions and Cargo checks, grouped minor/patch updates, separate major updates, and PR limits. |
 | `.github/CODEOWNERS` | Default review visibility. |
 | `.github/PULL_REQUEST_TEMPLATE.md` | Pull request scope, verification, risk, documentation, and safety checklist. |
-| `.github/ISSUE_TEMPLATE/config.yml` | Disables blank issues and links to support and security policies. |
+| `.github/ISSUE_TEMPLATE/config.yml` | Disables blank issues and links to contribution, support, and security policies. |
 | `.github/ISSUE_TEMPLATE/bug_report.yml` | Structured defect report form. |
 | `.github/ISSUE_TEMPLATE/feature_request.yml` | Structured improvement proposal form. |
 | `.github/ISSUE_TEMPLATE/documentation_task.yml` | Structured documentation correction form. |
@@ -92,14 +93,14 @@ A nested documentation directory with the same name is not automatically exclude
 
 The current design is:
 
-- Rust-first;
+- Rust 2024 with an exact reproducible toolchain;
 - dependency-free at runtime;
 - deterministic;
 - resource-bounded;
 - fail-closed on unreadable or ambiguous repository state;
 - protected by CI;
-- self-enforcing for critical workflow and Dependabot invariants;
+- self-enforcing for critical toolchain, workflow, and Dependabot invariants;
 - explicit about the difference between internal regression metrics and external production claims;
 - explicit about the difference between evidence-asset tags and software releases.
 
-Update this file whenever a maintained path, release-asset bundle, or material responsibility is added, removed, renamed, or changed.
+Update this file whenever a maintained path, toolchain, release-asset bundle, or material responsibility is added, removed, renamed, or changed.

@@ -21,6 +21,7 @@ const REQUIRED_FILES: &[&str] = &[
     "START_HERE.md",
     "Cargo.toml",
     "Cargo.lock",
+    "rust-toolchain.toml",
     "src/main.rs",
     "src/bin/check_repo.rs",
     "src/bin/check_repo/secrets.rs",
@@ -58,20 +59,36 @@ const SOURCE_REFERENCES: &[(&str, &[&str])] = &[
     (
         "Cargo.toml",
         &[
-            "edition = \"2021\"",
+            "edition = \"2024\"",
+            "rust-version = \"1.97.1\"",
             "license = \"Apache-2.0\"",
+            "publish = false",
             "unsafe_code = \"forbid\"",
+            "dbg_macro = \"deny\"",
+            "todo = \"deny\"",
+            "unimplemented = \"deny\"",
         ],
     ),
     ("Cargo.lock", &["name = \"test-project-tbd\""]),
+    (
+        "rust-toolchain.toml",
+        &[
+            "channel = \"1.97.1\"",
+            "profile = \"minimal\"",
+            "components = [\"clippy\", \"rustfmt\"]",
+        ],
+    ),
     (
         ".github/workflows/basic-checks.yml",
         &[
             "merge_group:",
             "workflow_dispatch:",
             "cancel-in-progress: true",
+            "FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: \"true\"",
+            "cargo check --locked --all-targets --all-features",
             "cargo clippy --locked --all-targets --all-features -- -D warnings",
             "cargo test --locked --all-targets --all-features",
+            "cargo doc --locked --no-deps --document-private-items",
             "cargo run --quiet --locked --bin check_repo",
         ],
     ),
@@ -246,10 +263,10 @@ fn check_repository_files(root: &Path, files: &[PathBuf], failures: &mut Vec<Str
             failures.push(format!("{relative_path} is a blocked sensitive path"));
         }
 
-        if let Some(file_name) = file_path.file_name().and_then(|name| name.to_str()) {
-            if is_blocked_filename(file_name) {
-                failures.push(format!("{relative_path} is a blocked sensitive filename"));
-            }
+        if let Some(file_name) = file_path.file_name().and_then(|name| name.to_str())
+            && is_blocked_filename(file_name)
+        {
+            failures.push(format!("{relative_path} is a blocked sensitive filename"));
         }
 
         if is_binary_file(file_path) {
@@ -423,8 +440,8 @@ fn relative_path(root: &Path, path: &Path) -> String {
 #[cfg(test)]
 mod tests {
     use super::{
-        is_binary_file, is_blocked_filename, is_blocked_sensitive_path, is_oversized_text_file,
-        should_skip_dir, MAX_TEXT_FILE_BYTES,
+        MAX_TEXT_FILE_BYTES, is_binary_file, is_blocked_filename, is_blocked_sensitive_path,
+        is_oversized_text_file, should_skip_dir,
     };
     use std::path::Path;
 

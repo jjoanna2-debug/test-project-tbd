@@ -25,12 +25,17 @@ All notable changes to this repository are recorded here. The project follows a 
 - Repository doctor checks for secret signals, sensitive paths, workflow policy, immutable action references, and explicitly redacted evidence artifacts.
 - Rust-native repository doctor binary so the project remains Rust-first.
 - Internal labeled secret-assignment corpus with an average-precision regression floor of `0.95`.
+- Exact `rust-toolchain.toml` selection for Rust `1.97.1`, Clippy, and Rustfmt.
 
 ### Changed
 
 - Improved repository documentation and public-use boundaries.
 - Replaced the earlier static starter with a Rust-first staging lab.
-- Added a Rust `1.85` toolchain floor, locked validation, unsafe-code rejection, and strict Clippy policy.
+- Migrated the package from Edition 2021 and Rust `1.85` to Edition 2024 and exact Rust `1.97.1`.
+- Added repository and README package metadata while keeping the package non-publishable.
+- Strengthened the lint policy by denying debug macros, `todo!`, and `unimplemented!` paths.
+- Expanded the protected gate to validate compilation and documentation in addition to formatting, strict Clippy, tests, and repository policy.
+- Made compiler and rustdoc warnings fatal in CI, disabled incremental compilation, and selected current JavaScript Action runtime behavior explicitly.
 - Clarified that funding metadata is inactive until a valid provider is configured.
 - Kept root-local backup, build, cache, dependency, temporary, and delegated-work areas outside the public scan boundary.
 - Expanded sensitive-filename checks to environment variants, credential manifests, private-key files, key containers, password-manager databases, and common root credential stores.
@@ -47,7 +52,7 @@ All notable changes to this repository are recorded here. The project follows a 
 - Expanded the protected Rust gate to all targets and features, direct doctor execution, merge-queue groups, pushes to `main`, and manual dispatches.
 - Added concurrency that cancels superseded runs for the same pull request or ref.
 - Grouped routine Dependabot minor and patch updates by ecosystem on a fixed Europe/Lisbon schedule while leaving major updates isolated for review.
-- Made the repository doctor assert durable CI and Dependabot guarantees so later edits cannot silently remove the automation baseline.
+- Made the repository doctor assert durable toolchain, CI, and Dependabot guarantees so later edits cannot silently remove the automation baseline.
 - Reconciled the roadmap with completed repository, workflow, automation, and doctor phases.
 - Distinguished the `codex-issue-22773-assets` and `codex-issue-23192-assets` evidence bundles from software releases, package versions, supported builds, and compatibility commitments.
 - Reconciled security, support, contribution, conduct, funding, legal, disclaimer, and attribution documents with the implemented repository and evidence surfaces.
@@ -66,6 +71,7 @@ All notable changes to this repository are recorded here. The project follows a 
 - Documented that GitHub Release assets are outside the checked-out tree and therefore require separate redaction review.
 - Updated the structure map and README to include current evidence tags and their May 2026 publication dates.
 - Tightened release-asset wording so redaction is claimed only where release metadata verifies it; the local doctor does not attest assets outside the checked-out tree.
+- Updated the README, beginner map, local setup, workflow guide, and structure map for the exact Rust 2024 toolchain and six-step quality gate.
 
 ### Notes
 

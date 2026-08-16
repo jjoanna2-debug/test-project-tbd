@@ -33,10 +33,14 @@ git diff
 
 ## 4. Run the Current Local Gate
 
+The repository selects Rust `1.97.1`, Clippy, and Rustfmt through `rust-toolchain.toml`.
+
 ```bash
 cargo fmt --check
+cargo check --locked --all-targets --all-features
 cargo clippy --locked --all-targets --all-features -- -D warnings
 cargo test --locked --all-targets --all-features
+cargo doc --locked --no-deps --document-private-items
 cargo run --quiet --locked --bin check_repo
 ```
 
@@ -76,13 +80,15 @@ Open a pull request from the branch into `main` and complete the repository temp
 
 ## 8. Protected Quality Gate
 
-The required `Repository smoke test` contains four direct steps:
+The required `Repository smoke test` contains six direct validation steps:
 
 | Step | Command |
 | --- | --- |
 | Formatting | `cargo fmt --check` |
+| Compilation | `cargo check --locked --all-targets --all-features` |
 | Lint | `cargo clippy --locked --all-targets --all-features -- -D warnings` |
 | Tests | `cargo test --locked --all-targets --all-features` |
+| Documentation | `cargo doc --locked --no-deps --document-private-items` |
 | Repository policy | `cargo run --quiet --locked --bin check_repo` |
 
 The workflow currently runs on:
@@ -92,7 +98,7 @@ The workflow currently runs on:
 - merge-queue `checks_requested` groups;
 - manual `workflow_dispatch` runs.
 
-The job has read-only repository contents permission, uses a full commit-SHA pin for `actions/checkout`, and disables persisted checkout credentials.
+The job has read-only repository contents permission, uses a full commit-SHA pin for `actions/checkout`, disables persisted checkout credentials, disables incremental compilation, and treats compiler and rustdoc warnings as failures. The repository toolchain file keeps local and hosted validation on the same exact Rust release.
 
 ## 9. Superseded Runs
 
@@ -132,6 +138,10 @@ Dependabot checks both GitHub Actions and Cargo every Monday at **06:00 Europe/L
 - Major updates remain separate for explicit review.
 - Open version-update pull requests are capped per ecosystem.
 - Dependabot changes still pass through the protected repository gate.
+
+## Toolchain Updates
+
+The Rust toolchain is intentionally exact rather than floating. A toolchain update must change `rust-toolchain.toml`, the matching `rust-version` in `Cargo.toml`, repository-doctor invariants, and current documentation in one pull request. The protected gate then proves that formatting, compilation, linting, tests, documentation, and repository policy all survive the update.
 
 ## Documentation Freshness
 

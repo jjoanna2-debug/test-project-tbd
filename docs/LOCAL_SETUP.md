@@ -9,21 +9,23 @@ This guide covers the current local workflow: clone, create a branch, run the sa
 You need:
 
 - Git for cloning, branching, committing, pulling, and pushing;
-- Rust `1.85` or newer with Cargo and Rustfmt;
-- Clippy for the repository's strict lint gate;
+- rustup, which selects the repository's pinned Rust `1.97.1` toolchain;
 - a code editor.
 
-No framework, server, database, external service, runtime dependency, or production credential is required.
+The repository toolchain file installs the minimal Rust profile plus Clippy and Rustfmt. No framework, server, database, external service, runtime dependency, or production credential is required.
 
 Confirm the tools are available:
 
 ```bash
 git --version
+rustup --version
 rustc --version
 cargo --version
 cargo clippy --version
 cargo fmt --version
 ```
+
+The Rust commands should resolve through `rust-toolchain.toml` after entering the repository directory.
 
 ## Clone the Repository
 
@@ -31,6 +33,8 @@ cargo fmt --version
 git clone https://github.com/jjoanna2-debug/test-project-tbd.git
 cd test-project-tbd
 ```
+
+The first Rust command may download the exact pinned toolchain if rustup does not already have it.
 
 ## Create a Working Branch
 
@@ -48,6 +52,7 @@ Use a branch name that describes one coherent change.
 
 ```text
 Cargo.toml
+rust-toolchain.toml
 src/main.rs
 src/bin/check_repo.rs
 src/bin/check_repo/secrets.rs
@@ -62,16 +67,18 @@ docs/
 
 ## Run the Complete Local Gate
 
-Run the same four checks used by the protected workflow:
+Run the same six checks used by the protected workflow:
 
 ```bash
 cargo fmt --check
+cargo check --locked --all-targets --all-features
 cargo clippy --locked --all-targets --all-features -- -D warnings
 cargo test --locked --all-targets --all-features
+cargo doc --locked --no-deps --document-private-items
 cargo run --quiet --locked --bin check_repo
 ```
 
-The commands stop at the first failure when run individually from a shell script or CI step. Fix the first reported defect, rerun the failed command, and then rerun the full set.
+The repository treats compiler, Clippy, and rustdoc warnings as failures in CI. Fix the first reported defect, rerun the failed command, and then rerun the full set.
 
 ## Run the Doctor Wrapper
 
@@ -81,7 +88,7 @@ bash scripts/doctor.sh
 
 The doctor currently checks:
 
-- required repository and source invariants;
+- required repository, toolchain, and source invariants;
 - one deterministic, sorted repository inventory;
 - iterative traversal capped at 20,000 visited entries;
 - rejection of symlinks and explicit reporting of unreadable filesystem state;
@@ -126,7 +133,7 @@ git commit -m "Describe the focused change"
 git push -u origin practice/my-change
 ```
 
-Open a pull request into `main`, complete the repository template, and wait for `Repository smoke test` to pass. The required check validates formatting, strict all-target/all-feature Clippy, locked all-target/all-feature tests, and the repository doctor.
+Open a pull request into `main`, complete the repository template, and wait for `Repository smoke test` to pass. The required check validates formatting, compilation, strict all-target/all-feature Clippy, locked all-target/all-feature tests, documentation compilation, and the repository doctor.
 
 ## Update After Merge
 

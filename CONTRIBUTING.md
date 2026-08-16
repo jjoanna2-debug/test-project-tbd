@@ -30,20 +30,27 @@ Keep one coherent change per branch. Review the diff before staging and avoid un
 
 ## Required Local Validation
 
-For code, workflow, configuration, or doctor-policy changes, run:
+The repository pins Rust `1.97.1`, Clippy, and Rustfmt through `rust-toolchain.toml`. For code, workflow, configuration, policy, or documentation changes, run:
 
 ```bash
 cargo fmt --check
+cargo check --locked --all-targets --all-features
 cargo clippy --locked --all-targets --all-features -- -D warnings
 cargo test --locked --all-targets --all-features
+cargo doc --locked --no-deps --document-private-items
 cargo run --quiet --locked --bin check_repo
 ```
 
-For documentation-only changes, the Rust commands still provide the authoritative repository gate because the doctor validates required documentation and policy invariants. At minimum, review:
+Also review the actual patch:
 
 ```bash
 git diff --check
 git diff
+```
+
+The local doctor wrapper remains available for a focused rerun:
+
+```bash
 bash scripts/doctor.sh
 ```
 
@@ -92,7 +99,7 @@ Prefer changes that are:
 
 - focused and reversible;
 - dependency-free unless a dependency has clear measured value;
-- consistent with the Rust-first design;
+- consistent with the Rust 2024 design and pinned toolchain;
 - deterministic and resource-bounded;
 - accompanied by regression coverage when behavior changes;
 - honest about internal metrics and external limitations.

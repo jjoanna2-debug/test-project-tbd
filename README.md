@@ -9,7 +9,8 @@ A compact Rust-first staging area for learning GitHub, repository automation, de
 | Item | Current value |
 | --- | --- |
 | Package | `test-project-tbd` `0.1.0` |
-| Rust | Edition 2021, Rust `1.85` or newer |
+| Rust edition | 2024 |
+| Pinned toolchain | Rust `1.97.1`, minimal profile, Clippy and Rustfmt |
 | Runtime dependencies | None |
 | Default branch | Protected `main` |
 | Required check | `Repository smoke test` |
@@ -29,7 +30,7 @@ cd test-project-tbd
 This repository is used to practice and improve:
 
 - focused commits, branches, pull requests, protected checks, and merge queues;
-- a small Rust project with a locked toolchain floor and strict lint policy;
+- a small Rust 2024 project with an exact reproducible toolchain and strict lint policy;
 - dependency-free repository inspection and policy enforcement;
 - secret-pattern classification with measurable regression tests;
 - safe GitHub Actions and Dependabot configuration;
@@ -42,6 +43,7 @@ It is not a production system, commercial product, managed service, professional
 ```text
 Cargo.toml
 Cargo.lock
+rust-toolchain.toml
 src/main.rs
 src/bin/check_repo.rs
 src/bin/check_repo/secrets.rs
@@ -54,6 +56,12 @@ issue-evidence/
 
 The implementation remains intentionally dependency-free. New abstractions have to earn their existence rather than arriving in a motorcade of configuration files.
 
+## Reproducible Rust Baseline
+
+`rust-toolchain.toml` pins Rust `1.97.1` with the minimal rustup profile plus Clippy and Rustfmt. Cargo uses Edition 2024 and the Rust-version-aware resolver implied by that edition. Local commands and GitHub Actions therefore evaluate the same compiler, formatter, linter, and standard library instead of whichever toolchain happens to be installed that week.
+
+The manifest also denies debug macros, unfinished `todo!` paths, and `unimplemented!` placeholders through the repository lint policy.
+
 ## Repository Doctor
 
 `src/bin/check_repo.rs` builds one deterministic repository inventory and coordinates focused classifiers. It exits successfully only when the repository satisfies its current structural, security, workflow, and automation invariants.
@@ -62,7 +70,7 @@ The implementation remains intentionally dependency-free. New abstractions have 
 
 The doctor:
 
-- verifies required project, policy, documentation, GitHub, Rust, and helper files;
+- verifies required project, policy, documentation, GitHub, Rust, toolchain, and helper files;
 - walks the repository iteratively rather than recursively;
 - stops after 20,000 visited directory entries;
 - rejects repository symlinks rather than following them outside the scan boundary;
@@ -105,12 +113,14 @@ That figure is a regression guard for the repository's own test corpus. It is no
 
 ## Run Locally
 
-Run the complete Rust gate:
+The pinned toolchain is selected automatically when rustup is installed. Run the complete gate:
 
 ```bash
 cargo fmt --check
+cargo check --locked --all-targets --all-features
 cargo clippy --locked --all-targets --all-features -- -D warnings
 cargo test --locked --all-targets --all-features
+cargo doc --locked --no-deps --document-private-items
 cargo run --quiet --locked --bin check_repo
 ```
 
@@ -129,16 +139,18 @@ Doctor check passed.
 
 ## Automated Quality Gate
 
-The required `Repository smoke test` runs the same formatting, strict Clippy, locked test, and doctor checks on:
+The required `Repository smoke test` runs formatting, compilation, strict Clippy, locked tests, documentation compilation, and the repository doctor on:
 
 - pull requests into `main`;
 - pushes to `main`;
 - merge-queue groups;
 - manual workflow dispatches.
 
+The workflow disables incremental compilation, treats compiler and rustdoc warnings as failures, forces current JavaScript Action runtime behavior, and uses the exact toolchain declared by the repository.
+
 New commits cancel older in-progress runs for the same pull request or ref. CI therefore validates the current revision rather than financing an archaeological survey of superseded commits.
 
-The doctor also asserts the important workflow and Dependabot settings. Removing merge-queue coverage, stale-run cancellation, all-target checks, direct doctor execution, or grouped dependency-update policy causes the repository gate to fail.
+The doctor also asserts the important workflow and Dependabot settings. Removing merge-queue coverage, stale-run cancellation, all-target checks, documentation compilation, direct doctor execution, or grouped dependency-update policy causes the repository gate to fail.
 
 ## Dependency Automation
 
