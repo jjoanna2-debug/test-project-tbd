@@ -8,7 +8,7 @@ This document maps the current repository layout and the responsibility of each 
 
 | Path | Current responsibility |
 | --- | --- |
-| `README.md` | Current project snapshot, architecture, checks, automation, priorities, and boundaries. |
+| `README.md` | Current project snapshot, architecture, checks, automation, priorities, evidence-release status, and boundaries. |
 | `START_HERE.md` | Beginner map and safe first branch-to-PR exercise. |
 | `Cargo.toml` | Package metadata, version `0.1.0`, Edition 2021, Rust `1.85` floor, license, publish setting, and lint policy. |
 | `Cargo.lock` | Locked dependency state for reproducible local and CI commands. |
@@ -71,12 +71,16 @@ CI runs the Rust doctor directly rather than placing a shell wrapper between Git
 
 ## Evidence Artifacts
 
-| Path | Current responsibility |
+| Location | Current responsibility |
 | --- | --- |
-| `issue-evidence/` | Public issue-supporting artifacts that must be explicitly named as redacted. |
-| `issue-evidence/codex-23192-redacted/` | Current redacted evidence set for the referenced Codex issue. |
+| `issue-evidence/` | Public issue-supporting artifacts committed to the repository tree and required to use explicit redaction naming. |
+| `issue-evidence/codex-23192-redacted/` | Current in-tree redacted evidence set for Codex issue 23192. |
+| Release tag `codex-issue-22773-assets` | Redacted screenshot asset bundle published 2026-05-15 for Codex issue 22773. |
+| Release tag `codex-issue-23192-assets` | Redacted screenshot asset bundle published 2026-05-17 for Codex issue 23192. |
 
-The doctor rejects evidence paths that are not explicitly redacted or that use names such as `unredacted` or `nonredacted`.
+The two GitHub Releases are evidence bundles, not software releases or package versions. Their tags must not be interpreted as supported builds or semantic versions of `test-project-tbd`.
+
+The doctor rejects in-tree evidence paths that are not explicitly redacted or that use names such as `unredacted` or `nonredacted`. GitHub Release assets are outside the checked-out repository tree, so their redaction and content must be reviewed before publication rather than assumed to be covered by the local doctor.
 
 ## Generated and Local-Only Areas
 
@@ -95,6 +99,7 @@ The current design is:
 - fail-closed on unreadable or ambiguous repository state;
 - protected by CI;
 - self-enforcing for critical workflow and Dependabot invariants;
-- explicit about the difference between internal regression metrics and external production claims.
+- explicit about the difference between internal regression metrics and external production claims;
+- explicit about the difference between evidence-asset tags and software releases.
 
-Update this file whenever a maintained path is added, removed, renamed, or materially changes responsibility.
+Update this file whenever a maintained path, release-asset bundle, or material responsibility is added, removed, renamed, or changed.

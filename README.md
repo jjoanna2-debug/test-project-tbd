@@ -146,6 +146,17 @@ Dependabot checks GitHub Actions and Cargo every Monday at **06:00 Europe/Lisbon
 
 Routine minor and patch updates are grouped by ecosystem. Major updates remain separate for explicit review. Open version-update pull requests are capped per ecosystem.
 
+## Evidence Asset Releases
+
+The repository currently has two GitHub Release tags:
+
+- `codex-issue-22773-assets`, published 2026-05-15;
+- `codex-issue-23192-assets`, published 2026-05-17.
+
+They are public redacted screenshot bundles supporting external Codex issue reports. They are **not software releases**, package versions, supported distributions, production builds, or compatibility promises. The tags point to evidence snapshots and must not be interpreted as semantic-version releases of `test-project-tbd`.
+
+Evidence stored in the repository tree remains subject to the explicit-redaction naming checks under `issue-evidence/`. Release assets are outside the checked-out file tree and must be reviewed separately before publication.
+
 ## Working With the Repository
 
 Start with [START_HERE.md](START_HERE.md) for the beginner map. The current operational guides are:

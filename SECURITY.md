@@ -1,42 +1,95 @@
 # Security Policy
 
+Status reviewed: **2026-08-16**.
+
 ## Project Status
 
-This is a personal learning and testing repository. It is not a production system, security product, audited codebase, maintained service, or hardened project.
+This is a public personal learning and testing repository. It is not a production system, supported security product, audited codebase, managed service, secret-management system, or hardened deployment.
 
-## Supported Versions
+The package is marked `publish = false` and is not distributed as a supported Rust crate.
 
-No versions of this repository are formally supported.
+## Supported Versions and Tags
 
-| Version | Supported |
+No branch, commit, package version, tag, release, fork, artifact, or file receives formal security support.
+
+| Surface | Current status |
 | --- | --- |
-| Any version, branch, fork, commit, or file | No formal support |
+| Protected `main` | Active development branch; no formal support |
+| Package version `0.1.0` | Learning version; unpublished and unsupported |
+| `codex-issue-22773-assets` | Evidence-asset tag, not a software release |
+| `codex-issue-23192-assets` | Evidence-asset tag, not a software release |
+| Forks and historical commits | Unsupported |
+
+The two GitHub Releases contain public redacted evidence for external Codex issue reports. They do not represent supported software versions, stable builds, or compatibility commitments.
+
+## Current Guardrails
+
+The repository doctor and protected `Repository smoke test` currently enforce or verify:
+
+- required repository, source, policy, documentation, workflow, and automation invariants;
+- Rust formatting, strict all-target/all-feature Clippy, and locked all-target/all-feature tests;
+- forbidden unsafe Rust;
+- one deterministic repository inventory;
+- iterative traversal capped at 20,000 visited entries;
+- rejection of repository symlinks;
+- a 4 MiB limit on non-binary text reads, including required-file reference checks;
+- explicit failures for unreadable directories, entries, metadata, and files;
+- sensitive filenames, root credential stores, key containers, password-manager databases, and live environment files;
+- private-key blocks, AWS access-key shapes, provider token shapes, and scored generic secret assignments;
+- placeholder, environment-reference, redaction, and low-entropy suppression;
+- explicitly redacted names for in-tree evidence artifacts;
+- explicit top-level workflow permissions;
+- rejection of `write-all`, `contents: write`, and `pull_request_target`;
+- disabled checkout credential persistence;
+- full commit-SHA pins for third-party GitHub Actions;
+- SHA-256 digests for Docker actions;
+- protected workflow and Dependabot configuration invariants.
+
+These controls are guardrails only. They are not proof that the repository is secure, vulnerability-free, complete, correctly configured on every platform, or suitable for sensitive use.
+
+## Coverage Boundaries
+
+The repository doctor inspects the current checked-out filesystem tree. It does not automatically inspect:
+
+- Git history or deleted commits;
+- forks or external clones;
+- GitHub Release assets;
+- external services, accounts, or deployment environments;
+- live repository settings that are not represented by checked files;
+- secrets already copied, cached, indexed, downloaded, or exposed elsewhere;
+- every possible credential format, obfuscation, encoding, or vulnerability class.
+
+Release assets require separate review before publication because they are not present in the checked-out repository tree.
 
 ## Security Expectations
 
-Do not treat anything in this repository as secure, reviewed, production-ready, or suitable for sensitive environments.
-
-Before using any content from this repository, you are responsible for independently reviewing, testing, validating, hardening, and securing it.
-
-The repository doctor and GitHub Actions smoke test reject common secret patterns, private-key blocks, sensitive filenames, unsafe Rust code, non-redacted evidence artifact names, broad workflow write permissions, and GitHub Actions that are not pinned to full commit SHAs. These checks are guardrails only; they are not a security audit, scanner warranty, or substitute for manual review.
-
 Do not use this repository with:
 
-- production credentials;
-- private keys, API keys, tokens, passwords, or secrets;
-- personal data or confidential information;
-- customer data;
-- business-critical workflows;
-- regulated, safety-critical, or security-sensitive systems.
+- production credentials, passwords, keys, tokens, or secrets;
+- personal, customer, confidential, regulated, or production data;
+- business-critical, safety-critical, privacy-sensitive, or security-sensitive systems;
+- any environment where failure, incorrect detection, false reassurance, or data exposure could cause harm.
 
-## Reporting Security Issues
+Review, test, validate, and harden anything independently before use.
 
-Because this is a learning repository with no formal support obligation, there is no guaranteed response time, remediation timeline, or maintenance commitment.
+## Reporting a Security Issue
 
-If you choose to report a security issue, do not include secrets, credentials, private data, exploit payloads against third-party systems, or information that could harm others.
+Never include a live secret, private key, credential, personal data, confidential material, or harmful third-party exploit payload in a public issue, pull request, discussion, comment, or screenshot.
 
-If you accidentally expose a secret, token, password, private key, or credential, revoke or rotate it immediately. Deleting a file or commit is not always enough once information has been pushed to a public repository.
+If GitHub presents a private vulnerability-reporting interface for this repository, prefer it for non-public vulnerability details. Otherwise, open a minimal public issue that identifies the affected file or control without publishing sensitive proof, active credentials, or harmful exploitation details.
+
+There is no guaranteed response time, remediation deadline, disclosure process, maintenance commitment, or support obligation.
+
+## Accidental Secret Exposure
+
+If a credential or secret is exposed:
+
+1. Revoke or rotate it immediately.
+2. Review access logs and downstream use where available.
+3. Remove the material from the current branch and related public surfaces.
+4. Assess whether Git history, release assets, caches, forks, downloads, or indexes still contain it.
+5. Do not assume deletion of one file or commit has invalidated the exposed value.
 
 ## No Security Warranty
 
-This repository is provided "as is" and may contain incomplete, outdated, insecure, vulnerable, placeholder, or experimental material. See [DISCLAIMER.md](DISCLAIMER.md) and [LICENSE](LICENSE) for the applicable disclaimer and license terms.
+This repository is provided "as is" and may contain incomplete, outdated, insecure, vulnerable, placeholder, experimental, or intentionally simplified material. See [DISCLAIMER.md](DISCLAIMER.md), [SUPPORT.md](SUPPORT.md), and [LICENSE](LICENSE).
