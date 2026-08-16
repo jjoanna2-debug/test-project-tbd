@@ -263,10 +263,10 @@ fn check_repository_files(root: &Path, files: &[PathBuf], failures: &mut Vec<Str
             failures.push(format!("{relative_path} is a blocked sensitive path"));
         }
 
-        if let Some(file_name) = file_path.file_name().and_then(|name| name.to_str()) {
-            if is_blocked_filename(file_name) {
-                failures.push(format!("{relative_path} is a blocked sensitive filename"));
-            }
+        if let Some(file_name) = file_path.file_name().and_then(|name| name.to_str())
+            && is_blocked_filename(file_name)
+        {
+            failures.push(format!("{relative_path} is a blocked sensitive filename"));
         }
 
         if is_binary_file(file_path) {
