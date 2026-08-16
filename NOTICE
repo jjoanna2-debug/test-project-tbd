@@ -1,4 +1,6 @@
-Staging Lab
+Rust Staging Lab
 Copyright 2026 Jean-Claude Joanna
 
-This repository is a personal learning and staging project for now.
+This repository is a personal Rust-first learning, testing, and staging project.
+
+The tags codex-issue-22773-assets and codex-issue-23192-assets identify public evidence-asset bundles, not software releases.
