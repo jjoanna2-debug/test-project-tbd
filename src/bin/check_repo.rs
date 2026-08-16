@@ -114,6 +114,7 @@ const BINARY_SUFFIXES: &[&str] = &[
     "pptx", "so", "tar", "tiff", "ttf", "wav", "webm", "webp", "woff", "woff2", "xls", "xlsx",
     "zip",
 ];
+const MAX_TEXT_FILE_BYTES: u64 = 4 * 1024 * 1024;
 
 const BLOCKED_FILENAMES: &[&str] = &[
     ".env",
@@ -220,6 +221,20 @@ fn check_repository_files(root: &Path, files: &[PathBuf], failures: &mut Vec<Str
 
         if is_binary_file(file_path) {
             continue;
+        }
+
+        match fs::metadata(file_path) {
+            Ok(metadata) if is_oversized_text_file(metadata.len()) => {
+                failures.push(format!(
+                    "{relative_path} exceeds the 4 MiB text scan limit"
+                ));
+                continue;
+            }
+            Ok(_) => {}
+            Err(error) => {
+                failures.push(format!("{relative_path} metadata could not be read: {error}"));
+                continue;
+            }
         }
 
         match fs::read_to_string(file_path) {
@@ -345,6 +360,10 @@ fn is_binary_file(path: &Path) -> bool {
         .is_some_and(|extension| BINARY_SUFFIXES.contains(&extension.as_str()))
 }
 
+fn is_oversized_text_file(size: u64) -> bool {
+    size > MAX_TEXT_FILE_BYTES
+}
+
 fn is_workflow_file(relative_path: &str, path: &Path) -> bool {
     relative_path.starts_with(".github/workflows/")
         && matches!(
@@ -365,7 +384,10 @@ fn relative_path(root: &Path, path: &Path) -> String {
 
 #[cfg(test)]
 mod tests {
-    use super::{is_binary_file, is_blocked_filename, is_blocked_sensitive_path, should_skip_dir};
+    use super::{
+        is_binary_file, is_blocked_filename, is_blocked_sensitive_path, is_oversized_text_file,
+        should_skip_dir, MAX_TEXT_FILE_BYTES,
+    };
     use std::path::Path;
 
     #[test]
@@ -391,6 +413,12 @@ mod tests {
         assert!(is_binary_file(Path::new("archive.ZIP")));
         assert!(is_binary_file(Path::new("fixture.DOCX")));
         assert!(!is_binary_file(Path::new("README.md")));
+    }
+
+    #[test]
+    fn bounds_text_file_scans() {
+        assert!(!is_oversized_text_file(MAX_TEXT_FILE_BYTES));
+        assert!(is_oversized_text_file(MAX_TEXT_FILE_BYTES + 1));
     }
 
     #[test]
