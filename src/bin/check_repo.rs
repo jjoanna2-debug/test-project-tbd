@@ -65,6 +65,26 @@ const SOURCE_REFERENCES: &[(&str, &[&str])] = &[
     ),
     ("Cargo.lock", &["name = \"test-project-tbd\""]),
     (
+        ".github/workflows/basic-checks.yml",
+        &[
+            "merge_group:",
+            "workflow_dispatch:",
+            "cancel-in-progress: true",
+            "cargo clippy --locked --all-targets --all-features -- -D warnings",
+            "cargo test --locked --all-targets --all-features",
+            "cargo run --quiet --locked --bin check_repo",
+        ],
+    ),
+    (
+        ".github/dependabot.yml",
+        &[
+            "routine-actions:",
+            "routine-rust:",
+            "applies-to: \"version-updates\"",
+            "timezone: \"Europe/Lisbon\"",
+        ],
+    ),
+    (
         "src/main.rs",
         &["#![forbid(unsafe_code)]", "GitHub staging lab ready."],
     ),
