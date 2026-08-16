@@ -338,9 +338,7 @@ fn is_colon_assignment_key(key_part: &str) -> bool {
     if let Some(rest) = candidate.strip_prefix("- ") {
         candidate = rest.trim_start();
     }
-    candidate = candidate
-        .trim_start_matches(|character| matches!(character, '{' | '[' | ','))
-        .trim();
+    candidate = candidate.trim_start_matches(['{', '[', ',']).trim();
 
     let first = candidate.as_bytes().first().copied();
     let last = candidate.as_bytes().last().copied();
