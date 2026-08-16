@@ -51,6 +51,8 @@ This project follows a simple chronological changelog. It is a learning reposito
   credential stores and password-manager databases.
 - Made workflow permission checks context-aware and required Docker actions to
   use immutable SHA-256 digests.
+- Grouped routine GitHub Actions and Cargo Dependabot updates by ecosystem to
+  reduce maintenance PR noise without disabling update coverage.
 - Reconciled the roadmap with completed issue and pull request practice.
 - Promoted the Rust-native repository doctor in the README with current checks and sample passing output.
 
