@@ -39,7 +39,7 @@ This document explains the current repository layout.
 | Path | Purpose |
 | --- | --- |
 | `src/main.rs` | Small Rust starter program. |
-| `src/bin/check_repo.rs` | Repository inventory, required-file policy, sensitive-path checks, and classifier orchestration. |
+| `src/bin/check_repo.rs` | Repository inventory, bounded traversal and text reads, required-file policy, sensitive-path checks, and classifier orchestration. |
 | `src/bin/check_repo/secrets.rs` | Provider signatures and scored secret-assignment classification with precision/recall regression tests. |
 | `src/bin/check_repo/workflows.rs` | Context-aware GitHub Actions permission and immutable-reference checks. |
 
