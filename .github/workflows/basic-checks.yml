@@ -55,9 +55,11 @@ jobs:
                   .trim_start_matches(|character| matches!(character, '{' | '[' | ','))
                   .trim();
 
-              let first = candidate.chars().next();
-              let last = candidate.chars().next_back();
-              if matches!(first, Some('"' | '\'')) || matches!(last, Some('"' | '\'')) {
+              let first = candidate.as_bytes().first().copied();
+              let last = candidate.as_bytes().last().copied();
+              let first_is_quote = first == Some(b'"') || first == Some(39);
+              let last_is_quote = last == Some(b'"') || last == Some(39);
+              if first_is_quote || last_is_quote {
                   if first != last || candidate.len() < 2 {
                       return false;
                   }
