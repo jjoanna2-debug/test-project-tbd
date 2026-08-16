@@ -1,44 +1,57 @@
 # Code of Conduct
 
+Status reviewed: **2026-08-16**.
+
 ## Purpose
 
-This repository is a public learning and testing project. The goal is to keep participation simple, respectful, relevant, and safe enough for beginners to learn.
+This is a public learning and testing repository. Participation should remain respectful, relevant, evidence-conscious, and safe enough for beginners and reviewers to work without navigating harassment, data exposure, or deliberate disruption.
+
+## Scope
+
+This Code of Conduct applies to repository issues, pull requests, reviews, discussions, comments, release notes, evidence assets, and other interactions connected to this project.
 
 ## Expected Behavior
 
 Participants are expected to:
 
-- communicate respectfully and constructively;
-- keep discussions relevant to this repository;
-- avoid harassment, abuse, threats, discrimination, or personal attacks;
-- avoid posting secrets, credentials, private information, confidential material, or personal data;
-- respect the repository's learning-focused purpose and public-use boundaries.
+- communicate respectfully, directly, and constructively;
+- keep contributions relevant to the repository;
+- criticize code, decisions, evidence, and proposals rather than attacking people;
+- disclose uncertainty and limitations honestly;
+- protect secrets, credentials, personal data, confidential information, and unredacted evidence;
+- respect the repository's learning-focused purpose and no-support boundaries;
+- follow the contribution, security, and evidence-handling rules.
 
 ## Unacceptable Behavior
 
 Unacceptable behavior includes, without limitation:
 
-- harassment, intimidation, abuse, or threats;
-- discriminatory, hateful, sexually explicit, or violent content;
-- spam, trolling, impersonation, or disruptive conduct;
-- publishing private information without permission;
-- submitting malware, exploit payloads, secrets, credentials, or harmful material;
-- using issues, pull requests, discussions, or comments for unrelated promotion or support demands.
+- harassment, intimidation, abuse, threats, discrimination, or personal attacks;
+- hateful, sexually explicit, violent, or targeted degrading content;
+- spam, trolling, impersonation, manipulation, or deliberate disruption;
+- publishing another person's private information without permission;
+- submitting malware, harmful exploit payloads, credentials, secrets, or deliberately unsafe material;
+- uploading unredacted screenshots, logs, exports, recordings, or release assets;
+- using issues, pull requests, discussions, comments, or release pages for unrelated promotion or support demands;
+- misrepresenting evidence bundles as supported software releases;
+- repeatedly ignoring repository safety or scope instructions after correction.
 
 ## Enforcement
 
-The repository owner may moderate, edit, hide, delete, lock, or close issues, pull requests, comments, discussions, or other contributions at their discretion.
+The repository owner may edit, hide, delete, lock, close, revert, or reject issues, pull requests, comments, discussions, releases, assets, or other contributions at their discretion.
 
-The repository owner may also block users, report abuse, or take other reasonable steps to protect the repository and its participants.
+The repository owner may also block users, report abuse, remove access, or take other reasonable steps to protect the repository, its participants, and affected third parties.
 
-## No Support Obligation
+Enforcement decisions may consider severity, repetition, intent, impact, safety, and the repository's limited maintenance capacity.
 
-This Code of Conduct does not create any duty to provide support, maintenance, review, response, mediation, investigation, or enforcement. For support boundaries, see [SUPPORT.md](SUPPORT.md).
+## No Support or Investigation Obligation
+
+This Code of Conduct does not create a duty to provide support, mediation, investigation, response, appeal, maintenance, or enforcement on any timeline.
 
 ## Related Documents
 
-- [LICENSE](LICENSE)
-- [DISCLAIMER.md](DISCLAIMER.md)
+- [CONTRIBUTING.md](CONTRIBUTING.md)
 - [SECURITY.md](SECURITY.md)
 - [SUPPORT.md](SUPPORT.md)
-- [CONTRIBUTING.md](CONTRIBUTING.md)
+- [DISCLAIMER.md](DISCLAIMER.md)
+- [LICENSE](LICENSE)
