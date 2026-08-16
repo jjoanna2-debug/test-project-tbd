@@ -72,6 +72,7 @@ pub(super) fn multiline_positive_probes() -> Vec<String> {
     ]
 }
 
+#[allow(clippy::too_many_lines)]
 fn add_positive_assignments(cases: &mut Vec<CalibrationCase>) {
     const QUOTED_KEYS: &[(&str, &str)] = &[
         ("shell API key", "SERVICE_API_KEY"),
@@ -212,6 +213,7 @@ fn add_positive_provider_tokens(cases: &mut Vec<CalibrationCase>) {
     );
 }
 
+#[allow(clippy::too_many_lines)]
 fn add_negative_placeholders(cases: &mut Vec<CalibrationCase>) {
     const STATIC_CASES: &[(&str, &str, &str)] = &[
         ("named API placeholder", "api_key", "your_api_key_here"),

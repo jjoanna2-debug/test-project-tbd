@@ -442,7 +442,7 @@ fn extract_yaml_block_value(
     start_line_index: usize,
     marker: &str,
 ) -> Option<(String, usize)> {
-    let base_indent = indentation(*lines.get(start_line_index)?);
+    let base_indent = indentation(lines.get(start_line_index)?);
     let folded = marker.starts_with('>');
     let mut value = String::new();
     let mut line_index = start_line_index + 1;
@@ -496,9 +496,7 @@ fn strip_unquoted_comment(value: &str) -> &str {
 }
 
 fn indentation(line: &str) -> usize {
-    line.bytes()
-        .take_while(|byte| byte.is_ascii_whitespace())
-        .count()
+    line.bytes().take_while(u8::is_ascii_whitespace).count()
 }
 
 struct SecretValueFeatures {
@@ -643,7 +641,7 @@ fn is_repeated_pattern_bytes(value: &[u8]) -> bool {
 fn has_monotonic_sequence(value: &str, required_run: usize) -> bool {
     let compact = value
         .bytes()
-        .filter(|byte| byte.is_ascii_alphanumeric())
+        .filter(u8::is_ascii_alphanumeric)
         .collect::<Vec<_>>();
     has_monotonic_sequence_bytes(&compact, required_run)
 }
