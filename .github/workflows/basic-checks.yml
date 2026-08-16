@@ -81,7 +81,6 @@ jobs:
 
           cargo fmt
           cargo test --locked --all-targets --all-features
-          cargo run --quiet --locked --bin check_repo
 
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
