@@ -49,6 +49,7 @@ pub(crate) fn check_workflow_content(
             failures.push(format!(
                 "{relative_path}:{line_number} must not use YAML anchors, aliases, or merge keys"
             ));
+            continue;
         }
 
         check_yaml_policy(
@@ -515,7 +516,7 @@ mod tests {
 
     #[test]
     fn rejects_every_write_permission_scope() {
-        let workflow = r#"
+        let workflow = r"
 on: push
 permissions:
   contents: read
@@ -523,7 +524,7 @@ permissions:
 jobs:
   smoke:
     permissions: { contents: read, issues: write }
-"#;
+";
         let mut failures = Vec::new();
         check_workflow_content("permissions.yml", workflow, &mut failures);
         assert_eq!(failures.len(), 2, "{failures:?}");
@@ -531,14 +532,14 @@ jobs:
 
     #[test]
     fn rejects_non_allowlisted_triggers() {
-        let workflow = r#"
+        let workflow = r"
 on:
   pull_request_target:
   workflow_run:
   issue_comment:
 permissions:
   contents: read
-"#;
+";
         let mut failures = Vec::new();
         check_workflow_content("triggers.yml", workflow, &mut failures);
         assert_eq!(failures.len(), 3, "{failures:?}");
@@ -546,7 +547,7 @@ permissions:
 
     #[test]
     fn rejects_yaml_indirection() {
-        let workflow = r#"
+        let workflow = r"
 on: push
 permissions: &read_permissions
   contents: read
@@ -555,7 +556,7 @@ jobs:
     permissions: *read_permissions
     strategy:
       <<: *defaults
-"#;
+";
         let mut failures = Vec::new();
         check_workflow_content("anchors.yml", workflow, &mut failures);
         assert_eq!(failures.len(), 4, "{failures:?}");
