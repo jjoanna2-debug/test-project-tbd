@@ -211,6 +211,18 @@ fn check_source_references(root: &Path, missing: &mut Vec<String>) {
             continue;
         }
 
+        match fs::metadata(&source_path) {
+            Ok(metadata) if is_oversized_text_file(metadata.len()) => {
+                missing.push(format!("{path} exceeds the 4 MiB text scan limit"));
+                continue;
+            }
+            Ok(_) => {}
+            Err(error) => {
+                missing.push(format!("{path} metadata could not be read: {error}"));
+                continue;
+            }
+        }
+
         let Ok(content) = fs::read_to_string(&source_path) else {
             missing.push(format!("{path} must be readable as UTF-8"));
             continue;
