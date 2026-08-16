@@ -38,7 +38,6 @@ jobs:
 
           path = Path("src/bin/check_repo/secrets.rs")
           content = path.read_text()
-
           old = '''    line.find(':')
           }
 
@@ -75,45 +74,12 @@ jobs:
           fn secret_key_score'''
           if old not in content:
               raise SystemExit("colon assignment marker not found")
-          content = content.replace(old, new, 1)
-
-          import_old = '''    use super::{
-              SECRET_ASSIGNMENT_THRESHOLD, contains_aws_access_key, contains_prefixed_token, corpus,
-              secret_assignment_score, secret_signal_score,
-          };'''
-          import_new = '''    use super::{
-              SECRET_ASSIGNMENT_THRESHOLD, contains_aws_access_key, contains_prefixed_token, corpus,
-              is_colon_assignment_key, secret_assignment_score, secret_signal_score,
-          };'''
-          if import_old not in content:
-              raise SystemExit("test import marker not found")
-          content = content.replace(import_old, import_new, 1)
-
-          test_marker = '''    #[test]
-              fn detects_current_provider_token_shapes() {'''
-          test_block = '''    #[test]
-              fn distinguishes_configuration_keys_from_code_and_markdown() {
-                  assert!(is_colon_assignment_key("client_secret"));
-                  assert!(is_colon_assignment_key("{\\\"client_secret\\\""));
-                  assert!(!is_colon_assignment_key("fn contains_prefixed_token(content"));
-                  assert!(!is_colon_assignment_key("`persist-credentials"));
-                  assert!(!is_colon_assignment_key("\\\"client_secret"));
-              }
-
-              #[test]
-              fn detects_current_provider_token_shapes() {'''
-          if test_marker not in content:
-              raise SystemExit("test insertion marker not found")
-          path.write_text(content.replace(test_marker, test_block, 1))
+          path.write_text(content.replace(old, new, 1))
           PY
 
           cargo fmt
           cargo test --locked --all-targets --all-features
           cargo run --quiet --locked --bin check_repo
-
-          if git diff --quiet; then
-            exit 0
-          fi
 
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
