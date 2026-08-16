@@ -10,7 +10,11 @@ const PREFIXED_SECRET_RULES: &[(&str, &[&str], usize)] = &[
     ("GitHub fine-grained token", &["github_pat_"], 20),
     ("GitLab personal access token", &["glpat-"], 20),
     ("OpenAI API key", &["sk-proj-", "sk-svcacct-"], 20),
-    ("Slack token", &["xoxb-", "xoxp-", "xoxa-", "xoxr-", "xoxs-"], 20),
+    (
+        "Slack token",
+        &["xoxb-", "xoxp-", "xoxa-", "xoxr-", "xoxs-"],
+        20,
+    ),
     ("Stripe live secret key", &["sk_live_", "rk_live_"], 16),
     ("npm access token", &["npm_"], 30),
     ("Google API key", &["AIza"], 30),
@@ -80,11 +84,7 @@ const PRIVATE_KEY_PREFIX: &str = "-----BEGIN ";
 const PRIVATE_KEY_WORDS: [&str; 2] = ["PRIVATE ", "KEY-----"];
 const SECRET_ASSIGNMENT_THRESHOLD: u8 = 65;
 
-pub(crate) fn check_secret_content(
-    relative_path: &str,
-    content: &str,
-    failures: &mut Vec<String>,
-) {
+pub(crate) fn check_secret_content(relative_path: &str, content: &str, failures: &mut Vec<String>) {
     let private_key_suffix = PRIVATE_KEY_WORDS.concat();
     if content.contains(PRIVATE_KEY_PREFIX) && content.contains(&private_key_suffix) {
         failures.push(format!(
@@ -203,7 +203,9 @@ fn find_assignment_separator(line: &str) -> Option<usize> {
             continue;
         }
 
-        let previous = index.checked_sub(1).and_then(|position| bytes.get(position));
+        let previous = index
+            .checked_sub(1)
+            .and_then(|position| bytes.get(position));
         let next = bytes.get(index + 1);
         if previous.is_some_and(|value| matches!(*value, b'=' | b'!' | b'<' | b'>'))
             || next.is_some_and(|value| matches!(*value, b'=' | b'>'))
@@ -399,10 +401,19 @@ mod tests {
             (format!("password: {generated} # deployment value"), true),
             ("API_KEY=your_api_key_here".to_owned(), false),
             ("client_secret = \"${CLIENT_SECRET}\"".to_owned(), false),
-            ("token_count = \"A7z9_Qp2A7z9_Qp2A7z9_Qp2\"".to_owned(), false),
+            (
+                "token_count = \"A7z9_Qp2A7z9_Qp2A7z9_Qp2\"".to_owned(),
+                false,
+            ),
             ("secretary = \"A7z9_Qp2A7z9_Qp2A7z9_Qp2\"".to_owned(), false),
-            ("password = \"redacted-redacted-redacted\"".to_owned(), false),
-            ("api_key = \"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\"".to_owned(), false),
+            (
+                "password = \"redacted-redacted-redacted\"".to_owned(),
+                false,
+            ),
+            (
+                "api_key = \"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\"".to_owned(),
+                false,
+            ),
         ];
         let scored = corpus
             .iter()
@@ -413,7 +424,10 @@ mod tests {
     }
 
     fn average_precision(scored_labels: &[(u8, bool)]) -> f64 {
-        let positive_count = scored_labels.iter().filter(|(_, positive)| *positive).count();
+        let positive_count = scored_labels
+            .iter()
+            .filter(|(_, positive)| *positive)
+            .count();
         assert!(positive_count > 0);
 
         let mut thresholds = scored_labels
