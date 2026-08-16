@@ -1,31 +1,52 @@
-# Sponsors
+# Funding and Sponsorship Status
 
-## Funding Status Notice
+Status reviewed: **2026-08-16**.
 
-This repository does not currently expose active GitHub funding links.
+## Current Funding Status
 
-A placeholder `.github/FUNDING.yml` exists for future funding metadata only. Do not treat sponsorship as available unless GitHub shows an active Sponsor button.
+No active GitHub funding provider is configured for this repository. The placeholder `.github/FUNDING.yml` does not currently expose a Sponsor button or active funding link.
 
-At this stage, this repository does not offer sponsorship tiers, paid support, consulting, service-level commitments, private maintenance, guaranteed responses, feature commitments, commercial deliverables, or any other benefit in exchange for sponsorship or financial support.
+Do not treat sponsorship, paid support, donations, or commercial services as available unless the repository is explicitly updated and GitHub displays an active provider.
 
-Any sponsorship, donation, tip, funding, or financial contribution connected to this repository is voluntary and does not create any contract, partnership, employment relationship, agency relationship, fiduciary duty, support obligation, maintenance obligation, warranty, guarantee, priority entitlement, or right to influence the repository.
+## No Sponsorship Benefits
 
-## No Purchase, Service, or Consideration
+This repository currently offers no:
 
-Sponsorship or financial support is not required to access, use, copy, fork, modify, distribute, or contribute to this repository under the applicable license terms.
+- sponsorship tiers;
+- paid support or consulting;
+- service-level commitments;
+- private maintenance;
+- guaranteed responses or review;
+- feature commitments or roadmap influence;
+- security review or production certification;
+- commercial deliverables;
+- access, priority, warranty, or exclusivity benefits.
 
-Financial support does not purchase software, services, advice, support, access, priority, fixes, updates, features, security review, consulting, or any commercial deliverable.
+Any sponsorship, donation, tip, funding, or financial contribution associated with this repository is voluntary and does not create a contract, purchase, partnership, employment relationship, agency relationship, fiduciary duty, support obligation, maintenance obligation, warranty, guarantee, priority entitlement, or right to influence the project.
+
+## No Purchase or Service
+
+Financial support is not required to access, use, copy, fork, modify, distribute, or contribute to the repository under the applicable license terms.
+
+Financial support does not purchase software, services, advice, support, access, fixes, updates, features, security work, consulting, compatibility, or any other deliverable.
 
 ## Repository Terms Still Apply
 
-All repository use remains subject to the [Apache License 2.0](LICENSE), [DISCLAIMER.md](DISCLAIMER.md), [SECURITY.md](SECURITY.md), [SUPPORT.md](SUPPORT.md), [CONTRIBUTING.md](CONTRIBUTING.md), and any other applicable repository notices.
+All repository use remains subject to:
 
-This funding notice does not replace or modify the license, disclaimer, security policy, support policy, or contribution rules.
+- [LICENSE](LICENSE);
+- [DISCLAIMER.md](DISCLAIMER.md);
+- [SECURITY.md](SECURITY.md);
+- [SUPPORT.md](SUPPORT.md);
+- [CONTRIBUTING.md](CONTRIBUTING.md);
+- [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md).
+
+This funding status does not replace or modify those documents.
 
 ## Sensitive Information
 
-Do not include secrets, credentials, private keys, API tokens, passwords, personal data, customer data, confidential information, or regulated information in sponsorship messages, public comments, issues, pull requests, discussions, or related communications.
+Do not include secrets, credentials, private keys, access tokens, passwords, personal data, customer data, confidential information, regulated information, or unredacted evidence in funding messages, comments, issues, pull requests, discussions, or related communications.
 
 ## Future Changes
 
-This funding notice may be updated, removed, or replaced at any time as the repository evolves.
+Funding may be enabled, changed, or removed later. Any future provider, benefit, or obligation must be stated explicitly in the repository at that time. Silence, a placeholder file, or an old reference does not create a current offer. Remarkably, contracts still require more than vibes.
