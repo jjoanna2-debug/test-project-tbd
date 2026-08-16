@@ -1,17 +1,15 @@
-# GitHub Sponsors funding configuration.
+# Funding configuration status reviewed 2026-08-16.
 #
-# This file enables GitHub's Sponsor button only when valid funding
-# accounts are configured and available for this repository.
+# No active funding provider is configured for this repository.
+# This placeholder file does not expose a Sponsor button, sponsorship tier,
+# paid support, consulting, maintenance, priority, service-level commitment,
+# feature entitlement, warranty, or commercial offer.
 #
-# Inactive placeholder:
-# - No sponsorship tiers, paid support, consulting, service-level commitments,
-#   or guaranteed benefits are currently offered.
-# - See SPONSORS.md for the funding status notice.
+# See SPONSORS.md for the current funding and sponsorship boundaries.
+# Configure a provider only after the account is active and the repository
+# documentation has been updated in the same pull request.
 
-# No active funding providers are configured right now.
-# Add `github: [jjoanna2-debug]` only after GitHub Sponsors is active.
-
-# Add external funding providers only when ready.
+# github: [jjoanna2-debug]
 # patreon: username
 # open_collective: username
 # ko_fi: username
