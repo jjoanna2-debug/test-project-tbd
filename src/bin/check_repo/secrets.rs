@@ -149,7 +149,6 @@ pub(crate) fn check_secret_content(relative_path: &str, content: &str, failures:
 }
 
 #[cfg(test)]
-#[cfg(test)]
 fn secret_signal_score(content: &str) -> u8 {
     if PREFIXED_SECRET_RULES
         .iter()
@@ -185,6 +184,8 @@ fn is_plausible_provider_token(token: &str, tail: &str, minimum_tail_len: usize)
             .bytes()
             .all(|byte| byte.is_ascii_alphanumeric() || matches!(byte, b'_' | b'-' | b'.'))
         && distinct_ascii_count(tail) >= 8
+        && !is_repeated_pattern(tail)
+        && !has_monotonic_sequence(tail, 8)
         && !is_placeholder_value(token)
 }
 
@@ -239,7 +240,6 @@ fn highest_secret_assignment_score(content: &str) -> Option<(usize, u8)> {
     highest.filter(|(_, score)| *score >= SECRET_ASSIGNMENT_THRESHOLD)
 }
 
-#[cfg(test)]
 #[cfg(test)]
 fn secret_assignment_score(content: &str) -> u8 {
     highest_secret_assignment_score(content).map_or(0, |(_, score)| score)
