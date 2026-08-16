@@ -181,7 +181,7 @@ mod tests {
 
     #[test]
     fn parses_workflow_permissions_in_context() {
-        let safe = r#"
+        let safe = r"
 permissions:
   contents: read
 jobs:
@@ -191,7 +191,7 @@ jobs:
         with:
           contents: write
 # permissions: write-all
-"#;
+";
         let unsafe_workflow = r#"
 permissions: "write-all"
 jobs:
