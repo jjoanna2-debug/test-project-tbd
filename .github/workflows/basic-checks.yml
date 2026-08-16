@@ -3,18 +3,29 @@ name: Basic Checks
 on:
   push:
     branches:
-      - codex/complete-classifier-calibration
+      - main
+  pull_request:
+    branches:
+      - main
+  merge_group:
+    types:
+      - checks_requested
+  workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
-  group: calibration-provider-fix-${{ github.ref }}
+  group: basic-checks-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
 env:
+  CARGO_INCREMENTAL: "0"
   CARGO_TERM_COLOR: always
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
+  RUST_BACKTRACE: "1"
+  RUSTFLAGS: -D warnings
+  RUSTDOCFLAGS: -D warnings
 
 defaults:
   run:
@@ -27,47 +38,26 @@ jobs:
     timeout-minutes: 10
 
     steps:
-      - name: Check out working branch
+      - name: Check out repository
+        # Pinned to actions/checkout v7.0.1.
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
-          ref: ${{ github.ref_name }}
-          persist-credentials: true
+          persist-credentials: false
 
-      - name: Reject synthetic provider-token patterns
-        env:
-          BRANCH_NAME: ${{ github.ref_name }}
-        run: |
-          python3 - <<'PY'
-          from pathlib import Path
+      - name: Check formatting
+        run: cargo fmt --check
 
-          path = Path("src/bin/check_repo/secrets.rs")
-          content = path.read_text()
-          old = "        && distinct_ascii_count(tail) >= 8\n        && !is_placeholder_value(token)"
-          new = (
-              "        && distinct_ascii_count(tail) >= 8\n"
-              "        && !is_repeated_pattern(tail)\n"
-              "        && !has_monotonic_sequence(tail, 8)\n"
-              "        && !is_placeholder_value(token)"
-          )
-          if old not in content:
-              raise SystemExit("provider plausibility marker not found")
-          content = content.replace(old, new, 1)
-          content = content.replace(
-              "#[cfg(test)]\n#[cfg(test)]\nfn secret_signal_score",
-              "#[cfg(test)]\nfn secret_signal_score",
-              1,
-          )
-          content = content.replace(
-              "#[cfg(test)]\n#[cfg(test)]\nfn secret_assignment_score",
-              "#[cfg(test)]\nfn secret_assignment_score",
-              1,
-          )
-          path.write_text(content)
-          PY
+      - name: Check all targets
+        run: cargo check --locked --all-targets --all-features
 
-          cargo fmt
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add src/bin/check_repo/secrets.rs
-          git commit -m "fix: reject synthetic provider token patterns"
-          git push origin "HEAD:${BRANCH_NAME}"
+      - name: Lint all targets
+        run: cargo clippy --locked --all-targets --all-features -- -D warnings
+
+      - name: Test all targets
+        run: cargo test --locked --all-targets --all-features
+
+      - name: Check documentation build
+        run: cargo doc --locked --no-deps --document-private-items
+
+      - name: Run repository doctor
+        run: cargo run --quiet --locked --bin check_repo
