@@ -186,7 +186,28 @@ fn is_plausible_provider_token(token: &str, tail: &str, minimum_tail_len: usize)
         && distinct_ascii_count(tail) >= 8
         && !is_repeated_pattern(tail)
         && !has_monotonic_sequence(tail, 8)
+        && !is_provider_placeholder(tail)
         && !is_placeholder_value(token)
+}
+
+fn is_provider_placeholder(tail: &str) -> bool {
+    const PLACEHOLDER_WORDS: &[&str] = &[
+        "changeme",
+        "dummy",
+        "example",
+        "fake",
+        "placeholder",
+        "redacted",
+        "replace",
+        "sample",
+        "test",
+        "your",
+    ];
+
+    tail.split(['_', '-', '.']).any(|segment| {
+        let normalized = segment.to_ascii_lowercase();
+        PLACEHOLDER_WORDS.contains(&normalized.as_str())
+    })
 }
 
 fn contains_aws_access_key(content: &str) -> bool {
