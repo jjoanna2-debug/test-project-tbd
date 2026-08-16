@@ -24,7 +24,6 @@ struct CheckoutStep {
     line_number: usize,
     step_indent: usize,
     credentials_disabled: bool,
-    unsafe_checkout_enabled: bool,
 }
 
 pub(crate) fn check_workflow_content(
@@ -43,19 +42,8 @@ pub(crate) fn check_workflow_content(
 
         let line_number = line_number + 1;
         let indent = line.len() - line.trim_start().len();
-        update_block_state(
-            relative_path,
-            indent,
-            &mut state,
-            failures,
-        );
-        start_step_if_needed(
-            relative_path,
-            trimmed_line,
-            indent,
-            &mut state,
-            failures,
-        );
+        update_block_state(relative_path, indent, &mut state, failures);
+        start_step_if_needed(relative_path, trimmed_line, indent, &mut state, failures);
 
         if contains_yaml_indirection(trimmed_line) {
             failures.push(format!(
@@ -303,15 +291,11 @@ fn check_permissions(
 }
 
 fn inline_write_permission_scope(value: &str) -> Option<&str> {
-    let inner = value
-        .trim()
-        .strip_prefix('{')?
-        .strip_suffix('}')?;
+    let inner = value.trim().strip_prefix('{')?.strip_suffix('}')?;
 
     inner.split(',').find_map(|entry| {
-        yaml_key_value(entry).and_then(|(key, value)| {
-            (trim_yaml_scalar(value) == "write").then_some(key)
-        })
+        yaml_key_value(entry)
+            .and_then(|(key, value)| (trim_yaml_scalar(value) == "write").then_some(key))
     })
 }
 
@@ -340,7 +324,6 @@ fn check_checkout_option(
             ));
         }
     } else if key == "allow-unsafe-pr-checkout" && scalar_value == "true" {
-        checkout.unsafe_checkout_enabled = true;
         failures.push(format!(
             "{relative_path}:{line_number} actions/checkout must not enable allow-unsafe-pr-checkout"
         ));
@@ -376,7 +359,6 @@ fn check_action_reference(
             line_number,
             step_indent,
             credentials_disabled: false,
-            unsafe_checkout_enabled: false,
         });
     }
 
@@ -420,9 +402,6 @@ fn finish_checkout_step(
             checkout.line_number
         ));
     }
-    if checkout.unsafe_checkout_enabled {
-        return;
-    }
 }
 
 fn contains_yaml_indirection(line: &str) -> bool {
@@ -439,14 +418,18 @@ fn contains_yaml_indirection(line: &str) -> bool {
     }
 
     let raw_value = value.trim_start();
-    if raw_value.starts_with(['\'', '"']) {
+    if matches!(raw_value.as_bytes().first(), Some(b'\'' | b'"')) {
         return false;
     }
 
-    raw_value
-        .trim_start_matches(['[', '{', ','])
-        .trim_start()
-        .starts_with(['*', '&'])
+    matches!(
+        raw_value
+            .trim_start_matches(['[', '{', ','])
+            .trim_start()
+            .as_bytes()
+            .first(),
+        Some(b'*' | b'&')
+    )
 }
 
 fn strip_yaml_comment(line: &str) -> &str {
@@ -575,7 +558,7 @@ jobs:
 "#;
         let mut failures = Vec::new();
         check_workflow_content("anchors.yml", workflow, &mut failures);
-        assert_eq!(failures.len(), 3, "{failures:?}");
+        assert_eq!(failures.len(), 4, "{failures:?}");
     }
 
     #[test]
