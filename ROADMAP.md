@@ -2,13 +2,13 @@
 
 Status reviewed: **2026-08-16**.
 
-This roadmap tracks the repository as it grows from a clean practice project into a small Rust-first staging lab. Completed phases describe the current baseline. Future phases are optional until a concrete use case justifies them.
+This roadmap records the repository's completed baseline and reserves future work for concrete use cases. Completed phases describe implemented, tested behavior. Optional phases are not commitments or unfinished obligations.
 
 ## Phase 1 — Repository Foundations
 
 Status: **complete**
 
-- Maintain a clear current README and beginner map.
+- Maintain a current README and beginner map.
 - Keep licensing, legal notices, disclaimer, security, support, contribution, conduct, sponsorship, and funding documents aligned.
 - Use structured issue forms and a pull request template.
 - Keep editing, Git, and Markdown configuration explicit.
@@ -18,9 +18,9 @@ Status: **complete**
 Status: **complete**
 
 - Provide a minimal Rust starter package.
-- Pin the minimum supported Rust version in `Cargo.toml`.
+- Use Edition 2024 with an exact Rust `1.97.1` toolchain.
 - Keep the package dependency-free and non-publishable.
-- Forbid unsafe Rust and enforce strict Clippy policy.
+- Forbid unsafe Rust and deny debug macros, `todo!`, and `unimplemented!` paths.
 - Preserve a locked dependency state for local and CI validation.
 
 ## Phase 3 — Protected GitHub Workflow
@@ -33,6 +33,8 @@ Status: **complete**
 - Cancel superseded runs for the same pull request or ref.
 - Pin third-party Actions to immutable commit SHAs.
 - Disable persisted checkout credentials and keep workflow permissions read-only.
+- Treat compiler, Clippy, and rustdoc warnings as failures.
+- Validate formatting, all targets and features, tests, documentation, and repository policy.
 
 ## Phase 4 — Repository Doctor
 
@@ -49,30 +51,28 @@ Status: **complete**
 
 ## Phase 5 — Classifier Calibration
 
-Status: **in progress**
+Status: **complete**
 
-Current baseline:
+- Maintain a dedicated labeled calibration corpus rather than embedding a handful of examples beside the classifier.
+- Cover realistic secret assignments, provider-token shapes, hard negatives, placeholders, misleading key names, documentation examples, comments, escaped strings, multiline quoted values, and YAML literal and folded blocks.
+- Construct provider-shaped probes at runtime so the repository does not store credential-like literals.
+- Parse quoted, unquoted, multiline, escaped, literal-block, and folded-block assignments within explicit line and byte limits.
+- Cover current GitHub, GitLab, OpenAI, Slack, Stripe, npm, Google, SendGrid, AWS access-key, and private-key signals.
+- Reject repeated, sequential, low-diversity, placeholder, example-host, environment-reference, and prose fixtures before they can inflate confidence.
+- Restrict colon-based assignment parsing to valid configuration keys so Rust type annotations, Markdown code, and quoted test literals do not masquerade as credentials.
+- Measure average precision, precision, recall, and F1 at the active score threshold.
+- Require at least `0.98` average precision and `0.95` precision, recall, and F1 on the maintained internal corpus.
+- Preserve one highest-scoring generic assignment finding per file to control duplicate noise.
 
-- Provider-specific signatures cover GitHub, GitLab, OpenAI, Slack, Stripe, npm, Google, SendGrid, and AWS access-key shapes.
-- Generic secret assignments are scored from key semantics and value characteristics.
-- Placeholder, redaction, environment-reference, and low-entropy suppression reduce obvious false positives.
-- A labeled internal corpus enforces average precision of at least `0.95`.
-
-Next useful work:
-
-- Expand the labeled corpus with more realistic positive and hard-negative cases.
-- Measure precision and recall at the active score threshold in addition to average precision.
-- Add cases for multiline configuration, escaped values, adjacent comments, and common documentation examples.
-- Calibrate provider signatures against false-positive fixtures without weakening exact token-shape detection.
-- Keep finding output concise by preserving per-file deduplication.
+These metrics protect regression behavior on the repository's maintained corpus. They are not claims about an external production dataset.
 
 ## Phase 6 — Useful CLI Direction
 
 Status: **optional**
 
-Proceed only when a real use case exists:
+Proceed only when a real consumer exists:
 
-- expose structured output suitable for CI annotations or machine consumption;
+- expose structured findings suitable for CI annotations or machine consumption;
 - separate reusable library code from binary entry points if a second consumer appears;
 - benchmark large-but-valid repositories within the existing resource ceilings;
 - add configuration only when fixed policy is no longer sufficient;
@@ -91,7 +91,7 @@ The repository is not currently pursuing:
 
 ## Review Rule
 
-Update this roadmap when a phase changes status, an implemented capability changes the current baseline, or a future item becomes obsolete. Do not leave completed work labeled “in progress,” which is how roadmaps become fiction with headings.
+Update this roadmap when an implemented capability changes the baseline or an optional item acquires a concrete consumer. Do not leave completed work labeled “in progress,” which is how roadmaps become fiction with headings.
 
 ## Boundaries
 
