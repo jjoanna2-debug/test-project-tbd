@@ -54,6 +54,8 @@ The doctor verifies that:
 - expected Rust safety and CI-policy references remain in place;
 - issue evidence artifacts are explicitly marked as redacted;
 - repository symlinks cannot silently escape the scan boundary;
+- traversal is iterative and stops after 20,000 visited entries instead of allowing unbounded filesystem work or recursion depth;
+- non-binary text reads, including required-file reference checks, are capped at 4 MiB per file before content is loaded into memory;
 - sensitive filenames, key containers, password-manager databases, and common root credential stores are not committed;
 - private-key blocks, AWS access-key shapes, and provider-specific token shapes are flagged;
 - quoted and unquoted secret assignments are scored using key semantics, length, character classes, and value diversity;
@@ -99,6 +101,7 @@ Dependabot checks GitHub Actions and Cargo every Monday at 06:00 Europe/Lisbon t
 - Rust starter project
 - Modular Rust-native repository doctor and local shell wrapper
 - Scored secret-signal classification and internal precision/recall regression coverage
+- Bounded text reads and iterative repository traversal
 - License and disclaimer hygiene
 - Protected branch, pull-request, merge-queue, and manual quality gates
 - Basic public-repository policy files
