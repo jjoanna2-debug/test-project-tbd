@@ -107,10 +107,11 @@ fn check_yaml_policy(
         failures,
     );
 
-    if key == "persist-credentials" && scalar_value == "false" {
-        if let Some((_, credentials_disabled)) = state.checkout_step.as_mut() {
-            *credentials_disabled = true;
-        }
+    if key == "persist-credentials"
+        && scalar_value == "false"
+        && let Some((_, credentials_disabled)) = state.checkout_step.as_mut()
+    {
+        *credentials_disabled = true;
     }
 }
 
