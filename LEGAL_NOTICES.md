@@ -48,7 +48,9 @@ Use, adapt, or deploy repository material only after independent review, testing
 
 The Rust package is marked `publish = false`. Package version `0.1.0` is a repository development identifier, not a supported public distribution.
 
-The tags `codex-issue-22773-assets` and `codex-issue-23192-assets` identify public redacted evidence bundles for external Codex issue reports. They are not software releases, semantic versions, stable builds, supported packages, or compatibility commitments.
+The `codex-issue-22773-assets` release metadata explicitly identifies redacted screenshots. The `codex-issue-23192-assets` release is public screenshot evidence. Both tags identify evidence bundles for external Codex issue reports, not software releases, semantic versions, stable builds, supported packages, or compatibility commitments.
+
+GitHub Release assets are outside the checked-out repository tree. The local doctor does not inspect or attest to their redaction, so publication still requires separate asset review.
 
 ## Funding Status
 

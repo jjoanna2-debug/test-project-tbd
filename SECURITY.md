@@ -20,7 +20,7 @@ No branch, commit, package version, tag, release, fork, artifact, or file receiv
 | `codex-issue-23192-assets` | Evidence-asset tag, not a software release |
 | Forks and historical commits | Unsupported |
 
-The two GitHub Releases contain public redacted evidence for external Codex issue reports. They do not represent supported software versions, stable builds, or compatibility commitments.
+The `codex-issue-22773-assets` release metadata explicitly identifies redacted screenshots. The `codex-issue-23192-assets` release is public screenshot evidence. Neither release represents a supported software version, stable build, or compatibility commitment, and the local doctor does not inspect or attest to either release's asset contents.
 
 ## Current Guardrails
 

@@ -65,6 +65,7 @@ All notable changes to this repository are recorded here. The project follows a 
 - Replaced vague “temporary” and “for now” status wording with dated, testable statements.
 - Documented that GitHub Release assets are outside the checked-out tree and therefore require separate redaction review.
 - Updated the structure map and README to include current evidence tags and their May 2026 publication dates.
+- Tightened release-asset wording so redaction is claimed only where release metadata verifies it; the local doctor does not attest assets outside the checked-out tree.
 
 ### Notes
 
