@@ -33,6 +33,9 @@ The repository doctor and protected `Repository smoke test` currently enforce or
 - iterative traversal capped at 20,000 visited entries;
 - rejection of repository symlinks;
 - a 4 MiB limit on non-binary text reads, including required-file reference checks;
+- 64 KiB validation samples for files carrying declared binary extensions;
+- magic-prefix, NUL-byte, control-byte, and UTF-8 classification before content is skipped or scanned;
+- rejection of undeclared binary content, invalid UTF-8, and text disguised behind binary suffixes;
 - explicit failures for unreadable directories, entries, metadata, and files;
 - sensitive filenames, root credential stores, key containers, password-manager databases, and live environment files;
 - private-key blocks, AWS access-key shapes, provider token shapes, and scored generic secret assignments;

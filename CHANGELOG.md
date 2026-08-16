@@ -47,6 +47,10 @@ All notable changes to this repository are recorded here. The project follows a 
 - Normalized binary-extension handling across letter case.
 - Refused non-binary text files over 4 MiB before loading them into memory.
 - Applied the same 4 MiB ceiling to required-file reference checks and surfaced metadata failures explicitly.
+- Replaced extension-only binary skipping with bounded byte classification and magic-prefix detection.
+- Sampled declared binary files before skipping them, then reported and scanned UTF-8 text disguised behind binary suffixes.
+- Rejected undeclared binary content and invalid UTF-8 instead of silently omitting unscannable files.
+- Expanded blocked credential paths for cloud CLIs, GitHub CLI, rclone, Terraform, Vault, Docker, Kubernetes, and package tooling.
 - Split secret and workflow classifiers into focused Rust modules.
 - Replaced broad secret-key substring matching with exact key semantics, bounded multiline assignment parsing, provider-token plausibility checks, placeholder suppression, and per-file deduplication.
 - Added quoted, unquoted, escaped, multiline, YAML literal-block, and YAML folded-block parsing with explicit 4,096-byte and 32-line candidate limits.

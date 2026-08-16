@@ -44,6 +44,8 @@ Status: **complete**
 - Use iterative traversal with a 20,000-entry ceiling.
 - Reject symlinks and surface unreadable filesystem state.
 - Limit non-binary text reads to 4 MiB, including required-file reference checks.
+- Validate up to 64 KiB from declared binary files rather than trusting extensions alone.
+- Reject undeclared binary content, invalid UTF-8, and UTF-8 text hidden behind binary suffixes.
 - Validate required files, source invariants, redacted evidence paths, sensitive filenames, credential stores, and key containers.
 - Split secret and workflow checks into focused Rust modules.
 - Parse GitHub Actions policy in context rather than through blind substring matching.
