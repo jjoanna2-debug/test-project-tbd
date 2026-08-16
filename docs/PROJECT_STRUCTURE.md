@@ -75,12 +75,12 @@ CI runs the Rust doctor directly rather than placing a shell wrapper between Git
 | --- | --- |
 | `issue-evidence/` | Public issue-supporting artifacts committed to the repository tree and required to use explicit redaction naming. |
 | `issue-evidence/codex-23192-redacted/` | Current in-tree redacted evidence set for Codex issue 23192. |
-| Release tag `codex-issue-22773-assets` | Redacted screenshot asset bundle published 2026-05-15 for Codex issue 22773. |
-| Release tag `codex-issue-23192-assets` | Redacted screenshot asset bundle published 2026-05-17 for Codex issue 23192. |
+| Release tag `codex-issue-22773-assets` | Screenshot-evidence bundle published 2026-05-15 and explicitly described by its release metadata as redacted. |
+| Release tag `codex-issue-23192-assets` | Public screenshot-evidence bundle published 2026-05-17 for Codex issue 23192. |
 
 The two GitHub Releases are evidence bundles, not software releases or package versions. Their tags must not be interpreted as supported builds or semantic versions of `test-project-tbd`.
 
-The doctor rejects in-tree evidence paths that are not explicitly redacted or that use names such as `unredacted` or `nonredacted`. GitHub Release assets are outside the checked-out repository tree, so their redaction and content must be reviewed before publication rather than assumed to be covered by the local doctor.
+The doctor rejects in-tree evidence paths that are not explicitly redacted or that use names such as `unredacted` or `nonredacted`. GitHub Release assets are outside the checked-out repository tree. The local doctor neither inspects nor attests to their redaction, so every release asset requires separate review before publication.
 
 ## Generated and Local-Only Areas
 
