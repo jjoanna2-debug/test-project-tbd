@@ -110,9 +110,9 @@ const SKIPPED_DIRS: &[&str] = &[
 
 const BINARY_SUFFIXES: &[&str] = &[
     "7z", "a", "avi", "bmp", "class", "dmg", "doc", "docx", "dylib", "eot", "exe", "flac", "gif",
-    "gz", "ico", "jar", "jpeg", "jpg", "m4a", "mov", "mp3", "mp4", "o", "otf", "pdf", "png",
-    "ppt", "pptx", "so", "tar", "tiff", "ttf", "wav", "webm", "webp", "woff", "woff2", "xls",
-    "xlsx", "zip",
+    "gz", "ico", "jar", "jpeg", "jpg", "m4a", "mov", "mp3", "mp4", "o", "otf", "pdf", "png", "ppt",
+    "pptx", "so", "tar", "tiff", "ttf", "wav", "webm", "webp", "woff", "woff2", "xls", "xlsx",
+    "zip",
 ];
 
 const BLOCKED_FILENAMES: &[&str] = &[
@@ -129,14 +129,7 @@ const BLOCKED_FILENAMES: &[&str] = &[
     "service-account.json",
 ];
 
-const BLOCKED_SECRET_SUFFIXES: &[&str] = &[
-    ".jks",
-    ".key",
-    ".kdbx",
-    ".keystore",
-    ".p12",
-    ".pfx",
-];
+const BLOCKED_SECRET_SUFFIXES: &[&str] = &[".jks", ".key", ".kdbx", ".keystore", ".p12", ".pfx"];
 
 const BLOCKED_SENSITIVE_PATHS: &[&str] = &[
     ".aws/credentials",
@@ -372,9 +365,7 @@ fn relative_path(root: &Path, path: &Path) -> String {
 
 #[cfg(test)]
 mod tests {
-    use super::{
-        is_binary_file, is_blocked_filename, is_blocked_sensitive_path, should_skip_dir,
-    };
+    use super::{is_binary_file, is_blocked_filename, is_blocked_sensitive_path, should_skip_dir};
     use std::path::Path;
 
     #[test]
@@ -407,6 +398,7 @@ mod tests {
         let root = Path::new("/repo");
         assert!(should_skip_dir(root, &root.join("worktrees/transmission")));
         assert!(should_skip_dir(root, &root.join("backups/archive")));
+        assert!(!is_blocked_sensitive_path("docs/worktrees"));
         assert!(!should_skip_dir(root, &root.join("docs/worktrees")));
     }
 }
