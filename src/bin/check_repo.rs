@@ -476,9 +476,7 @@ mod tests {
 
     #[test]
     fn requires_full_lowercase_sha() {
-        assert!(is_full_sha(
-            "9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0"
-        ));
+        assert!(is_full_sha("9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0"));
         assert!(!is_full_sha("v4"));
     }
 
