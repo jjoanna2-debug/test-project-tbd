@@ -44,6 +44,13 @@ This project follows a simple chronological changelog. It is a learning reposito
   workflow files.
 - Rejected repository symlinks instead of silently omitting them from security
   checks, and normalized binary-extension handling across letter case.
+- Split secret and workflow classifiers into focused Rust modules, then replaced
+  broad substring matching with scored key-aware assignment parsing, provider
+  token signatures, placeholder suppression, and an average-precision floor.
+- Allowed documented environment-template variants while blocking common root
+  credential stores and password-manager databases.
+- Made workflow permission checks context-aware and required Docker actions to
+  use immutable SHA-256 digests.
 - Reconciled the roadmap with completed issue and pull request practice.
 - Promoted the Rust-native repository doctor in the README with current checks and sample passing output.
 
