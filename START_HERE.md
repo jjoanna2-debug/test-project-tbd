@@ -1,89 +1,115 @@
 # Start Here
 
-This file is the beginner map for this repository.
+Documentation snapshot: **2026-08-16**.
 
-If you are new to GitHub, think of a repository as a project folder that remembers every important change.
+This is the beginner map for the repository. It explains what currently exists, how changes reach the protected `main` branch, and which files matter first.
 
-## What This Repo Is
+## What This Repository Is
 
-This is a public staging project for learning the basics:
+This is a public Rust-first staging project for learning:
 
-- what files live in a repository;
-- how commits work;
-- how branches work;
-- how pull requests work;
-- how public repository policy files work;
-- how a small Rust project is structured.
-- how small Rust and shell checks can support a repository.
+- how repositories, commits, branches, pull requests, and protected checks work;
+- how a small Rust package is structured;
+- how GitHub Actions and Dependabot automate repository maintenance;
+- how policy and contribution files shape a public repository;
+- how a dependency-free Rust doctor can enforce repository-specific rules;
+- how classifier quality can be protected by measurable regression tests.
 
-It is not a production app. That is okay. The point is to learn the shape of a clean repository before building something bigger.
+It is not a production app or supported security product. The point is to learn with a small repository whose safeguards are implemented rather than merely admired in Markdown.
 
-## What Each File Does
+## Current Snapshot
 
-| File | What it means |
+| Item | Current value |
 | --- | --- |
-| `README.md` | The front page of the project. Start here when visiting the repo. |
-| `START_HERE.md` | A beginner-friendly guide to what is going on. |
-| `Cargo.toml` | Rust package manifest, project metadata, toolchain floor, and lint policy. |
-| `Cargo.lock` | Rust dependency lockfile for reproducible local and CI checks. |
-| `src/main.rs` | Small Rust starter program. |
-| `src/bin/check_repo.rs` | Rust check for required files, Rust starter references, common secret patterns, workflow hardening, and redacted evidence artifact names. |
-| `scripts/doctor.sh` | Shell wrapper for running the repository check locally. |
-| `docs/LOCAL_SETUP.md` | How to clone, open, edit, and commit locally. |
-| `docs/GITHUB_WORKFLOW.md` | How to branch, commit, push, open a pull request, and merge. |
-| `docs/PROJECT_STRUCTURE.md` | A fuller map of the repository structure. |
-| `LICENSE` | The legal permission for using the project. This repo uses Apache-2.0. |
-| `NOTICE` | Copyright and project attribution notice. |
-| `LEGAL_NOTICES.md` | Plain-language context for the license and public-use boundaries. |
-| `DISCLAIMER.md` | Extra warning that this is experimental and used at your own risk. |
-| `SECURITY.md` | Says this project is not security-reviewed or formally supported. |
-| `SUPPORT.md` | Explains that there is no support or maintenance promise. |
-| `CONTRIBUTING.md` | Rules for opening issues, pull requests, or contributions. |
-| `CODE_OF_CONDUCT.md` | Participation and moderation expectations. |
-| `SPONSORS.md` | Funding status and no-benefits clarification. |
-| `CHANGELOG.md` | Notes meaningful repository changes over time. |
-| `ROADMAP.md` | Shows possible next learning steps. |
-| `.github/FUNDING.yml` | Placeholder funding configuration for future sponsor links. |
-| `.github/dependabot.yml` | Weekly Dependabot checks for GitHub Actions and Cargo. |
-| `.github/PULL_REQUEST_TEMPLATE.md` | Checklist shown when opening pull requests. |
-| `.github/ISSUE_TEMPLATE/` | Issue forms for bugs, features, and documentation tasks. |
-| `.github/workflows/basic-checks.yml` | Basic automated checks for the repository. |
-| `.github/CODEOWNERS` | Default review visibility for repository changes. |
-| `.gitignore` | Tells Git which local junk files should stay out of the repo. |
-| `.gitattributes` | Keeps text and binary file handling consistent. |
-| `.editorconfig` | Keeps editor formatting consistent. |
-| `.markdownlint.json` | Keeps Markdown linting useful without fighting long policy text. |
+| Rust package | `test-project-tbd` `0.1.0` |
+| Rust requirement | `1.85` or newer, Edition 2021 |
+| Runtime dependencies | None |
+| Default branch | Protected `main` |
+| Required check | `Repository smoke test` |
+| Dependency updates | Mondays at 06:00 Europe/Lisbon |
 
-## Your First GitHub Words
+## What the Main Files Do
 
-- **Repository:** the project folder on GitHub.
-- **Commit:** a saved snapshot of a change.
-- **Branch:** a separate line of work.
-- **Pull request:** a request to merge one branch into another.
-- **Clone:** download the repo to your computer.
-- **Push:** send your local commits to GitHub.
-- **Pull:** bring GitHub changes down to your computer.
+| Path | Purpose |
+| --- | --- |
+| `README.md` | Current project overview, checks, automation, and boundaries. |
+| `START_HERE.md` | This beginner-friendly map. |
+| `Cargo.toml` | Package metadata, Rust-version floor, and lint policy. |
+| `Cargo.lock` | Reproducible dependency lockfile. |
+| `src/main.rs` | Minimal Rust starter program. |
+| `src/bin/check_repo.rs` | Repository inventory, bounded traversal and reads, required-file checks, and classifier orchestration. |
+| `src/bin/check_repo/secrets.rs` | Provider token signatures and scored secret-assignment classification. |
+| `src/bin/check_repo/workflows.rs` | Context-aware GitHub Actions permission, trigger, checkout, and immutable-reference checks. |
+| `scripts/doctor.sh` | Local wrapper for the Rust repository doctor. |
+| `docs/LOCAL_SETUP.md` | Current clone, branch, check, commit, and push instructions. |
+| `docs/GITHUB_WORKFLOW.md` | Current protected branch-to-merge workflow. |
+| `docs/PROJECT_STRUCTURE.md` | Complete repository layout and file responsibilities. |
+| `CHANGELOG.md` | Meaningful changes recorded over time. |
+| `ROADMAP.md` | Completed phases, current priorities, and optional future work. |
+| `SECURITY.md` | Security expectations, implemented guardrails, and unsupported status. |
+| `SUPPORT.md` | No-support and no-maintenance boundaries. |
+| `CONTRIBUTING.md` | Contribution requirements and current validation commands. |
+| `.github/workflows/basic-checks.yml` | Protected formatting, lint, test, and doctor gate. |
+| `.github/dependabot.yml` | Scheduled and grouped GitHub Actions and Cargo updates. |
+| `.github/ISSUE_TEMPLATE/` | Structured bug, feature, and documentation forms. |
+| `.github/PULL_REQUEST_TEMPLATE.md` | Pull request scope, verification, risk, and documentation checklist. |
+
+The remaining legal, conduct, funding, Git, and editor files are mapped in [docs/PROJECT_STRUCTURE.md](docs/PROJECT_STRUCTURE.md).
+
+## GitHub Words You Need First
+
+- **Repository:** the project folder and its history.
+- **Commit:** a saved snapshot with a message.
+- **Branch:** a separate line of work created from another commit.
+- **Pull request:** a proposed merge from one branch into another.
+- **Clone:** copy the repository to your computer.
+- **Push:** send local commits to GitHub.
+- **Pull:** bring remote commits into your local branch.
 - **Workflow:** an automated GitHub Actions process.
-- **Dependabot:** GitHub's automated dependency update helper.
+- **Required check:** an automated result that must pass before merge.
+- **Merge queue:** GitHub validation of the proposed combined state before merging.
+- **Dependabot:** GitHub's dependency-update automation.
 
-## Tiny Practice Plan
+## First Safe Practice Change
 
-1. Open `src/main.rs` in an editor.
-2. Edit the status message or one sentence in `README.md`.
-3. Run `git status` to see what changed.
-4. Run `git add src/main.rs` or `git add README.md`.
-5. Run `git commit -m "Practice Rust starter edit"`.
-6. Run `git push`.
-7. Refresh GitHub and look for the new commit.
+Do not work directly on `main`. It is protected, which is GitHub's way of preventing a five-second experiment from becoming permanent folklore.
 
-## What To Try Next
+```bash
+git clone https://github.com/jjoanna2-debug/test-project-tbd.git
+cd test-project-tbd
+git switch -c practice/first-change
+```
 
-- Create a new branch.
-- Edit `src/main.rs`.
-- Open a pull request.
-- Check the pull request template.
-- Check the GitHub Actions result.
-- Merge the pull request.
-- Look at the commit history.
+Edit `src/main.rs` or one relevant documentation file, then run:
 
-Small steps are the whole game. You do not need to understand everything before touching the repo.
+```bash
+cargo fmt --check
+cargo clippy --locked --all-targets --all-features -- -D warnings
+cargo test --locked --all-targets --all-features
+bash scripts/doctor.sh
+```
+
+Commit and push the branch:
+
+```bash
+git status
+git add src/main.rs
+git commit -m "Practice first branch change"
+git push -u origin practice/first-change
+```
+
+Then:
+
+1. Open a pull request into `main`.
+2. Complete the pull request template.
+3. Wait for `Repository smoke test` to pass.
+4. Review the diff and check output.
+5. Merge only after the protected gate succeeds.
+6. Pull the updated `main` branch locally.
+
+## Where to Go Next
+
+- Use [docs/LOCAL_SETUP.md](docs/LOCAL_SETUP.md) for complete local commands.
+- Use [docs/GITHUB_WORKFLOW.md](docs/GITHUB_WORKFLOW.md) for the current branch-to-merge contract.
+- Read [README.md](README.md) for the doctor, classifier metric, CI events, and dependency automation.
+- Read [ROADMAP.md](ROADMAP.md) before inventing another “helpful” file the repository does not need.

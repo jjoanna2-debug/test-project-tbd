@@ -1,16 +1,29 @@
 # Local Setup
 
-This guide explains how to open and edit this repository on your computer.
+Verified against the repository on **2026-08-16**.
+
+This guide covers the current local workflow: clone, create a branch, run the same validation used by CI, commit, push, and open a pull request.
 
 ## Requirements
 
 You need:
 
-- Git, if you want to clone and push changes;
-- Rust and Cargo, if you want to run the Rust starter locally;
-- a code editor, such as VS Code, Cursor, Zed, or another editor.
+- Git for cloning, branching, committing, pulling, and pushing;
+- Rust `1.85` or newer with Cargo and Rustfmt;
+- Clippy for the repository's strict lint gate;
+- a code editor.
 
-No framework, server, external service, or production dependency is required.
+No framework, server, database, external service, runtime dependency, or production credential is required.
+
+Confirm the tools are available:
+
+```bash
+git --version
+rustc --version
+cargo --version
+cargo clippy --version
+cargo fmt --version
+```
 
 ## Clone the Repository
 
@@ -19,48 +32,121 @@ git clone https://github.com/jjoanna2-debug/test-project-tbd.git
 cd test-project-tbd
 ```
 
-## Open the Starter Project
+## Create a Working Branch
 
-You can also open the full folder in your code editor and edit:
+Do not make routine changes directly on protected `main`.
+
+```bash
+git switch main
+git pull --ff-only origin main
+git switch -c practice/my-change
+```
+
+Use a branch name that describes one coherent change.
+
+## Files You Will Usually Edit
 
 ```text
 Cargo.toml
 src/main.rs
 src/bin/check_repo.rs
-scripts/doctor.sh
+src/bin/check_repo/secrets.rs
+src/bin/check_repo/workflows.rs
+README.md
+START_HERE.md
+docs/
+.github/
 ```
 
-## Make a Small Practice Change
+`scripts/doctor.sh` is only the local wrapper for the Rust doctor. CI invokes the Rust binary directly.
 
-For example:
+## Run the Complete Local Gate
 
-1. Change the status message in `src/main.rs`.
-2. Save the file.
-3. Run `cargo test --locked` if Rust is installed.
-4. Check the change.
+Run the same four checks used by the protected workflow:
 
-## Run the Doctor Check
+```bash
+cargo fmt --check
+cargo clippy --locked --all-targets --all-features -- -D warnings
+cargo test --locked --all-targets --all-features
+cargo run --quiet --locked --bin check_repo
+```
+
+The commands stop at the first failure when run individually from a shell script or CI step. Fix the first reported defect, rerun the failed command, and then rerun the full set.
+
+## Run the Doctor Wrapper
 
 ```bash
 bash scripts/doctor.sh
 ```
 
-The doctor check verifies the expected repository files and fails if anything
-under `issue-evidence/` is not explicitly marked as redacted. It also rejects
-common secret patterns, private-key blocks, sensitive filenames, broad workflow
-write permissions, and GitHub Actions that are not pinned to full commit SHAs.
+The doctor currently checks:
 
-## Commit the Change
+- required repository and source invariants;
+- one deterministic, sorted repository inventory;
+- iterative traversal capped at 20,000 visited entries;
+- rejection of symlinks and explicit reporting of unreadable filesystem state;
+- a 4 MiB ceiling on every non-binary text read, including required-file reference checks;
+- sensitive filenames, credential stores, key containers, and non-redacted evidence paths;
+- private-key blocks, provider token shapes, AWS access-key shapes, and scored generic secret assignments;
+- contextual GitHub Actions permissions, triggers, checkout credentials, full action SHA pins, and Docker digests;
+- durable CI and Dependabot configuration invariants.
+
+Passing output:
+
+```text
+Repository check passed.
+Doctor check passed.
+```
+
+## Make and Review a Change
+
+After editing:
 
 ```bash
 git status
-git add src/main.rs
-git commit -m "Practice Rust starter edit"
-git push
+git diff --check
+git diff
 ```
 
-## Safety Reminder
+Stage only the files that belong to the change:
 
-Do not add secrets, credentials, API tokens, private keys, personal data, customer data, confidential information, or production files to this repository.
+```bash
+git add path/to/file
+```
 
-This project is for learning, testing, and experimentation only.
+Then commit:
+
+```bash
+git commit -m "Describe the focused change"
+```
+
+## Push and Open a Pull Request
+
+```bash
+git push -u origin practice/my-change
+```
+
+Open a pull request into `main`, complete the repository template, and wait for `Repository smoke test` to pass. The required check validates formatting, strict all-target/all-feature Clippy, locked all-target/all-feature tests, and the repository doctor.
+
+## Update After Merge
+
+```bash
+git switch main
+git pull --ff-only origin main
+git branch -d practice/my-change
+```
+
+Delete the remote branch through GitHub or with Git after confirming the pull request merged.
+
+## Safety Rules
+
+Never commit or paste:
+
+- production credentials;
+- API keys, tokens, passwords, or private keys;
+- live `.env` files or root credential stores;
+- personal, customer, confidential, or regulated data;
+- unredacted evidence artifacts;
+- unrelated generated or backup directories.
+
+This repository is public and intended for learning, testing, and experimentation only.

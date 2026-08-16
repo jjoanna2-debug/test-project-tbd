@@ -1,8 +1,8 @@
 # Changelog
 
-All notable changes to this repository will be documented in this file.
+Documentation reconciled through **2026-08-16**.
 
-This project follows a simple chronological changelog. It is a learning repository, not a formal release-managed product.
+All notable changes to this repository are recorded here. The project follows a simple chronological changelog rather than a formal release-management process.
 
 ## [Unreleased]
 
@@ -17,59 +17,49 @@ This project follows a simple chronological changelog. It is a learning reposito
 - Local setup guide in `docs/LOCAL_SETUP.md`.
 - GitHub workflow guide in `docs/GITHUB_WORKFLOW.md`.
 - License, legal notices, disclaimer, security, support, contribution, conduct, and sponsorship policy files.
-- Basic issue templates for bugs, feature requests, and documentation tasks.
-- Pull request template.
-- Basic GitHub Actions repository smoke test.
-- Weekly Dependabot checks for GitHub Actions and Cargo.
+- Structured issue forms and a pull request template.
+- Protected GitHub Actions repository quality gate.
+- Scheduled Dependabot checks for GitHub Actions and Cargo.
 - `CODEOWNERS`, `.editorconfig`, and `.gitattributes` for repository hygiene.
-- Roadmap for future learning steps.
-- Practice issues for branch workflow and future project direction.
-- Repository doctor checks for common secret patterns, sensitive filenames, workflow permissions, pinned GitHub Actions, and explicitly redacted evidence artifacts.
-- Rust-native repository doctor binary so the repo remains Rust-first.
+- Roadmap for current and future learning phases.
+- Repository doctor checks for secret signals, sensitive paths, workflow policy, immutable action references, and explicitly redacted evidence artifacts.
+- Rust-native repository doctor binary so the project remains Rust-first.
+- Internal labeled secret-assignment corpus with an average-precision regression floor of `0.95`.
 
 ### Changed
 
 - Improved repository documentation and public-use boundaries.
-- Updated README and starter guide to reflect the expanded repository structure.
-- Expanded the basic GitHub Actions smoke test to verify the current file layout.
-- Replaced the static web starter with a Rust-first staging project.
-- Clarified that funding metadata is inactive until GitHub exposes active funding links.
-- Hardened repository checks for locked Cargo validation, unsafe-code rejection, secret-pattern screening, pinned workflow actions, and explicitly redacted evidence artifacts.
-- Kept local backup and delegated-work directories out of Git and the repository
-  doctor so preserved external checkouts cannot create false secret findings.
-- Expanded sensitive-filename checks to cover environment variants, credential
-  manifests, private-key files, and key-container formats.
-- Collapsed artifact, secret, and workflow checks into one deterministic file
-  inventory so the doctor no longer walks the repository repeatedly or rereads
-  workflow files.
-- Rejected repository symlinks instead of silently omitting them from security
-  checks, and normalized binary-extension handling across letter case.
-- Split secret and workflow classifiers into focused Rust modules, then replaced
-  broad substring matching with scored key-aware assignment parsing, provider
-  token signatures, placeholder suppression, and an average-precision floor.
-- Allowed documented environment-template variants while blocking common root
-  credential stores and password-manager databases.
-- Made workflow permission checks context-aware and required Docker actions to
-  use immutable SHA-256 digests.
-- Enforced explicit top-level workflow token permissions, rejected
-  `pull_request_target`, and required checkout steps to disable persisted
-  credentials.
-- Rejected non-binary repository text over 4 MiB before loading content,
-  reported metadata failures explicitly, and applied the same bound to
-  required-file reference checks.
-- Replaced recursive filesystem walking with an iterative traversal capped at
-  20,000 directory entries.
-- Expanded the protected Rust gate to all targets and features, direct doctor
-  execution, merge-queue commits, and manual dispatches while canceling stale
-  runs for the same pull request or ref.
-- Grouped routine Dependabot minor and patch updates by ecosystem on a fixed
-  Europe/Lisbon schedule while leaving major updates isolated for review.
-- Made the repository doctor assert the durable CI and Dependabot guarantees so
-  later edits cannot silently remove the automation baseline.
-- Reconciled the roadmap with completed issue and pull request practice.
-- Promoted the Rust-native repository doctor in the README with current checks and sample passing output.
+- Replaced the earlier static starter with a Rust-first staging lab.
+- Added a Rust `1.85` toolchain floor, locked validation, unsafe-code rejection, and strict Clippy policy.
+- Clarified that funding metadata is inactive until a valid provider is configured.
+- Kept root-local backup, build, cache, dependency, temporary, and delegated-work areas outside the public scan boundary.
+- Expanded sensitive-filename checks to environment variants, credential manifests, private-key files, key containers, password-manager databases, and common root credential stores.
+- Collapsed artifact, secret, and workflow checks into one deterministic file inventory so the doctor does not repeatedly traverse or reread the repository.
+- Replaced recursive filesystem walking with iterative traversal capped at 20,000 visited entries.
+- Rejected repository symlinks instead of silently omitting them from the security boundary.
+- Normalized binary-extension handling across letter case.
+- Refused non-binary text files over 4 MiB before loading them into memory.
+- Applied the same 4 MiB ceiling to required-file reference checks and surfaced metadata failures explicitly.
+- Split secret and workflow classifiers into focused Rust modules.
+- Replaced broad secret-key substring matching with scored key-aware assignment parsing, provider token signatures, unquoted-value support, placeholder suppression, and per-file deduplication.
+- Made workflow permission checks context-aware and required Docker actions to use immutable SHA-256 digests.
+- Enforced explicit top-level workflow token permissions, rejected `pull_request_target`, and required checkout steps to disable persisted credentials.
+- Expanded the protected Rust gate to all targets and features, direct doctor execution, merge-queue groups, pushes to `main`, and manual dispatches.
+- Added concurrency that cancels superseded runs for the same pull request or ref.
+- Grouped routine Dependabot minor and patch updates by ecosystem on a fixed Europe/Lisbon schedule while leaving major updates isolated for review.
+- Made the repository doctor assert durable CI and Dependabot guarantees so later edits cannot silently remove the automation baseline.
+- Reconciled the roadmap with completed repository, workflow, automation, and doctor phases.
+
+### Documentation
+
+- Reviewed every maintained current-state document against the repository as implemented on 2026-08-16.
+- Corrected beginner instructions to use a branch and pull request rather than pushing routine work directly to protected `main`.
+- Replaced stale “basic check” descriptions with the current modular doctor, protected gate, merge-queue, concurrency, resource-bound, and dependency-automation behavior.
+- Added explicit review dates to current technical and policy documentation.
+- Replaced vague “temporary” and “for now” status wording with dated, testable statements.
 
 ### Notes
 
-- This repository is experimental and provided for learning, testing, and GitHub workflow practice.
-- Earlier closed issues may mention the previous static-page starter. The current repository has pivoted to a Rust-first staging lab with a Rust-native repository doctor.
+- This repository remains experimental and is provided for learning, testing, and GitHub workflow practice.
+- Earlier closed issues may mention the previous static-page starter. The current repository is a Rust-first staging lab with a modular Rust-native repository doctor.
+- The internal average-precision floor is a regression metric for the repository's labeled test corpus, not a claim about external production performance.

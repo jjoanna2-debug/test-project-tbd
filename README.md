@@ -1,36 +1,43 @@
 # Rust Staging Lab
 
-A small Rust-first staging area for learning GitHub, tooling, automation, repository hygiene, and future app or CLI ideas.
+Documentation snapshot: **2026-08-16**.
 
-## Repository
+A compact Rust-first staging area for learning GitHub, repository automation, defensive tooling, and future CLI ideas. The repository is deliberately small, but its checks are real: protected CI, deterministic repository inspection, bounded filesystem work, contextual GitHub Actions policy checks, and a scored secret-signal classifier.
+
+## Current Snapshot
+
+| Item | Current value |
+| --- | --- |
+| Package | `test-project-tbd` `0.1.0` |
+| Rust | Edition 2021, Rust `1.85` or newer |
+| Runtime dependencies | None |
+| Default branch | Protected `main` |
+| Required check | `Repository smoke test` |
+| Doctor text-read limit | 4 MiB per non-binary file |
+| Doctor traversal limit | 20,000 visited directory entries |
+| Intended use | Learning, testing, and experimentation only |
 
 Public repository: <https://github.com/jjoanna2-debug/test-project-tbd>
 
-Clone URL:
-
 ```bash
 git clone https://github.com/jjoanna2-debug/test-project-tbd.git
+cd test-project-tbd
 ```
 
 ## Purpose
 
-This repository is used for experimenting with GitHub workflows and basic project setup.
+This repository is used to practice and improve:
 
-It is not a production system, commercial product, managed service, professional recommendation, security tool, or operational dependency.
+- focused commits, branches, pull requests, protected checks, and merge queues;
+- a small Rust project with a locked toolchain floor and strict lint policy;
+- dependency-free repository inspection and policy enforcement;
+- secret-pattern classification with measurable regression tests;
+- safe GitHub Actions and Dependabot configuration;
+- documentation, licensing, contribution, and public-repository hygiene.
 
-## Start Here
+It is not a production system, commercial product, managed service, professional recommendation, security product, or operational dependency.
 
-If you are new to GitHub, read [START_HERE.md](START_HERE.md) first. It explains the files in this repository, the basic GitHub words, and a tiny practice plan.
-
-For hands-on setup and workflow notes, read:
-
-- [docs/LOCAL_SETUP.md](docs/LOCAL_SETUP.md)
-- [docs/GITHUB_WORKFLOW.md](docs/GITHUB_WORKFLOW.md)
-- [docs/PROJECT_STRUCTURE.md](docs/PROJECT_STRUCTURE.md)
-
-## Starter Project
-
-This repository uses a small Rust starter and a modular Rust-native repository doctor:
+## Repository Layout
 
 ```text
 Cargo.toml
@@ -40,38 +47,80 @@ src/bin/check_repo.rs
 src/bin/check_repo/secrets.rs
 src/bin/check_repo/workflows.rs
 scripts/doctor.sh
+docs/
+.github/
+issue-evidence/
 ```
 
-Edit the Rust, documentation, or configuration files to practice commits, branches, pull requests, and checks. The code is intentionally compact; it is a staging point, not a finished product.
+The implementation remains intentionally dependency-free. New abstractions have to earn their existence rather than arriving in a motorcade of configuration files.
 
-## What the Doctor Checks
+## Repository Doctor
 
-`src/bin/check_repo.rs` builds one deterministic repository inventory and coordinates the project-specific checks. The focused classifier modules keep detection logic testable instead of turning one file into a municipal landfill.
+`src/bin/check_repo.rs` builds one deterministic repository inventory and coordinates focused classifiers. It exits successfully only when the repository satisfies its current structural, security, workflow, and automation invariants.
 
-The doctor verifies that:
+### Inventory and resource boundaries
 
-- required project, policy, documentation, GitHub, Rust, and local-helper files exist;
-- expected Rust safety and CI-policy references remain in place;
-- issue evidence artifacts are explicitly marked as redacted;
-- repository symlinks cannot silently escape the scan boundary;
-- traversal is iterative and stops after 20,000 visited entries instead of allowing unbounded filesystem work or recursion depth;
-- non-binary text reads, including required-file reference checks, are capped at 4 MiB per file before content is loaded into memory;
-- sensitive filenames, key containers, password-manager databases, and common root credential stores are not committed;
-- private-key blocks, AWS access-key shapes, and provider-specific token shapes are flagged;
-- quoted and unquoted secret assignments are scored using key semantics, length, character classes, and value diversity;
-- placeholders, environment references, redacted values, and low-entropy examples are suppressed to reduce false positives;
-- GitHub Actions permissions are evaluated in YAML context rather than by blind substring matching;
-- third-party GitHub Actions use full commit SHAs and Docker actions use SHA-256 digests.
+The doctor:
 
-The secret-assignment classifier includes a labeled positive-and-negative regression corpus with an internal average-precision floor of `0.95`. That protects classifier behavior from silent regression; it is not a claim about performance on an external production dataset.
+- verifies required project, policy, documentation, GitHub, Rust, and helper files;
+- walks the repository iteratively rather than recursively;
+- stops after 20,000 visited directory entries;
+- rejects repository symlinks rather than following them outside the scan boundary;
+- sorts and deduplicates findings for stable output;
+- skips known binary formats before text inspection;
+- refuses to load non-binary files larger than 4 MiB;
+- applies the same 4 MiB ceiling to required-file reference checks;
+- reports unreadable directories, entries, metadata, and files instead of silently omitting them.
 
-Run the doctor locally with:
+### Sensitive-file and secret checks
+
+The doctor rejects common credential stores, live environment files, private-key filenames, key containers, and password-manager databases. It detects private-key blocks, AWS access-key shapes, and provider-specific token shapes for GitHub, GitLab, OpenAI, Slack, Stripe, npm, Google, and SendGrid.
+
+Generic secret assignments are scored using:
+
+- secret-bearing key semantics;
+- value length;
+- character-class diversity;
+- distinct-character diversity;
+- placeholder, environment-reference, redaction, and low-entropy suppression.
+
+Only the strongest generic assignment finding per file is emitted, which avoids turning one bad fixture into a choir of identical alarms.
+
+### GitHub Actions policy
+
+Workflow checks are context-aware rather than blind substring searches. The doctor enforces:
+
+- explicit top-level workflow permissions;
+- no `write-all` or `contents: write` grants;
+- no `pull_request_target` trigger;
+- `persist-credentials: false` on `actions/checkout` steps;
+- full commit-SHA pins for third-party GitHub Actions;
+- immutable SHA-256 digests for Docker actions.
+
+### Classifier regression metric
+
+The secret-assignment classifier includes a labeled positive-and-negative test corpus with an internal average-precision floor of `0.95`.
+
+That figure is a regression guard for the repository's own test corpus. It is not a claim about performance on an external production dataset. A respectable distinction, despite the internet's ongoing campaign against those.
+
+## Run Locally
+
+Run the complete Rust gate:
+
+```bash
+cargo fmt --check
+cargo clippy --locked --all-targets --all-features -- -D warnings
+cargo test --locked --all-targets --all-features
+cargo run --quiet --locked --bin check_repo
+```
+
+Or run the local wrapper for the repository doctor:
 
 ```bash
 bash scripts/doctor.sh
 ```
 
-Passing output:
+Passing doctor output:
 
 ```text
 Repository check passed.
@@ -80,96 +129,72 @@ Doctor check passed.
 
 ## Automated Quality Gate
 
-The required `Repository smoke test` runs formatting, strict Clippy checks, locked tests, and the repository doctor directly against every Rust target and feature.
-
-The same gate covers:
+The required `Repository smoke test` runs the same formatting, strict Clippy, locked test, and doctor checks on:
 
 - pull requests into `main`;
 - pushes to `main`;
 - merge-queue groups;
 - manual workflow dispatches.
 
-New commits cancel older in-progress runs for the same pull request or ref, so CI validates the current revision instead of burning runner time on archaeological layers. The doctor also asserts the important workflow and Dependabot settings, making those automation guarantees cumulative.
+New commits cancel older in-progress runs for the same pull request or ref. CI therefore validates the current revision rather than financing an archaeological survey of superseded commits.
 
-Dependabot checks GitHub Actions and Cargo every Monday at 06:00 Europe/Lisbon time. Routine minor and patch updates are grouped by ecosystem; major updates remain separate for explicit review.
+The doctor also asserts the important workflow and Dependabot settings. Removing merge-queue coverage, stale-run cancellation, all-target checks, direct doctor execution, or grouped dependency-update policy causes the repository gate to fail.
 
-## Current Scope
+## Dependency Automation
 
-- Repository setup
-- Beginner onboarding
-- README structure
-- Rust starter project
-- Modular Rust-native repository doctor and local shell wrapper
-- Scored secret-signal classification and internal precision/recall regression coverage
-- Bounded text reads and iterative repository traversal
-- License and disclaimer hygiene
-- Protected branch, pull-request, merge-queue, and manual quality gates
-- Basic public-repository policy files
-- Issue and pull request templates
-- Grouped weekly Dependabot checks for GitHub Actions and Cargo
-- Local and CI guards for sensitive paths, secret patterns, redacted evidence artifacts, workflow permissions, and immutable action references
-- Funding status note
+Dependabot checks GitHub Actions and Cargo every Monday at **06:00 Europe/Lisbon**.
 
-## Important Notices
+Routine minor and patch updates are grouped by ecosystem. Major updates remain separate for explicit review. Open version-update pull requests are capped per ecosystem.
 
-This repository is provided for learning, testing, and experimentation only. Use of this repository or its contents is voluntary and entirely at your own risk.
+## Working With the Repository
 
-This repository is not production software, not professional advice, not a managed service, not a security product, not audited, not supported, and not guaranteed to be accurate, complete, secure, maintained, or suitable for any purpose.
+Start with [START_HERE.md](START_HERE.md) for the beginner map. The current operational guides are:
 
-Do not use this repository with production credentials, secrets, private keys, API tokens, personal data, confidential information, customer data, regulated data, business-critical workflows, or security-sensitive systems.
+- [docs/LOCAL_SETUP.md](docs/LOCAL_SETUP.md)
+- [docs/GITHUB_WORKFLOW.md](docs/GITHUB_WORKFLOW.md)
+- [docs/PROJECT_STRUCTURE.md](docs/PROJECT_STRUCTURE.md)
+- [ROADMAP.md](ROADMAP.md)
+- [CHANGELOG.md](CHANGELOG.md)
 
-## Policies and Project Files
+Use a branch and pull request for changes to `main`. The current workflow is documented in [docs/GITHUB_WORKFLOW.md](docs/GITHUB_WORKFLOW.md).
+
+## Current Engineering Priorities
+
+The next useful work is not another layer of decorative repository furniture. It is:
+
+- expanding the labeled classifier corpus with more realistic positive and hard-negative cases;
+- measuring precision and recall at the current score threshold alongside average precision;
+- improving diagnostics without increasing duplicate-noise volume;
+- keeping scanner resource limits and workflow invariants explicit and tested;
+- growing the Rust starter only when a concrete CLI or automation use case exists;
+- preserving the zero-runtime-dependency baseline unless a dependency provides clear, measured value.
+
+See [ROADMAP.md](ROADMAP.md) for the current phase status.
+
+## Important Boundaries
+
+This repository is provided for learning, testing, and experimentation only. Do not use it with production credentials, secrets, private keys, API tokens, personal data, confidential information, customer data, regulated data, business-critical workflows, or security-sensitive systems.
+
+The repository doctor and protected workflow are guardrails, not a security audit, scanner warranty, support promise, or production-readiness certification.
+
+## Policies and Notices
 
 - [LICENSE](LICENSE) — Apache License 2.0 terms
-- [NOTICE](NOTICE) — copyright and project attribution notice
+- [NOTICE](NOTICE) — copyright and project attribution
 - [LEGAL_NOTICES.md](LEGAL_NOTICES.md) — plain-language license and public-use boundaries
-- [DISCLAIMER.md](DISCLAIMER.md) — warranty, liability, professional-advice, and risk disclaimer
-- [SECURITY.md](SECURITY.md) — security policy and no-support expectations
+- [DISCLAIMER.md](DISCLAIMER.md) — warranty, liability, reliance, and risk boundaries
+- [SECURITY.md](SECURITY.md) — security policy and supported-status statement
 - [SUPPORT.md](SUPPORT.md) — support and maintenance boundaries
-- [CONTRIBUTING.md](CONTRIBUTING.md) — contribution rules and sensitive-information restrictions
+- [CONTRIBUTING.md](CONTRIBUTING.md) — contribution workflow and restrictions
 - [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) — participation and moderation expectations
-- [SPONSORS.md](SPONSORS.md) — funding status and no-benefits clarification
-- [CHANGELOG.md](CHANGELOG.md) — chronological repository change notes
-- [ROADMAP.md](ROADMAP.md) — future learning path and project ideas
-- [docs/PROJECT_STRUCTURE.md](docs/PROJECT_STRUCTURE.md) — current file layout
-
-## GitHub Workflow Helpers
-
-This repository includes:
-
-- issue templates for bugs, features, and documentation tasks;
-- a pull request template;
-- a protected GitHub Actions quality gate;
-- merge-queue and manual-run coverage;
-- stale-run cancellation;
-- Rust formatting, linting, tests, and project-specific checks;
-- grouped weekly Dependabot checks for GitHub Actions and Cargo;
-- public-repository hardening checks for secrets, redacted evidence artifacts, and GitHub workflow safety;
-- `CODEOWNERS` review visibility;
-- `.editorconfig` and `.gitattributes` for cleaner editing and diffs.
+- [SPONSORS.md](SPONSORS.md) — current funding status and sponsorship boundaries
 
 ## Funding Status
 
-This repository does not currently expose active GitHub funding links. If funding is enabled later, any support will remain voluntary and will not create support, maintenance, consulting, service-level, feature, priority, warranty, or commercial obligations. See [SPONSORS.md](SPONSORS.md).
-
-A placeholder `.github/FUNDING.yml` exists for future funding metadata only.
-
-## Next Steps
-
-- Edit the Rust starter
-- Create a branch
-- Make focused commits
-- Open a pull request
-- Review the protected GitHub Actions result
-- Merge the pull request
-- Read the changelog and roadmap
+No active GitHub funding provider is configured as of 2026-08-16. The placeholder `.github/FUNDING.yml` does not expose a Sponsor button or create sponsorship tiers, paid support, consulting, maintenance, priority, or service obligations.
 
 ## License
 
-This project is licensed under the Apache License 2.0. See [LICENSE](LICENSE) for the full license text and [LEGAL_NOTICES.md](LEGAL_NOTICES.md) for plain-language context.
+This project is licensed under the Apache License 2.0. See [LICENSE](LICENSE) for the controlling license text and [LEGAL_NOTICES.md](LEGAL_NOTICES.md) for plain-language context.
 
 Copyright and project attribution are listed in [NOTICE](NOTICE).
-
-## Disclaimer
-
-This repository is provided on an "as is" and "as available" basis for learning, testing, and experimentation purposes only. See [DISCLAIMER.md](DISCLAIMER.md) for additional clarification.
