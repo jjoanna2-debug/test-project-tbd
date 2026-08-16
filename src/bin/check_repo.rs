@@ -225,14 +225,14 @@ fn check_repository_files(root: &Path, files: &[PathBuf], failures: &mut Vec<Str
 
         match fs::metadata(file_path) {
             Ok(metadata) if is_oversized_text_file(metadata.len()) => {
-                failures.push(format!(
-                    "{relative_path} exceeds the 4 MiB text scan limit"
-                ));
+                failures.push(format!("{relative_path} exceeds the 4 MiB text scan limit"));
                 continue;
             }
             Ok(_) => {}
             Err(error) => {
-                failures.push(format!("{relative_path} metadata could not be read: {error}"));
+                failures.push(format!(
+                    "{relative_path} metadata could not be read: {error}"
+                ));
                 continue;
             }
         }
