@@ -49,6 +49,12 @@ All notable changes to this repository are recorded here. The project follows a 
 - Grouped routine Dependabot minor and patch updates by ecosystem on a fixed Europe/Lisbon schedule while leaving major updates isolated for review.
 - Made the repository doctor assert durable CI and Dependabot guarantees so later edits cannot silently remove the automation baseline.
 - Reconciled the roadmap with completed repository, workflow, automation, and doctor phases.
+- Distinguished the `codex-issue-22773-assets` and `codex-issue-23192-assets` evidence bundles from software releases, package versions, supported builds, and compatibility commitments.
+- Reconciled security, support, contribution, conduct, funding, legal, disclaimer, and attribution documents with the implemented repository and evidence surfaces.
+- Replaced the lightweight pull request checklist with scope, verification, impact, documentation, rollback, and follow-up sections.
+- Reworked issue forms to collect affected revisions, reproducible steps, acceptance criteria, measurements, verified dates, evidence handling, and current sources of truth.
+- Added current contribution, support, and security links to the issue chooser.
+- Dated the inactive funding configuration and tied future provider activation to a documentation update.
 
 ### Documentation
 
@@ -57,9 +63,12 @@ All notable changes to this repository are recorded here. The project follows a 
 - Replaced stale “basic check” descriptions with the current modular doctor, protected gate, merge-queue, concurrency, resource-bound, and dependency-automation behavior.
 - Added explicit review dates to current technical and policy documentation.
 - Replaced vague “temporary” and “for now” status wording with dated, testable statements.
+- Documented that GitHub Release assets are outside the checked-out tree and therefore require separate redaction review.
+- Updated the structure map and README to include current evidence tags and their May 2026 publication dates.
 
 ### Notes
 
 - This repository remains experimental and is provided for learning, testing, and GitHub workflow practice.
 - Earlier closed issues may mention the previous static-page starter. The current repository is a Rust-first staging lab with a modular Rust-native repository doctor.
 - The internal average-precision floor is a regression metric for the repository's labeled test corpus, not a claim about external production performance.
+- The two GitHub Release tags are evidence-asset bundles, not software releases.
