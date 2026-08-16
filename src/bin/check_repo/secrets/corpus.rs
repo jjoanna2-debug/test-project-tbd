@@ -51,13 +51,19 @@ pub(super) fn provider_negative_probes() -> Vec<String> {
         ["npm_", &"x".repeat(40)].concat(),
         ["AIza", "abcdefghijklmnopqrstuvwxyz0123456789"].concat(),
         ["SG.", &"ABCD".repeat(14)].concat(),
-        ["Documentation mentions ", "ghp_", " without a complete token"].concat(),
+        [
+            "Documentation mentions ",
+            "ghp_",
+            " without a complete token",
+        ]
+        .concat(),
     ]
 }
 
 pub(super) fn multiline_positive_probes() -> Vec<String> {
     let first = generated_secret(61, 24);
     let second = generated_secret(62, 24);
+
     vec![
         multiline_quoted_assignment("client_secret", &first, &second),
         yaml_block_assignment("signing_key", '|', &first, &second),
@@ -67,45 +73,125 @@ pub(super) fn multiline_positive_probes() -> Vec<String> {
 }
 
 fn add_positive_assignments(cases: &mut Vec<CalibrationCase>) {
-    let values = (1..=28)
-        .map(|seed| generated_secret(seed, 40 + seed % 17))
+    const QUOTED_KEYS: &[(&str, &str)] = &[
+        ("shell API key", "SERVICE_API_KEY"),
+        ("TOML private key", "private_key"),
+        ("refresh token", "refresh_token"),
+        ("webhook secret", "webhook_secret"),
+        ("authentication token", "auth_token"),
+        ("bearer token", "bearer_token"),
+        ("passphrase", "passphrase"),
+        ("master key", "master_key"),
+        ("encryption key", "encryption_key"),
+        ("database password", "db_password"),
+        ("service account key", "service_account_key"),
+        ("SAS token", "sas_token"),
+        ("credentials", "credentials"),
+        ("session token", "session_token"),
+        ("production-prefixed key", "PROD_SERVICE_API_KEY"),
+        ("uppercase access token", "PAYMENTS_ACCESS_TOKEN"),
+        ("session secret", "session_secret"),
+        ("database password alias", "database_password"),
+    ];
+
+    for (index, &(name, key)) in QUOTED_KEYS.iter().enumerate() {
+        let value = generated_secret(index + 1, 40 + index % 17);
+        add_case(cases, name, quoted_assignment(key, &value), true);
+    }
+
+    let values = (31..=46)
+        .map(|seed| generated_secret(seed, 44 + seed % 13))
         .collect::<Vec<_>>();
 
-    push(cases, "shell API key", quoted_assignment("SERVICE_API_KEY", &values[0]), true);
-    push(cases, "JSON client secret", json_assignment("client_secret", &values[1]), true);
-    push(cases, "Rust access token", typed_assignment("accessToken", &values[2]), true);
-    push(cases, "YAML password with comment", unquoted_assignment("password", &values[3]), true);
-    push(cases, "TOML private key", quoted_assignment("private_key", &values[4]), true);
-    push(cases, "refresh token", quoted_assignment("refresh_token", &values[5]), true);
-    push(cases, "webhook secret", quoted_assignment("webhook_secret", &values[6]), true);
-    push(cases, "signing key", quoted_assignment("signing_key", &hex_secret(7, 64)), true);
-    push(cases, "session token", quoted_assignment("session_token", &base64_secret(8, 56)), true);
-    push(cases, "authentication token", quoted_assignment("auth_token", &values[9]), true);
-    push(cases, "bearer token", quoted_assignment("bearer_token", &values[10]), true);
-    push(cases, "passphrase", quoted_assignment("passphrase", &values[11]), true);
-    push(cases, "master key", quoted_assignment("master_key", &values[12]), true);
-    push(cases, "encryption key", quoted_assignment("encryption_key", &values[13]), true);
-    push(cases, "database password", quoted_assignment("db_password", &values[14]), true);
-    push(cases, "service account key", quoted_assignment("service_account_key", &values[15]), true);
-    push(cases, "SAS token", quoted_assignment("sas_token", &values[16]), true);
-    push(cases, "credentials", quoted_assignment("credentials", &values[17]), true);
-    push(cases, "database URL", database_url_assignment(&values[18]), true);
-    push(cases, "connection string", connection_string_assignment(&values[19]), true);
-    push(cases, "authorization header", authorization_assignment(&values[20]), true);
-    push(cases, "multiline quoted secret", multiline_quoted_assignment("client_secret", &values[21], &values[22]), true);
-    push(cases, "YAML literal secret", yaml_block_assignment("private_key", '|', &values[23], &values[24]), true);
-    push(cases, "YAML folded secret", yaml_block_assignment("webhook_secret", '>', &values[25], &values[26]), true);
-    push(cases, "escaped quoted secret", escaped_quoted_assignment("api_key", &values[27]), true);
-    push(cases, "commented leaked secret", ["# ", &quoted_assignment("api_key", &generated_secret(31, 44))].concat(), true);
-    push(cases, "JSON trailing comma", [json_assignment("refresh_token", &generated_secret(32, 44)), ",".to_owned()].concat(), true);
-    push(cases, "production-prefixed key", quoted_assignment("PROD_SERVICE_API_KEY", &generated_secret(33, 44)), true);
-    push(cases, "uppercase access token", quoted_assignment("PAYMENTS_ACCESS_TOKEN", &generated_secret(34, 44)), true);
-    push(cases, "long hexadecimal secret", quoted_assignment("secret_key", &hex_secret(35, 96)), true);
+    add_case(
+        cases,
+        "JSON client secret",
+        json_assignment("client_secret", &values[0]),
+        true,
+    );
+    add_case(
+        cases,
+        "Rust access token",
+        typed_assignment("accessToken", &values[1]),
+        true,
+    );
+    add_case(
+        cases,
+        "YAML password with comment",
+        unquoted_assignment("password", &values[2]),
+        true,
+    );
+    add_case(
+        cases,
+        "signing key",
+        quoted_assignment("signing_key", &hex_secret(34, 64)),
+        true,
+    );
+    add_case(
+        cases,
+        "database URL",
+        database_url_assignment(&values[4]),
+        true,
+    );
+    add_case(
+        cases,
+        "connection string",
+        connection_string_assignment(&values[5]),
+        true,
+    );
+    add_case(
+        cases,
+        "authorization header",
+        authorization_assignment(&values[6]),
+        true,
+    );
+    add_case(
+        cases,
+        "multiline quoted secret",
+        multiline_quoted_assignment("client_secret", &values[7], &values[8]),
+        true,
+    );
+    add_case(
+        cases,
+        "YAML literal secret",
+        yaml_block_assignment("private_key", '|', &values[9], &values[10]),
+        true,
+    );
+    add_case(
+        cases,
+        "YAML folded secret",
+        yaml_block_assignment("webhook_secret", '>', &values[11], &values[12]),
+        true,
+    );
+    add_case(
+        cases,
+        "escaped quoted secret",
+        escaped_quoted_assignment("api_key", &values[13]),
+        true,
+    );
+    add_case(
+        cases,
+        "commented leaked secret",
+        ["# ", &quoted_assignment("api_key", &values[14])].concat(),
+        true,
+    );
+    add_case(
+        cases,
+        "JSON trailing comma",
+        [json_assignment("refresh_token", &values[15]), ",".to_owned()].concat(),
+        true,
+    );
+    add_case(
+        cases,
+        "long hexadecimal secret",
+        quoted_assignment("secret_key", &hex_secret(47, 96)),
+        true,
+    );
 }
 
 fn add_positive_provider_tokens(cases: &mut Vec<CalibrationCase>) {
     for (index, probe) in provider_positive_probes().into_iter().enumerate() {
-        push(
+        add_case(
             cases,
             provider_case_name(index),
             ["credential: ", &probe].concat(),
@@ -113,64 +199,181 @@ fn add_positive_provider_tokens(cases: &mut Vec<CalibrationCase>) {
         );
     }
 
-    push(
+    let aws_access_key = ["AKIA", "Q7W9E2R4T6Y8U1I3"].concat();
+    add_case(
         cases,
         "AWS access key identifier",
-        ["AWS_ACCESS_KEY_ID=", &["AKIA", "Q7W9E2R4T6Y8U1I3"].concat()].concat(),
+        ["AWS_ACCESS_KEY_ID=", &aws_access_key].concat(),
         true,
     );
 }
 
 fn add_negative_placeholders(cases: &mut Vec<CalibrationCase>) {
-    push(cases, "named API placeholder", quoted_assignment("api_key", "your_api_key_here"), false);
-    push(cases, "environment expansion", quoted_assignment("client_secret", "${CLIENT_SECRET}"), false);
-    push(cases, "template expansion", quoted_assignment("access_token", "{{ secrets.ACCESS_TOKEN }}"), false);
-    push(cases, "process environment reference", quoted_assignment("auth_token", "process.env.AUTH_TOKEN"), false);
-    push(cases, "Rust environment reference", quoted_assignment("password", "std::env::var(DATABASE_PASSWORD)"), false);
-    push(cases, "Python environment reference", quoted_assignment("password", "os.environ[DATABASE_PASSWORD]"), false);
-    push(cases, "redacted value", quoted_assignment("private_key", "redacted-redacted-redacted"), false);
-    push(cases, "repeated x fixture", quoted_assignment("api_key", &"x".repeat(48)), false);
-    push(cases, "repeated block fixture", quoted_assignment("api_key", &"A7z9".repeat(12)), false);
-    push(cases, "ascending alphabet fixture", quoted_assignment("api_key", "abcdefghijklmnopqrstuvwxyz0123456789"), false);
-    push(cases, "descending alphabet fixture", quoted_assignment("api_key", "zyxwvutsrqponmlkjihgfedcba9876543210"), false);
-    push(cases, "example host database URL", quoted_assignment("database_url", "postgresql://user:secret-value@example.com/app"), false);
-    push(cases, "localhost connection string", quoted_assignment("connection_string", "postgresql://username:password@localhost/app"), false);
-    push(cases, "angle-bracket placeholder", quoted_assignment("webhook_secret", "<insert-webhook-secret-here>"), false);
-    push(cases, "ellipsis placeholder", quoted_assignment("signing_key", &["sk_live_", "................................."].concat()), false);
-    push(cases, "boolean secret field", unquoted_assignment("secret", "false"), false);
-    push(cases, "null password field", unquoted_assignment("password", "null"), false);
-    push(cases, "short password", quoted_assignment("password", "correct-horse"), false);
-    push(cases, "prose password explanation", quoted_assignment("password", "this value is supplied by the deployment environment"), false);
-    push(cases, "YAML prose block", yaml_block_assignment("secret", '|', "this value is documented for operators", "and is not stored in this repository"), false);
+    const STATIC_CASES: &[(&str, &str, &str)] = &[
+        ("named API placeholder", "api_key", "your_api_key_here"),
+        ("environment expansion", "client_secret", "${CLIENT_SECRET}"),
+        (
+            "template expansion",
+            "access_token",
+            "{{ secrets.ACCESS_TOKEN }}",
+        ),
+        (
+            "process environment reference",
+            "auth_token",
+            "process.env.AUTH_TOKEN",
+        ),
+        (
+            "Rust environment reference",
+            "password",
+            "std::env::var(DATABASE_PASSWORD)",
+        ),
+        (
+            "Python environment reference",
+            "password",
+            "os.environ[DATABASE_PASSWORD]",
+        ),
+        (
+            "redacted value",
+            "private_key",
+            "redacted-redacted-redacted",
+        ),
+        (
+            "ascending alphabet fixture",
+            "api_key",
+            "abcdefghijklmnopqrstuvwxyz0123456789",
+        ),
+        (
+            "descending alphabet fixture",
+            "api_key",
+            "zyxwvutsrqponmlkjihgfedcba9876543210",
+        ),
+        (
+            "example host database URL",
+            "database_url",
+            "postgresql://user:secret-value@example.com/app",
+        ),
+        (
+            "localhost connection string",
+            "connection_string",
+            "postgresql://username:password@localhost/app",
+        ),
+        (
+            "angle-bracket placeholder",
+            "webhook_secret",
+            "<insert-webhook-secret-here>",
+        ),
+        (
+            "prose password explanation",
+            "password",
+            "this value is supplied by the deployment environment",
+        ),
+    ];
+
+    for &(name, key, value) in STATIC_CASES {
+        add_case(cases, name, quoted_assignment(key, value), false);
+    }
+
+    add_case(
+        cases,
+        "repeated x fixture",
+        quoted_assignment("api_key", &"x".repeat(48)),
+        false,
+    );
+    add_case(
+        cases,
+        "repeated block fixture",
+        quoted_assignment("api_key", &"A7z9".repeat(12)),
+        false,
+    );
+    add_case(
+        cases,
+        "ellipsis placeholder",
+        quoted_assignment(
+            "signing_key",
+            &["sk_live_", "................................."].concat(),
+        ),
+        false,
+    );
+    add_case(
+        cases,
+        "boolean secret field",
+        unquoted_assignment("secret", "false"),
+        false,
+    );
+    add_case(
+        cases,
+        "null password field",
+        unquoted_assignment("password", "null"),
+        false,
+    );
+    add_case(
+        cases,
+        "short password",
+        quoted_assignment("password", "correct-horse"),
+        false,
+    );
+    add_case(
+        cases,
+        "YAML prose block",
+        yaml_block_assignment(
+            "secret",
+            '|',
+            "this value is documented for operators",
+            "and is not stored in this repository",
+        ),
+        false,
+    );
 }
 
 fn add_negative_key_semantics(cases: &mut Vec<CalibrationCase>) {
+    const KEYS: &[(&str, &str)] = &[
+        ("token count", "token_count"),
+        ("secretary field", "secretary"),
+        ("password policy", "password_policy"),
+        ("API key name", "api_key_name"),
+        ("client secret field name", "client_secret_field"),
+        ("access token URL", "access_token_url"),
+        ("token endpoint", "token_endpoint"),
+        ("token type", "token_type"),
+        ("password reset URL", "password_reset_url"),
+        ("secret scan threshold", "secret_scan_threshold"),
+        ("connection string format", "connection_string_format"),
+        ("example API key fixture", "example_api_key"),
+        ("test password fixture", "test_password"),
+        ("mock client secret fixture", "mock_client_secret"),
+        ("fixture token", "fixture_token"),
+        ("sample connection string", "sample_connection_string"),
+        ("request identifier", "request_token_id"),
+    ];
+
     let random = generated_secret(71, 48);
-    push(cases, "token count", quoted_assignment("token_count", &random), false);
-    push(cases, "secretary field", quoted_assignment("secretary", &random), false);
-    push(cases, "password policy", quoted_assignment("password_policy", &random), false);
-    push(cases, "API key name", quoted_assignment("api_key_name", &random), false);
-    push(cases, "client secret field name", quoted_assignment("client_secret_field", &random), false);
-    push(cases, "access token URL", quoted_assignment("access_token_url", &random), false);
-    push(cases, "token endpoint", quoted_assignment("token_endpoint", &random), false);
-    push(cases, "token type", quoted_assignment("token_type", &random), false);
-    push(cases, "password reset URL", quoted_assignment("password_reset_url", &random), false);
-    push(cases, "secret scan threshold", quoted_assignment("secret_scan_threshold", &random), false);
-    push(cases, "private key path", quoted_assignment("private_key_path", "/var/run/keys/service.pem"), false);
-    push(cases, "connection string format", quoted_assignment("connection_string_format", &random), false);
-    push(cases, "example API key fixture", quoted_assignment("example_api_key", &random), false);
-    push(cases, "test password fixture", quoted_assignment("test_password", &random), false);
-    push(cases, "mock client secret fixture", quoted_assignment("mock_client_secret", &random), false);
-    push(cases, "fixture token", quoted_assignment("fixture_token", &random), false);
-    push(cases, "sample connection string", quoted_assignment("sample_connection_string", &random), false);
-    push(cases, "public key material", quoted_assignment("public_key", &base64_secret(72, 80)), false);
-    push(cases, "checksum", quoted_assignment("checksum", &hex_secret(73, 64)), false);
-    push(cases, "request identifier", quoted_assignment("request_token_id", &random), false);
+    for &(name, key) in KEYS {
+        add_case(cases, name, quoted_assignment(key, &random), false);
+    }
+
+    add_case(
+        cases,
+        "private key path",
+        quoted_assignment("private_key_path", "/var/run/keys/service.pem"),
+        false,
+    );
+    add_case(
+        cases,
+        "public key material",
+        quoted_assignment("public_key", &base64_secret(72, 80)),
+        false,
+    );
+    add_case(
+        cases,
+        "checksum",
+        quoted_assignment("checksum", &hex_secret(73, 64)),
+        false,
+    );
 }
 
 fn add_negative_documentation_examples(cases: &mut Vec<CalibrationCase>) {
     for (index, probe) in provider_negative_probes().into_iter().enumerate() {
-        push(
+        add_case(
             cases,
             provider_negative_case_name(index),
             ["documentation: ", &probe].concat(),
@@ -178,15 +381,48 @@ fn add_negative_documentation_examples(cases: &mut Vec<CalibrationCase>) {
         );
     }
 
-    push(cases, "schema declaration", "client_secret: { type: string, minLength: 32 }".to_owned(), false);
-    push(cases, "JWT header constant", quoted_assignment("token_header", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"), false);
-    push(cases, "authorization scheme", quoted_assignment("authorization_scheme", "Bearer"), false);
-    push(cases, "CSRF field name", quoted_assignment("csrf_token_name", "csrfmiddlewaretoken"), false);
-    push(cases, "expiration setting", unquoted_assignment("access_token_expires_in", "3600"), false);
-    push(cases, "password reset TTL", unquoted_assignment("password_reset_token_ttl", "900"), false);
+    add_case(
+        cases,
+        "schema declaration",
+        "client_secret: { type: string, minLength: 32 }".to_owned(),
+        false,
+    );
+    add_case(
+        cases,
+        "JWT header constant",
+        quoted_assignment(
+            "token_header",
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+        ),
+        false,
+    );
+    add_case(
+        cases,
+        "authorization scheme",
+        quoted_assignment("authorization_scheme", "Bearer"),
+        false,
+    );
+    add_case(
+        cases,
+        "CSRF field name",
+        quoted_assignment("csrf_token_name", "csrfmiddlewaretoken"),
+        false,
+    );
+    add_case(
+        cases,
+        "expiration setting",
+        unquoted_assignment("access_token_expires_in", "3600"),
+        false,
+    );
+    add_case(
+        cases,
+        "password reset TTL",
+        unquoted_assignment("password_reset_token_ttl", "900"),
+        false,
+    );
 }
 
-fn push(
+fn add_case(
     cases: &mut Vec<CalibrationCase>,
     name: &'static str,
     content: String,
@@ -269,7 +505,9 @@ fn github_stateless_probe(seed: usize) -> String {
 }
 
 fn generated_secret(seed: usize, length: usize) -> String {
-    const ALPHABET: &[u8] = b"ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789_-";
+    const ALPHABET: &[u8] =
+        b"ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789_-";
+
     (0..length)
         .map(|index| {
             let position = (index * 17 + seed * 11 + index * index) % ALPHABET.len();
@@ -280,13 +518,16 @@ fn generated_secret(seed: usize, length: usize) -> String {
 
 fn hex_secret(seed: usize, length: usize) -> String {
     const HEX: &[u8] = b"0123456789abcdef";
+
     (0..length)
         .map(|index| char::from(HEX[(index * 7 + seed * 5 + index / 3) % HEX.len()]))
         .collect()
 }
 
 fn base64_secret(seed: usize, length: usize) -> String {
-    const BASE64: &[u8] = b"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+    const BASE64: &[u8] =
+        b"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+
     (0..length)
         .map(|index| {
             let position = (index * 19 + seed * 13 + index / 2) % BASE64.len();
@@ -312,6 +553,7 @@ fn provider_case_name(index: usize) -> &'static str {
         "Google API key",
         "SendGrid key",
     ];
+
     NAMES[index]
 }
 
@@ -330,5 +572,6 @@ fn provider_negative_case_name(index: usize) -> &'static str {
         "SendGrid repeated fixture",
         "GitHub prefix prose",
     ];
+
     NAMES[index]
 }
