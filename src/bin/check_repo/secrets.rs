@@ -724,7 +724,10 @@ mod tests {
     fn calibrated_corpus_meets_quality_floors() {
         let cases = corpus::assignment_cases();
         let case_names = cases.iter().map(|case| case.name).collect::<Vec<_>>();
-        assert!(cases.len() >= 64, "calibration corpus is too small");
+        assert!(
+            cases.len() >= 64,
+            "calibration corpus is too small: {case_names:?}"
+        );
         assert!(
             cases.iter().filter(|case| case.expected).count() >= 28,
             "calibration corpus needs more positive cases"
