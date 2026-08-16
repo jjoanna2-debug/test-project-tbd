@@ -24,8 +24,9 @@ All notable changes to this repository are recorded here. The project follows a 
 - Roadmap for current and future learning phases.
 - Repository doctor checks for secret signals, sensitive paths, workflow policy, immutable action references, and explicitly redacted evidence artifacts.
 - Rust-native repository doctor binary so the project remains Rust-first.
-- Internal labeled secret-assignment corpus with an average-precision regression floor of `0.95`.
 - Exact `rust-toolchain.toml` selection for Rust `1.97.1`, Clippy, and Rustfmt.
+- Dedicated test-only classifier corpus with realistic positives, hard negatives, provider probes, multiline assignments, YAML blocks, escaped values, documentation examples, placeholders, and misleading key names.
+- Calibration gates for average precision, precision, recall, and F1 at the active classifier threshold.
 
 ### Changed
 
@@ -46,14 +47,19 @@ All notable changes to this repository are recorded here. The project follows a 
 - Refused non-binary text files over 4 MiB before loading them into memory.
 - Applied the same 4 MiB ceiling to required-file reference checks and surfaced metadata failures explicitly.
 - Split secret and workflow classifiers into focused Rust modules.
-- Replaced broad secret-key substring matching with scored key-aware assignment parsing, provider token signatures, unquoted-value support, placeholder suppression, and per-file deduplication.
+- Replaced broad secret-key substring matching with exact key semantics, bounded multiline assignment parsing, provider-token plausibility checks, placeholder suppression, and per-file deduplication.
+- Added quoted, unquoted, escaped, multiline, YAML literal-block, and YAML folded-block parsing with explicit 4,096-byte and 32-line candidate limits.
+- Expanded provider coverage to current GitHub, GitLab, OpenAI, Slack, Stripe, npm, Google, SendGrid, AWS access-key, and private-key signals.
+- Rejected repeated, sequential, low-diversity, placeholder, example-host, environment-reference, redacted, and prose fixtures before they can inflate classifier confidence.
+- Restricted colon assignment parsing to valid configuration keys so Rust type annotations, Markdown code, and unbalanced quoted literals do not produce false findings.
+- Raised the maintained calibration floors to `0.98` average precision and `0.95` precision, recall, and F1.
 - Made workflow permission checks context-aware and required Docker actions to use immutable SHA-256 digests.
 - Enforced explicit top-level workflow token permissions, rejected `pull_request_target`, and required checkout steps to disable persisted credentials.
 - Expanded the protected Rust gate to all targets and features, direct doctor execution, merge-queue groups, pushes to `main`, and manual dispatches.
 - Added concurrency that cancels superseded runs for the same pull request or ref.
 - Grouped routine Dependabot minor and patch updates by ecosystem on a fixed Europe/Lisbon schedule while leaving major updates isolated for review.
-- Made the repository doctor assert durable toolchain, CI, and Dependabot guarantees so later edits cannot silently remove the automation baseline.
-- Reconciled the roadmap with completed repository, workflow, automation, and doctor phases.
+- Made the repository doctor assert durable toolchain, CI, classifier, and Dependabot guarantees so later edits cannot silently remove the automation baseline.
+- Reconciled the roadmap with completed repository, workflow, automation, doctor, and classifier-calibration phases.
 - Distinguished the `codex-issue-22773-assets` and `codex-issue-23192-assets` evidence bundles from software releases, package versions, supported builds, and compatibility commitments.
 - Reconciled security, support, contribution, conduct, funding, legal, disclaimer, and attribution documents with the implemented repository and evidence surfaces.
 - Replaced the lightweight pull request checklist with scope, verification, impact, documentation, rollback, and follow-up sections.
@@ -72,10 +78,11 @@ All notable changes to this repository are recorded here. The project follows a 
 - Updated the structure map and README to include current evidence tags and their May 2026 publication dates.
 - Tightened release-asset wording so redaction is claimed only where release metadata verifies it; the local doctor does not attest assets outside the checked-out tree.
 - Updated the README, beginner map, local setup, workflow guide, and structure map for the exact Rust 2024 toolchain and six-step quality gate.
+- Replaced the classifier roadmap's “in progress” status with the implemented calibration contract and optional future maintenance direction.
 
 ### Notes
 
 - This repository remains experimental and is provided for learning, testing, and GitHub workflow practice.
 - Earlier closed issues may mention the previous static-page starter. The current repository is a Rust-first staging lab with a modular Rust-native repository doctor.
-- The internal average-precision floor is a regression metric for the repository's labeled test corpus, not a claim about external production performance.
+- Classifier metrics are regression guarantees for the maintained internal corpus, not claims about external production performance.
 - The two GitHub Release tags are evidence-asset bundles, not software releases.

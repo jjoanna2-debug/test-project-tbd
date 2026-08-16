@@ -67,7 +67,23 @@ A pull request should state:
 - documentation impact;
 - deliberate exclusions, limitations, or follow-up work.
 
-Update current-state documentation in the same pull request when behavior, commands, architecture, file layout, policies, automation, supported tooling, roadmap status, or evidence handling changes.
+Update current-state documentation in the same pull request when behavior, commands, architecture, file layout, policies, automation, supported tooling, roadmap status, evidence handling, or classifier calibration changes.
+
+## Classifier Changes
+
+A change to secret parsing, provider signatures, scoring, suppression, or thresholds must update the maintained calibration corpus when the behavioral boundary changes.
+
+Classifier pull requests must:
+
+- include realistic positive and hard-negative cases for the changed behavior;
+- preserve runtime construction of provider-shaped probes rather than committing credential-like literals;
+- exercise multiline, YAML, escaped, comment, placeholder, and misleading-key behavior where relevant;
+- preserve one highest-scoring generic finding per file unless the output contract is intentionally redesigned;
+- pass at least `0.98` average precision and `0.95` precision, recall, and F1 on the maintained internal corpus;
+- explain any threshold change and its observed false-positive and false-negative effect;
+- avoid describing internal corpus metrics as external production performance.
+
+Do not lower a metric floor merely to make a new fixture pass. Fix the classifier or justify a deliberate model change with the complete confusion analysis. Moving the goalposts is still moving the goalposts when the goalposts are constants in Rust.
 
 ## No Sensitive Information
 
