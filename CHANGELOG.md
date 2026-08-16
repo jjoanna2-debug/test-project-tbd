@@ -39,6 +39,11 @@ This project follows a simple chronological changelog. It is a learning reposito
   doctor so preserved external checkouts cannot create false secret findings.
 - Expanded sensitive-filename checks to cover environment variants, credential
   manifests, private-key files, and key-container formats.
+- Collapsed artifact, secret, and workflow checks into one deterministic file
+  inventory so the doctor no longer walks the repository repeatedly or rereads
+  workflow files.
+- Rejected repository symlinks instead of silently omitting them from security
+  checks, and normalized binary-extension handling across letter case.
 - Reconciled the roadmap with completed issue and pull request practice.
 - Promoted the Rust-native repository doctor in the README with current checks and sample passing output.
 

@@ -61,7 +61,7 @@ const SOURCE_REFERENCES: &[(&str, &[&str])] = &[
     ),
     (
         "src/bin/check_repo.rs",
-        &["#![forbid(unsafe_code)]", "fn check_workflows"],
+        &["#![forbid(unsafe_code)]", "fn check_workflow_content"],
     ),
 ];
 
@@ -117,9 +117,14 @@ fn main() -> ExitCode {
 
     check_required_files(&root, &mut missing);
     check_source_references(&root, &mut missing);
-    check_evidence_artifacts(&root, &mut failures);
-    check_sensitive_files(&root, &mut failures);
-    check_workflows(&root, &mut failures);
+
+    let repository_files = repo_files_under(&root, &root, &mut failures);
+    check_repository_files(&root, &repository_files, &mut failures);
+
+    missing.sort_unstable();
+    missing.dedup();
+    failures.sort_unstable();
+    failures.dedup();
 
     if missing.is_empty() && failures.is_empty() {
         println!("Repository check passed.");
@@ -161,27 +166,11 @@ fn check_source_references(root: &Path, missing: &mut Vec<String>) {
     }
 }
 
-fn check_evidence_artifacts(root: &Path, failures: &mut Vec<String>) {
-    let evidence_root = root.join("issue-evidence");
-    if !evidence_root.is_dir() {
-        return;
-    }
+fn check_repository_files(root: &Path, files: &[PathBuf], failures: &mut Vec<String>) {
+    for file_path in files {
+        let relative_path = relative_path(root, file_path);
 
-    for file_path in repo_files_under(root, &evidence_root, failures) {
-        let relative_path = relative_path(root, &file_path);
-        let lower_path = relative_path.to_ascii_lowercase();
-        if !lower_path.contains("redacted")
-            || lower_path.contains("unredacted")
-            || lower_path.contains("nonredacted")
-        {
-            failures.push(format!("{relative_path} must be explicitly redacted"));
-        }
-    }
-}
-
-fn check_sensitive_files(root: &Path, failures: &mut Vec<String>) {
-    for file_path in repo_files_under(root, root, failures) {
-        let relative_path = relative_path(root, &file_path);
+        check_evidence_artifact(&relative_path, failures);
 
         if let Some(file_name) = file_path.file_name().and_then(|name| name.to_str()) {
             if is_blocked_filename(file_name) {
@@ -189,15 +178,36 @@ fn check_sensitive_files(root: &Path, failures: &mut Vec<String>) {
             }
         }
 
-        if is_binary_file(&file_path) {
+        if is_binary_file(file_path) {
             continue;
         }
 
-        match fs::read_to_string(&file_path) {
-            Ok(content) => check_secret_content(&relative_path, &content, failures),
+        match fs::read_to_string(file_path) {
+            Ok(content) => {
+                check_secret_content(&relative_path, &content, failures);
+                if is_workflow_file(&relative_path, file_path) {
+                    check_workflow_content(&relative_path, &content, failures);
+                }
+            }
             Err(error) if error.kind() == io::ErrorKind::InvalidData => {}
-            Err(error) => failures.push(format!("{relative_path} could not be read: {error}")),
+            Err(error) => {
+                failures.push(format!("{relative_path} could not be read: {error}"));
+            }
         }
+    }
+}
+
+fn check_evidence_artifact(relative_path: &str, failures: &mut Vec<String>) {
+    if !relative_path.starts_with("issue-evidence/") {
+        return;
+    }
+
+    let lower_path = relative_path.to_ascii_lowercase();
+    if !lower_path.contains("redacted")
+        || lower_path.contains("unredacted")
+        || lower_path.contains("nonredacted")
+    {
+        failures.push(format!("{relative_path} must be explicitly redacted"));
     }
 }
 
@@ -232,64 +242,42 @@ fn check_secret_content(relative_path: &str, content: &str, failures: &mut Vec<S
     }
 }
 
-fn check_workflows(root: &Path, failures: &mut Vec<String>) {
-    let workflow_root = root.join(".github/workflows");
-    if !workflow_root.is_dir() {
-        return;
+fn check_workflow_content(relative_path: &str, content: &str, failures: &mut Vec<String>) {
+    if content.contains("write-all") {
+        failures.push(format!(
+            "{relative_path} must not use write-all permissions"
+        ));
     }
 
-    for workflow_path in repo_files_under(root, &workflow_root, failures) {
-        if !matches!(
-            workflow_path
-                .extension()
-                .and_then(|extension| extension.to_str()),
-            Some("yml" | "yaml")
-        ) {
-            continue;
+    for (line_number, line) in content.lines().enumerate() {
+        let trimmed_line = line.trim();
+        if trimmed_line == "contents: write" {
+            failures.push(format!("{relative_path} must not grant contents: write"));
         }
 
-        let relative_path = relative_path(root, &workflow_path);
-        let Ok(content) = fs::read_to_string(&workflow_path) else {
-            failures.push(format!("{relative_path} must be readable as UTF-8"));
+        let step_line = trimmed_line.strip_prefix("- ").unwrap_or(trimmed_line);
+        let Some(action_ref) = step_line.strip_prefix("uses:") else {
             continue;
         };
 
-        if content.contains("write-all") {
-            failures.push(format!(
-                "{relative_path} must not use write-all permissions"
-            ));
+        let action_ref = action_ref.split_whitespace().next().unwrap_or("");
+        if action_ref.starts_with("./") || action_ref.starts_with("docker://") {
+            continue;
         }
 
-        for (line_number, line) in content.lines().enumerate() {
-            let trimmed_line = line.trim();
-            if trimmed_line == "contents: write" {
-                failures.push(format!("{relative_path} must not grant contents: write"));
-            }
+        let Some((_, ref_name)) = action_ref.rsplit_once('@') else {
+            failures.push(format!(
+                "{relative_path}:{} action is unpinned",
+                line_number + 1
+            ));
+            continue;
+        };
 
-            let step_line = trimmed_line.strip_prefix("- ").unwrap_or(trimmed_line);
-            let Some(action_ref) = step_line.strip_prefix("uses:") else {
-                continue;
-            };
-
-            let action_ref = action_ref.split_whitespace().next().unwrap_or("");
-            if action_ref.starts_with("./") || action_ref.starts_with("docker://") {
-                continue;
-            }
-
-            let Some((_, ref_name)) = action_ref.rsplit_once('@') else {
-                failures.push(format!(
-                    "{relative_path}:{} action is unpinned",
-                    line_number + 1
-                ));
-                continue;
-            };
-
-            if !is_full_sha(ref_name) {
-                failures.push(format!(
-                    "{relative_path}:{} action must be pinned to a full SHA",
-                    line_number + 1
-                ));
-            }
+        if !is_full_sha(ref_name) {
+            failures.push(format!(
+                "{relative_path}:{} action must be pinned to a full SHA",
+                line_number + 1
+            ));
         }
     }
 }
@@ -297,6 +285,7 @@ fn check_workflows(root: &Path, failures: &mut Vec<String>) {
 fn repo_files_under(root: &Path, directory: &Path, failures: &mut Vec<String>) -> Vec<PathBuf> {
     let mut files = Vec::new();
     collect_repo_files(root, directory, failures, &mut files);
+    files.sort_unstable();
     files
 }
 
@@ -342,6 +331,11 @@ fn collect_repo_files(
             collect_repo_files(root, &path, failures, files);
         } else if file_type.is_file() {
             files.push(path);
+        } else if file_type.is_symlink() {
+            failures.push(format!(
+                "{} is a symlink and will not be followed",
+                relative_path(root, &path)
+            ));
         }
     }
 }
@@ -366,7 +360,19 @@ fn is_blocked_filename(file_name: &str) -> bool {
 fn is_binary_file(path: &Path) -> bool {
     path.extension()
         .and_then(|extension| extension.to_str())
-        .is_some_and(|extension| BINARY_SUFFIXES.contains(&extension))
+        .map(str::to_ascii_lowercase)
+        .is_some_and(|extension| BINARY_SUFFIXES.contains(&extension.as_str()))
+}
+
+fn is_workflow_file(relative_path: &str, path: &Path) -> bool {
+    relative_path.starts_with(".github/workflows/")
+        && matches!(
+            path.extension()
+                .and_then(|extension| extension.to_str())
+                .map(str::to_ascii_lowercase)
+                .as_deref(),
+            Some("yml" | "yaml")
+        )
 }
 
 fn contains_prefixed_token(content: &str, prefixes: &[&str], minimum_tail_len: usize) -> bool {
@@ -470,7 +476,9 @@ mod tests {
 
     #[test]
     fn requires_full_lowercase_sha() {
-        assert!(is_full_sha("9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0"));
+        assert!(is_full_sha(
+            "9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0"
+        ));
         assert!(!is_full_sha("v4"));
     }
 
