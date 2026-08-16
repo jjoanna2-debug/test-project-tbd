@@ -178,7 +178,11 @@ fn add_positive_assignments(cases: &mut Vec<CalibrationCase>) {
     add_case(
         cases,
         "JSON trailing comma",
-        [json_assignment("refresh_token", &values[15]), ",".to_owned()].concat(),
+        [
+            json_assignment("refresh_token", &values[15]),
+            ",".to_owned(),
+        ]
+        .concat(),
         true,
     );
     add_case(
@@ -390,10 +394,7 @@ fn add_negative_documentation_examples(cases: &mut Vec<CalibrationCase>) {
     add_case(
         cases,
         "JWT header constant",
-        quoted_assignment(
-            "token_header",
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
-        ),
+        quoted_assignment("token_header", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"),
         false,
     );
     add_case(
@@ -422,12 +423,7 @@ fn add_negative_documentation_examples(cases: &mut Vec<CalibrationCase>) {
     );
 }
 
-fn add_case(
-    cases: &mut Vec<CalibrationCase>,
-    name: &'static str,
-    content: String,
-    expected: bool,
-) {
+fn add_case(cases: &mut Vec<CalibrationCase>, name: &'static str, content: String, expected: bool) {
     cases.push(CalibrationCase {
         name,
         content,
@@ -505,8 +501,7 @@ fn github_stateless_probe(seed: usize) -> String {
 }
 
 fn generated_secret(seed: usize, length: usize) -> String {
-    const ALPHABET: &[u8] =
-        b"ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789_-";
+    const ALPHABET: &[u8] = b"ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789_-";
 
     (0..length)
         .map(|index| {
@@ -525,8 +520,7 @@ fn hex_secret(seed: usize, length: usize) -> String {
 }
 
 fn base64_secret(seed: usize, length: usize) -> String {
-    const BASE64: &[u8] =
-        b"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+    const BASE64: &[u8] = b"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
     (0..length)
         .map(|index| {

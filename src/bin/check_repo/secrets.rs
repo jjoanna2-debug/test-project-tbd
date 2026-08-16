@@ -15,19 +15,8 @@ const PREFIXED_SECRET_RULES: &[(&str, &[&str], usize)] = &[
     (
         "GitLab token",
         &[
-            "glpat-",
-            "gloas-",
-            "gldt-",
-            "glrt-",
-            "glrtr-",
-            "glcbt-",
-            "glptt-",
-            "glft-",
-            "glimt-",
-            "glagent-",
-            "glwt-",
-            "glsoat-",
-            "glffct-",
+            "glpat-", "gloas-", "gldt-", "glrt-", "glrtr-", "glcbt-", "glptt-", "glft-", "glimt-",
+            "glagent-", "glwt-", "glsoat-", "glffct-",
         ],
         16,
     ),
@@ -132,11 +121,7 @@ const SECRET_ASSIGNMENT_THRESHOLD: u8 = 70;
 const MAX_SECRET_VALUE_BYTES: usize = 4_096;
 const MAX_SECRET_VALUE_LINES: usize = 32;
 
-pub(crate) fn check_secret_content(
-    relative_path: &str,
-    content: &str,
-    failures: &mut Vec<String>,
-) {
+pub(crate) fn check_secret_content(relative_path: &str, content: &str, failures: &mut Vec<String>) {
     let private_key_suffix = PRIVATE_KEY_WORDS.concat();
     if content.contains(PRIVATE_KEY_PREFIX) && content.contains(&private_key_suffix) {
         failures.push(format!(
@@ -163,6 +148,7 @@ pub(crate) fn check_secret_content(
     }
 }
 
+#[cfg(test)]
 fn secret_signal_score(content: &str) -> u8 {
     if PREFIXED_SECRET_RULES
         .iter()
@@ -184,9 +170,9 @@ fn contains_prefixed_token(content: &str, prefixes: &[&str], minimum_tail_len: u
         })
         .any(|token| {
             prefixes.iter().any(|prefix| {
-                token.strip_prefix(prefix).is_some_and(|tail| {
-                    is_plausible_provider_token(token, tail, minimum_tail_len)
-                })
+                token
+                    .strip_prefix(prefix)
+                    .is_some_and(|tail| is_plausible_provider_token(token, tail, minimum_tail_len))
             })
         })
 }
@@ -252,6 +238,7 @@ fn highest_secret_assignment_score(content: &str) -> Option<(usize, u8)> {
     highest.filter(|(_, score)| *score >= SECRET_ASSIGNMENT_THRESHOLD)
 }
 
+#[cfg(test)]
 fn secret_assignment_score(content: &str) -> u8 {
     highest_secret_assignment_score(content).map_or(0, |(_, score)| score)
 }
@@ -765,11 +752,7 @@ mod tests {
             "recall below floor: {:.4}",
             metrics.recall
         );
-        assert!(
-            metrics.f1 >= 0.95,
-            "F1 below floor: {:.4}",
-            metrics.f1
-        );
+        assert!(metrics.f1 >= 0.95, "F1 below floor: {:.4}", metrics.f1);
     }
 
     struct CalibrationMetrics {
