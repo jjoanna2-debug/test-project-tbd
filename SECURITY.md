@@ -42,11 +42,14 @@ The repository doctor and protected `Repository smoke test` currently enforce or
 - a maintained labeled corpus covering realistic positives, hard negatives, provider probes, documentation examples, comments, multiline values, YAML blocks, escaped strings, and misleading key names;
 - internal calibration floors of `0.98` average precision and `0.95` precision, recall, and F1 at the active threshold;
 - explicitly redacted names for in-tree evidence artifacts;
-- explicit top-level workflow permissions;
-- rejection of `write-all`, `contents: write`, and `pull_request_target`;
-- disabled checkout credential persistence;
-- full commit-SHA pins for third-party GitHub Actions;
-- SHA-256 digests for Docker actions;
+- mandatory top-level GitHub Actions permissions;
+- read-only or empty workflow token permissions, with every `write` scope rejected at workflow and job level;
+- an explicit trigger allowlist limited to `push`, `pull_request`, `merge_group`, `workflow_dispatch`, and `schedule`;
+- rejection of privileged, comment-driven, externally dispatched, or workflow-completion trigger surfaces;
+- rejection of YAML anchors, aliases, and merge keys in workflows so policy cannot be hidden behind indirection;
+- disabled checkout credential persistence and rejection of unsafe pull-request checkout mode;
+- full lowercase commit-SHA pins for third-party GitHub Actions;
+- lowercase SHA-256 digests for Docker actions;
 - protected workflow and Dependabot configuration invariants.
 
 Provider-shaped calibration probes are constructed at runtime so the repository does not store credential-like literals solely for testing.
@@ -65,6 +68,8 @@ The repository doctor inspects the current checked-out filesystem tree. It does 
 - secrets already copied, cached, indexed, downloaded, or exposed elsewhere;
 - every possible credential format, obfuscation, encoding, or vulnerability class;
 - external production datasets or provider-side validity.
+
+The workflow policy intentionally rejects YAML indirection rather than attempting to resolve every YAML graph. That keeps authorization review local, deterministic, and visible in the workflow file.
 
 Release assets require separate review before publication because they are not present in the checked-out repository tree.
 
