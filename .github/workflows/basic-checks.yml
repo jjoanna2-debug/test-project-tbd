@@ -1,6 +1,9 @@
 name: Basic Checks
 
 on:
+  push:
+    branches:
+      - codex/complete-classifier-calibration
   pull_request:
     branches:
       - main
@@ -9,7 +12,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: basic-checks-${{ github.workflow }}-${{ github.event.pull_request.number }}
+  group: basic-checks-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
 env:
@@ -31,15 +34,15 @@ jobs:
     timeout-minutes: 10
 
     steps:
-      - name: Check out pull request branch
+      - name: Check out working branch
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
-          ref: ${{ github.head_ref }}
+          ref: ${{ github.head_ref || github.ref_name }}
           persist-credentials: true
 
       - name: Apply canonical classifier formatting
         env:
-          BRANCH_NAME: ${{ github.head_ref }}
+          BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
         run: |
           python3 - <<'PY'
           from pathlib import Path
