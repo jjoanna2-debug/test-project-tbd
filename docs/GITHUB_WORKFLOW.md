@@ -1,105 +1,152 @@
 # GitHub Workflow
 
-This guide explains the branch-to-merge workflow used by this repository.
+Verified against the repository on **2026-08-16**.
 
-## 1. Create a Branch
+This guide defines the current branch-to-merge workflow. The default branch is protected, the required check is named `Repository smoke test`, and the same gate also validates merge-queue groups and pushes to `main`.
 
-A branch is a safe place to make changes before merging them into `main`.
+## 1. Synchronize `main`
 
 ```bash
-git checkout -b practice/my-first-change
+git switch main
+git pull --ff-only origin main
 ```
 
-## 2. Make a Small Change
+`--ff-only` prevents an accidental local merge commit while updating the protected branch.
 
-Edit a focused set of files, such as:
+## 2. Create a Focused Branch
 
-```text
-Cargo.toml
-src/main.rs
-README.md
+```bash
+git switch -c feature/describe-the-change
 ```
 
-Keep each change coherent so it is easy to review, test, and reverse.
+Use one branch for one coherent change. Good branch names describe the intent rather than the emotional journey required to implement it.
 
-## 3. Check What Changed
+## 3. Make the Change
+
+Edit only the files needed for the task. Review the working tree before staging:
 
 ```bash
 git status
+git diff --check
 git diff
 ```
 
-## 4. Run Local Checks
-
-Run the same project-specific doctor used in CI:
-
-```bash
-bash scripts/doctor.sh
-```
-
-For the complete Rust gate, also run:
+## 4. Run the Current Local Gate
 
 ```bash
 cargo fmt --check
 cargo clippy --locked --all-targets --all-features -- -D warnings
 cargo test --locked --all-targets --all-features
+cargo run --quiet --locked --bin check_repo
 ```
 
-## 5. Commit the Change
+The local wrapper remains available when only the doctor needs to be rerun:
 
 ```bash
-git add src/main.rs
-git commit -m "Practice first branch change"
+bash scripts/doctor.sh
 ```
 
-Replace `src/main.rs` with the files you actually changed.
+## 5. Commit a Reviewable Unit
+
+```bash
+git add path/to/changed-file
+git commit -m "Describe the focused change"
+```
+
+Do not stage unrelated files merely because Git has noticed them. Computers are excellent witnesses and terrible editors.
 
 ## 6. Push the Branch
 
 ```bash
-git push -u origin practice/my-first-change
+git push -u origin feature/describe-the-change
 ```
 
-## 7. Open a Pull Request
+Later commits on the same branch can use plain `git push`.
 
-Open a pull request from the branch into `main`.
+## 7. Open the Pull Request
 
-Use the pull request template and confirm that no secrets, credentials, personal data, or confidential information are included.
+Open a pull request from the branch into `main` and complete the repository template. The description should state:
 
-## 8. Review the Protected Check
+- what changed;
+- why the change is needed;
+- how it was verified;
+- security, data, compatibility, and operational impact;
+- documentation changes;
+- any deliberate exclusions or follow-up work.
 
-The required `Repository smoke test` runs four direct gates:
+## 8. Protected Quality Gate
 
-1. Rust formatting;
-2. strict Clippy checks across all targets and features;
-3. locked tests across all targets and features;
-4. the Rust repository doctor.
+The required `Repository smoke test` contains four direct steps:
 
-The same gate runs for pull requests, pushes to `main`, merge-queue groups, and manual dispatches. When another commit reaches the same pull request, the older in-progress run is canceled so only the current revision consumes CI time.
+| Step | Command |
+| --- | --- |
+| Formatting | `cargo fmt --check` |
+| Lint | `cargo clippy --locked --all-targets --all-features -- -D warnings` |
+| Tests | `cargo test --locked --all-targets --all-features` |
+| Repository policy | `cargo run --quiet --locked --bin check_repo` |
 
-If the check fails, open the failed step, fix the reported defect, and push the correction to the same branch.
+The workflow currently runs on:
 
-## 9. Merge
+- pull requests targeting `main`;
+- pushes to `main`;
+- merge-queue `checks_requested` groups;
+- manual `workflow_dispatch` runs.
 
-Merge only after the required check passes. The merge queue, when used, runs the same check against the proposed merge-group commit rather than trusting an earlier pull-request result.
+The job has read-only repository contents permission, uses a full commit-SHA pin for `actions/checkout`, and disables persisted checkout credentials.
+
+## 9. Superseded Runs
+
+The workflow concurrency key is based on the workflow plus the pull request number or Git ref. A newer commit cancels an older in-progress run for the same pull request or ref.
+
+A canceled obsolete run is not a quality failure. It means a newer revision has replaced it and will receive the authoritative result.
+
+## 10. Review Before Merge
+
+Before merging:
+
+1. Read the final diff, not merely the commit messages.
+2. Confirm the required check passed on the current head commit.
+3. Resolve review comments and stale conversations.
+4. Confirm documentation matches the implemented behavior.
+5. Confirm no secrets, credentials, personal data, confidential information, or unredacted evidence entered the branch.
+
+## 11. Merge Queue
+
+When the merge queue is used, GitHub creates a proposed merge-group commit and runs the same `Repository smoke test` against that combined state. This catches failures caused by interaction with newer `main` changes instead of trusting an earlier pull-request result.
+
+## 12. After Merge
+
+```bash
+git switch main
+git pull --ff-only origin main
+git branch -d feature/describe-the-change
+```
+
+Delete the remote branch after confirming the merge completed.
 
 ## Dependency Updates
 
-Dependabot checks GitHub Actions and Cargo every Monday at 06:00 Europe/Lisbon time. Routine minor and patch updates are grouped by ecosystem, while major updates remain separate for explicit review.
+Dependabot checks both GitHub Actions and Cargo every Monday at **06:00 Europe/Lisbon**.
+
+- Minor and patch updates are grouped by ecosystem.
+- Major updates remain separate for explicit review.
+- Open version-update pull requests are capped per ecosystem.
+- Dependabot changes still pass through the protected repository gate.
+
+## Documentation Freshness
+
+Update documentation in the same pull request whenever behavior, commands, file layout, policy, supported tooling, automation, or roadmap status changes. Add or update the review date on current-state documents.
+
+A green build beside obsolete instructions is merely a well-tested lie.
 
 ## Safety Rules
 
 Do not commit:
 
-- passwords;
-- API keys;
-- tokens;
-- private keys;
-- live `.env` files;
-- personal data;
-- customer data;
-- confidential information;
-- regulated data;
-- production credentials.
+- passwords, API keys, tokens, private keys, or production credentials;
+- live `.env` files or root credential stores;
+- personal, customer, confidential, or regulated data;
+- unredacted evidence artifacts;
+- unrelated backup, build, or delegated-work directories.
 
-This repository is a learning sandbox, not a production project.
+This repository remains a public learning and testing project, not a production service.
