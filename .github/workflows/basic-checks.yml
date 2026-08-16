@@ -3,13 +3,17 @@ name: Basic Checks
 on:
   push:
     branches:
-      - codex/complete-classifier-calibration
+      - main
   pull_request:
     branches:
       - main
+  merge_group:
+    types:
+      - checks_requested
+  workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: basic-checks-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
@@ -34,80 +38,26 @@ jobs:
     timeout-minutes: 10
 
     steps:
-      - name: Check out working branch
+      - name: Check out repository
+        # Pinned to actions/checkout v7.0.1.
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
-          ref: ${{ github.head_ref || github.ref_name }}
-          persist-credentials: true
+          persist-credentials: false
 
-      - name: Apply canonical classifier formatting
-        env:
-          BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
-        run: |
-          python3 - <<'PY'
-          from pathlib import Path
+      - name: Check formatting
+        run: cargo fmt --check
 
-          path = Path("src/bin/check_repo/secrets.rs")
-          content = path.read_text()
-          content = content.replace(
-              "\nfn secret_signal_score(content: &str) -> u8 {",
-              "\n#[cfg(test)]\nfn secret_signal_score(content: &str) -> u8 {",
-          )
-          content = content.replace(
-              "\nfn secret_assignment_score(content: &str) -> u8 {",
-              "\n#[cfg(test)]\nfn secret_assignment_score(content: &str) -> u8 {",
-          )
-          old = '''        let scored = cases
-              .iter()
-              .map(|case| (secret_signal_score(&case.content), case.expected))
-              .collect::<Vec<_>>();
-          let metrics = calibration_metrics(&scored, SECRET_ASSIGNMENT_THRESHOLD);
+      - name: Check all targets
+        run: cargo check --locked --all-targets --all-features
 
-          assert!(
-          '''
-          new = '''        let scored = cases
-              .iter()
-              .map(|case| (secret_signal_score(&case.content), case.expected))
-              .collect::<Vec<_>>();
-          let false_positives = cases
-              .iter()
-              .filter(|case| {
-                  secret_signal_score(&case.content) >= SECRET_ASSIGNMENT_THRESHOLD
-                      && !case.expected
-              })
-              .map(|case| case.name)
-              .collect::<Vec<_>>();
-          let false_negatives = cases
-              .iter()
-              .filter(|case| {
-                  secret_signal_score(&case.content) < SECRET_ASSIGNMENT_THRESHOLD
-                      && case.expected
-              })
-              .map(|case| case.name)
-              .collect::<Vec<_>>();
-          let metrics = calibration_metrics(&scored, SECRET_ASSIGNMENT_THRESHOLD);
+      - name: Lint all targets
+        run: cargo clippy --locked --all-targets --all-features -- -D warnings
 
-          assert!(
-              false_positives.len() <= 2,
-              "too many false positives: {false_positives:?}"
-          );
-          assert!(
-              false_negatives.len() <= 2,
-              "too many false negatives: {false_negatives:?}"
-          );
-          assert!(
-          '''
-          if old in content:
-              content = content.replace(old, new)
-          path.write_text(content)
-          PY
+      - name: Test all targets
+        run: cargo test --locked --all-targets --all-features
 
-          cargo fmt
+      - name: Check documentation build
+        run: cargo doc --locked --no-deps --document-private-items
 
-          if ! git diff --quiet; then
-            git config user.name "github-actions[bot]"
-            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add src/bin/check_repo/secrets.rs src/bin/check_repo/secrets/corpus.rs
-            git commit -m "style: apply canonical classifier formatting"
-            git push origin "HEAD:${BRANCH_NAME}"
-          fi
+      - name: Run repository doctor
+        run: cargo run --quiet --locked --bin check_repo
