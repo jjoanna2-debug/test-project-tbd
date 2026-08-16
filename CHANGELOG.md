@@ -51,8 +51,16 @@ This project follows a simple chronological changelog. It is a learning reposito
   credential stores and password-manager databases.
 - Made workflow permission checks context-aware and required Docker actions to
   use immutable SHA-256 digests.
-- Grouped routine GitHub Actions and Cargo Dependabot updates by ecosystem to
-  reduce maintenance PR noise without disabling update coverage.
+- Enforced explicit top-level workflow token permissions, rejected
+  `pull_request_target`, and required checkout steps to disable persisted
+  credentials.
+- Expanded the protected Rust gate to all targets and features, direct doctor
+  execution, merge-queue commits, and manual dispatches while canceling stale
+  runs for the same pull request or ref.
+- Grouped routine Dependabot minor and patch updates by ecosystem on a fixed
+  Europe/Lisbon schedule while leaving major updates isolated for review.
+- Made the repository doctor assert the durable CI and Dependabot guarantees so
+  later edits cannot silently remove the automation baseline.
 - Reconciled the roadmap with completed issue and pull request practice.
 - Promoted the Rust-native repository doctor in the README with current checks and sample passing output.
 
