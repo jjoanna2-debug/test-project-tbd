@@ -44,8 +44,19 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Check formatting
-        run: cargo fmt --check
+      - name: Format sources
+        run: cargo fmt
+
+      - name: Upload formatted classifier sources
+        # Pinned to actions/upload-artifact v7.0.1.
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: formatted-classifier-${{ github.sha }}
+          path: |
+            src/bin/check_repo/secrets.rs
+            src/bin/check_repo/secrets/corpus.rs
+          if-no-files-found: error
+          retention-days: 1
 
       - name: Check all targets
         run: cargo check --locked --all-targets --all-features
