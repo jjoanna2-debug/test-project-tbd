@@ -117,6 +117,7 @@ Prefer changes that are:
 - dependency-free unless a dependency has clear measured value;
 - consistent with the Rust 2024 design and pinned toolchain;
 - deterministic and resource-bounded;
+- UTF-8 for scannable text and an honest recognized extension for binary artifacts;
 - accompanied by regression coverage when behavior changes;
 - honest about internal metrics and external limitations.
 

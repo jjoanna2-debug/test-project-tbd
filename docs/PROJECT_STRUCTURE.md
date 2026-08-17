@@ -34,7 +34,7 @@ This document maps the current repository layout and the responsibility of each 
 | Path | Current responsibility |
 | --- | --- |
 | `src/main.rs` | Minimal Rust starter binary and its unit test. |
-| `src/bin/check_repo.rs` | Main repository-doctor binary: required-file policy, source invariants, iterative bounded inventory, text-read limits, sensitive paths, redacted evidence, and classifier orchestration. |
+| `src/bin/check_repo.rs` | Main repository-doctor binary: required-file policy, source invariants, iterative bounded inventory, bounded UTF-8 reads, binary declaration validation, magic-prefix classification, sensitive paths, redacted evidence, and classifier orchestration. |
 | `src/bin/check_repo/secrets.rs` | Private-key, provider-token, AWS-key, bounded assignment parsing, calibrated generic secret scoring, and metric enforcement. |
 | `src/bin/check_repo/secrets/corpus.rs` | Maintained labeled calibration corpus with realistic positives, hard negatives, provider probes, multiline values, YAML blocks, escaped strings, placeholders, and misleading key names. |
 | `src/bin/check_repo/workflows.rs` | Context-aware GitHub Actions trigger allowlisting, read-only permission enforcement, YAML-indirection rejection, checkout safety, lowercase SHA pins, and Docker-digest enforcement. |
@@ -126,6 +126,7 @@ The current design is:
 - dependency-free at runtime;
 - deterministic;
 - resource-bounded;
+- fail-closed for undeclared binary data, invalid UTF-8, and text disguised as binary;
 - calibrated against a maintained labeled corpus;
 - read-only and allowlisted at the GitHub Actions boundary;
 - fail-closed on unreadable or ambiguous repository state;

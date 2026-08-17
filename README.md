@@ -76,14 +76,17 @@ The doctor:
 - stops after 20,000 visited directory entries;
 - rejects repository symlinks rather than following them outside the scan boundary;
 - sorts and deduplicates findings for stable output;
-- skips known binary formats before text inspection;
+- samples up to 64 KiB from declared binary files and verifies that their content is actually binary;
+- reports UTF-8 text hidden behind a binary suffix and then scans the full text;
+- rejects undeclared binary data and invalid UTF-8 instead of silently omitting it;
+- recognizes common executable, archive, object, image, document, audio, database, and WebAssembly magic prefixes;
 - refuses to load non-binary files larger than 4 MiB;
 - applies the same 4 MiB ceiling to required-file reference checks;
 - reports unreadable directories, entries, metadata, and files instead of silently omitting them.
 
 ### Sensitive-file and secret checks
 
-The doctor rejects common credential stores, live environment files, private-key filenames, key containers, and password-manager databases. It detects private-key blocks, AWS access-key shapes, and provider-specific token shapes for GitHub, GitLab, OpenAI, Slack, Stripe, npm, Google, and SendGrid.
+The doctor rejects common credential stores, live environment files, private-key filenames, key containers, and password-manager databases used by cloud CLIs, container tooling, Kubernetes, Terraform, Vault, package managers, and service-account workflows. It detects private-key blocks, AWS access-key shapes, and provider-specific token shapes for GitHub, GitLab, OpenAI, Slack, Stripe, npm, Google, and SendGrid.
 
 Generic assignments are parsed from quoted, unquoted, multiline, escaped, YAML literal-block, and YAML folded-block forms. Colon assignments are accepted only when the left side is a valid configuration key, preventing Rust type annotations, Markdown code, and quoted test literals from being misread as credentials.
 
