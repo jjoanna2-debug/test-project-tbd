@@ -1,6 +1,6 @@
 # Project Structure
 
-Verified against `main` on **2026-08-16**.
+Verified against `main` on **2026-08-17**.
 
 This document maps the current repository layout and the responsibility of each maintained path.
 
@@ -8,7 +8,7 @@ This document maps the current repository layout and the responsibility of each 
 
 | Path | Current responsibility |
 | --- | --- |
-| `README.md` | Current project snapshot, architecture, checks, automation, priorities, evidence-release status, and boundaries. |
+| `README.md` | Current project snapshot, architecture, checks, automation, diagnostics, evidence-release status, and boundaries. |
 | `START_HERE.md` | Beginner map and safe first branch-to-PR exercise. |
 | `Cargo.toml` | Package metadata, version `0.1.0`, Edition 2024, Rust `1.97.1`, repository metadata, publish setting, and lint policy. |
 | `Cargo.lock` | Locked dependency state for reproducible local and CI commands. |
@@ -34,7 +34,9 @@ This document maps the current repository layout and the responsibility of each 
 | Path | Current responsibility |
 | --- | --- |
 | `src/main.rs` | Minimal Rust starter binary and its unit test. |
-| `src/bin/check_repo.rs` | Main repository-doctor binary: required-file policy, source invariants, iterative bounded inventory, bounded UTF-8 reads, binary declaration validation, magic-prefix classification, sensitive paths, redacted evidence, and classifier orchestration. |
+| `src/bin/check_repo.rs` | Main repository-doctor binary: CLI dispatch, required-file policy, source invariants, iterative bounded inventory, sensitive paths, redacted evidence, and classifier orchestration. |
+| `src/bin/check_repo/content.rs` | Bounded UTF-8 reads, declared-binary validation, binary sampling, magic-prefix classification, and fail-closed content handling. |
+| `src/bin/check_repo/output.rs` | Deterministic text, JSON, and GitHub Actions annotation output with CLI parsing and escaping. |
 | `src/bin/check_repo/secrets.rs` | Private-key, provider-token, AWS-key, bounded assignment parsing, calibrated generic secret scoring, and metric enforcement. |
 | `src/bin/check_repo/secrets/corpus.rs` | Maintained labeled calibration corpus with realistic positives, hard negatives, provider probes, multiline values, YAML blocks, escaped strings, placeholders, and misleading key names. |
 | `src/bin/check_repo/workflows.rs` | Context-aware GitHub Actions trigger allowlisting, read-only permission enforcement, YAML-indirection rejection, checkout safety, lowercase SHA pins, and Docker-digest enforcement. |
@@ -42,6 +44,18 @@ This document maps the current repository layout and the responsibility of each 
 The package has no runtime dependencies. `unsafe_code` is forbidden. Clippy `all` and `pedantic` are enabled, while debug macros and unfinished `todo!` or `unimplemented!` paths are denied. CI promotes warnings to failures.
 
 The classifier corpus is test-only. Provider-shaped probes are constructed at runtime so source control does not contain credential-like literals merely to exercise detection.
+
+## Content Boundary Contract
+
+The content classifier:
+
+- reads scannable text through a single bounded UTF-8 path;
+- caps text reads at 4 MiB;
+- samples at most 64 KiB from files carrying declared binary extensions;
+- recognizes common executable, archive, object, image, document, audio, database, font, and WebAssembly signatures;
+- rejects undeclared binary content and invalid UTF-8;
+- reports and scans UTF-8 text disguised behind a binary extension;
+- does not load an entire known binary artifact merely to establish that it is binary.
 
 ## Classifier Calibration Contract
 
@@ -69,12 +83,24 @@ The workflow classifier enforces:
 
 The policy rejects indirection rather than resolving it. Authorization remains visible, deterministic, and locally reviewable in each workflow file.
 
+## Diagnostic Contract
+
+The output module provides:
+
+- human-readable text output for local use;
+- deterministic JSON findings with path, line, and message fields;
+- native GitHub Actions error annotations;
+- automatic GitHub-format selection inside Actions;
+- explicit `--format text`, `--format json`, and `--format github` selection;
+- `--help` and strict rejection of unsupported arguments;
+- escaping for JSON strings and GitHub workflow-command properties.
+
 ## Documentation
 
 | Path | Current responsibility |
 | --- | --- |
-| `docs/LOCAL_SETUP.md` | Tool requirements, clone, branch, complete local gate, push, PR, and post-merge cleanup. |
-| `docs/GITHUB_WORKFLOW.md` | Protected branch-to-merge contract, exact toolchain, CI steps, event allowlist, read-only permissions, concurrency, merge queue, and dependency automation. |
+| `docs/LOCAL_SETUP.md` | Tool requirements, clone, branch, complete local gate, diagnostic formats, push, PR, and post-merge cleanup. |
+| `docs/GITHUB_WORKFLOW.md` | Protected branch-to-merge contract, exact toolchain, CI steps, annotations, event allowlist, read-only permissions, concurrency, merge queue, and dependency automation. |
 | `docs/PROJECT_STRUCTURE.md` | This current layout map. |
 
 ## Local Helper
@@ -89,7 +115,7 @@ CI runs the Rust doctor directly rather than placing a shell wrapper between Git
 
 | Path | Current responsibility |
 | --- | --- |
-| `.github/workflows/basic-checks.yml` | Required `Repository smoke test` for pull requests, pushes to `main`, merge groups, and manual dispatch; validates formatting, compilation, linting, tests, documentation, and repository policy with stale-run cancellation and read-only checkout. |
+| `.github/workflows/basic-checks.yml` | Required `Repository smoke test` for pull requests, pushes to `main`, merge groups, and manual dispatch; validates formatting, compilation, linting, tests, documentation, and repository policy with stale-run cancellation, read-only checkout, and annotated doctor findings. |
 | `.github/dependabot.yml` | Monday 06:00 Europe/Lisbon GitHub Actions and Cargo checks, grouped minor/patch updates, separate major updates, and PR limits. |
 | `.github/CODEOWNERS` | Default review visibility. |
 | `.github/PULL_REQUEST_TEMPLATE.md` | Pull request scope, verification, risk, documentation, and safety checklist. |
@@ -129,10 +155,11 @@ The current design is:
 - fail-closed for undeclared binary data, invalid UTF-8, and text disguised as binary;
 - calibrated against a maintained labeled corpus;
 - read-only and allowlisted at the GitHub Actions boundary;
+- structured for both human and machine-readable diagnostics;
 - fail-closed on unreadable or ambiguous repository state;
 - protected by CI;
-- self-enforcing for critical toolchain, workflow, classifier, and Dependabot invariants;
+- self-enforcing for critical toolchain, workflow, classifier, content, diagnostic, and Dependabot invariants;
 - explicit about the difference between internal regression metrics and external production claims;
 - explicit about the difference between evidence-asset tags and software releases.
 
-Update this file whenever a maintained path, toolchain, calibration contract, workflow trust boundary, release-asset bundle, or material responsibility is added, removed, renamed, or changed.
+Update this file whenever a maintained path, toolchain, calibration contract, content boundary, workflow trust boundary, diagnostic contract, release-asset bundle, or material responsibility is added, removed, renamed, or changed.
