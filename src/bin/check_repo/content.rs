@@ -51,22 +51,21 @@ pub(crate) fn read_repository_content(
         return classify_declared_binary(path, display_path, metadata.len(), sample_kind);
     }
 
-    if matches!(sample_kind, SampleKind::KnownBinary | SampleKind::BinaryLike) {
-        return Err(format!(
+    match sample_kind {
+        SampleKind::KnownBinary | SampleKind::BinaryLike => Err(format!(
             "{display_path}: contains binary data without a recognized binary extension"
-        ));
+        )),
+        SampleKind::InvalidText => Err(format!("{display_path}: must be readable as UTF-8")),
+        SampleKind::Text => {
+            if metadata.len() > MAX_TEXT_FILE_BYTES {
+                return Err(format!("{display_path}: exceeds the 4 MiB text scan limit"));
+            }
+            Ok(ScannableContent::Text {
+                content: read_full_text(path, display_path)?,
+                warning: None,
+            })
+        }
     }
-    if matches!(sample_kind, SampleKind::InvalidText) {
-        return Err(format!("{display_path}: must be readable as UTF-8"));
-    }
-    if metadata.len() > MAX_TEXT_FILE_BYTES {
-        return Err(format!("{display_path}: exceeds the 4 MiB text scan limit"));
-    }
-
-    Ok(ScannableContent::Text {
-        content: read_full_text(path, display_path)?,
-        warning: None,
-    })
 }
 
 fn classify_declared_binary(
@@ -170,6 +169,10 @@ fn has_known_binary_magic(bytes: &[u8]) -> bool {
         b"\0asm",
         b"SQLite format 3\0",
         b"\xca\xfe\xba\xbe",
+        b"\xfe\xed\xfa\xce",
+        b"\xfe\xed\xfa\xcf",
+        b"\xce\xfa\xed\xfe",
+        b"\xcf\xfa\xed\xfe",
         b"OTTO",
         b"RIFF",
         b"ID3",
@@ -179,24 +182,13 @@ fn has_known_binary_magic(bytes: &[u8]) -> bool {
     if PREFIXES.iter().any(|prefix| bytes.starts_with(prefix)) {
         return true;
     }
-    if bytes.starts_with(&[0xff, 0xd8, 0xff]) {
-        return true;
-    }
-    if bytes.starts_with(&[0x00, 0x01, 0x00, 0x00]) {
-        return true;
-    }
-    if bytes.len() > 262 && bytes.get(257..262) == Some(b"ustar") {
+    if bytes.starts_with(&[0xff, 0xd8, 0xff]) || bytes.starts_with(&[0x00, 0x01, 0x00, 0x00]) {
         return true;
     }
 
-    matches!(
-        bytes.get(..4),
-        Some([0xfe, 0xed, 0xfa, 0xce]
-            | [0xfe, 0xed, 0xfa, 0xcf]
-            | [0xce, 0xfa, 0xed, 0xfe]
-            | [0xcf, 0xfa, 0xed, 0xfe]
-            | [0xca, 0xfe, 0xba, 0xbe])
-    )
+    bytes
+        .get(257..262)
+        .is_some_and(|magic| magic == b"ustar")
 }
 
 #[cfg(test)]
