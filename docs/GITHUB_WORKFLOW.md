@@ -1,6 +1,6 @@
 # GitHub Workflow
 
-Verified against the repository on **2026-08-16**.
+Verified against the repository on **2026-08-17**.
 
 This guide defines the current branch-to-merge workflow. The default branch is protected, the required check is named `Repository smoke test`, and the same gate also validates merge-queue groups and pushes to `main`.
 
@@ -42,6 +42,14 @@ cargo clippy --locked --all-targets --all-features -- -D warnings
 cargo test --locked --all-targets --all-features
 cargo doc --locked --no-deps --document-private-items
 cargo run --quiet --locked --bin check_repo
+```
+
+The doctor supports explicit output formats when needed:
+
+```bash
+cargo run --quiet --locked --bin check_repo -- --format text
+cargo run --quiet --locked --bin check_repo -- --format json
+cargo run --quiet --locked --bin check_repo -- --format github
 ```
 
 The local wrapper remains available when only the doctor needs to be rerun:
@@ -100,6 +108,8 @@ The workflow currently runs on:
 
 The job has read-only repository contents permission, uses a full lowercase commit-SHA pin for `actions/checkout`, disables persisted checkout credentials, disables incremental compilation, and treats compiler and rustdoc warnings as failures. The repository toolchain file keeps local and hosted validation on the same exact Rust release.
 
+When `GITHUB_ACTIONS=true`, the repository doctor automatically selects GitHub annotation output. Findings with a parsed file and line become native workflow error annotations rather than anonymous log text. Explicit `--format github` remains available for local reproduction, while `--format json` provides deterministic machine-readable findings.
+
 ## 9. Workflow Security Contract
 
 Every workflow is scanned by the Rust repository doctor. The current contract is intentionally narrow:
@@ -119,13 +129,24 @@ Every workflow is scanned by the Rust repository doctor. The current contract is
 
 A future workflow requiring a new trigger or token permission must change the policy, regression tests, security documentation, and risk analysis in the same pull request. Authority is never inherited merely because YAML accepts it.
 
-## 10. Superseded Runs
+## 10. Content Boundary Contract
+
+Repository files are not trusted merely because their extensions look familiar. The doctor:
+
+- caps scannable text at 4 MiB;
+- samples at most 64 KiB from files carrying declared binary extensions;
+- recognizes common binary magic prefixes;
+- rejects undeclared binary data and invalid UTF-8;
+- reports and scans UTF-8 text hidden behind a binary suffix;
+- preserves bounded work instead of loading known binary artifacts wholesale.
+
+## 11. Superseded Runs
 
 The workflow concurrency key is based on the workflow plus the pull request number or Git ref. A newer commit cancels an older in-progress run for the same pull request or ref.
 
 A canceled obsolete run is not a quality failure. It means a newer revision has replaced it and will receive the authoritative result.
 
-## 11. Review Before Merge
+## 12. Review Before Merge
 
 Before merging:
 
@@ -135,12 +156,13 @@ Before merging:
 4. Confirm documentation matches the implemented behavior.
 5. Confirm no secrets, credentials, personal data, confidential information, or unredacted evidence entered the branch.
 6. Confirm workflow triggers and permissions remain within the repository contract.
+7. Confirm any binary artifact has an honest recognized extension and expected content.
 
-## 12. Merge Queue
+## 13. Merge Queue
 
 When the merge queue is used, GitHub creates a proposed merge-group commit and runs the same `Repository smoke test` against that combined state. This catches failures caused by interaction with newer `main` changes instead of trusting an earlier pull-request result.
 
-## 13. After Merge
+## 14. After Merge
 
 ```bash
 git switch main
@@ -165,7 +187,7 @@ The Rust toolchain is intentionally exact rather than floating. A toolchain upda
 
 ## Documentation Freshness
 
-Update documentation in the same pull request whenever behavior, commands, file layout, policy, supported tooling, automation, or roadmap status changes. Add or update the review date on current-state documents.
+Update documentation in the same pull request whenever behavior, commands, file layout, policy, supported tooling, automation, diagnostics, or roadmap status changes. Add or update the review date on current-state documents.
 
 A green build beside obsolete instructions is merely a well-tested lie.
 
