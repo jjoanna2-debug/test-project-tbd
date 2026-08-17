@@ -3,15 +3,20 @@
 
 #![forbid(unsafe_code)]
 
+#[path = "check_repo/content.rs"]
+mod content;
+#[path = "check_repo/output.rs"]
+mod output;
 #[path = "check_repo/secrets.rs"]
 mod secrets;
 #[path = "check_repo/workflows.rs"]
 mod workflows;
 
+use content::{ScannableContent, read_repository_content, read_required_text};
+use output::{CliAction, OutputFormat, findings_from_raw};
 use secrets::check_secret_content;
 use std::env;
 use std::fs;
-use std::io;
 use std::path::{Path, PathBuf};
 use std::process::ExitCode;
 use workflows::check_workflow_content;
@@ -24,6 +29,8 @@ const REQUIRED_FILES: &[&str] = &[
     "rust-toolchain.toml",
     "src/main.rs",
     "src/bin/check_repo.rs",
+    "src/bin/check_repo/content.rs",
+    "src/bin/check_repo/output.rs",
     "src/bin/check_repo/secrets.rs",
     "src/bin/check_repo/secrets/corpus.rs",
     "src/bin/check_repo/workflows.rs",
@@ -110,8 +117,26 @@ const SOURCE_REFERENCES: &[(&str, &[&str])] = &[
         "src/bin/check_repo.rs",
         &[
             "#![forbid(unsafe_code)]",
+            "check_repo/content.rs",
+            "check_repo/output.rs",
             "check_repo/secrets.rs",
             "check_repo/workflows.rs",
+        ],
+    ),
+    (
+        "src/bin/check_repo/content.rs",
+        &[
+            "pub(crate) fn read_repository_content",
+            "pub(crate) fn read_required_text",
+            "const BINARY_SAMPLE_BYTES",
+        ],
+    ),
+    (
+        "src/bin/check_repo/output.rs",
+        &[
+            "pub(crate) enum OutputFormat",
+            "pub(crate) struct Finding",
+            "pub(crate) fn render",
         ],
     ),
     (
@@ -155,23 +180,17 @@ const SKIPPED_DIRS: &[&str] = &[
     "temp",
     "worktrees",
 ];
-
-const BINARY_SUFFIXES: &[&str] = &[
-    "7z", "a", "avi", "bmp", "class", "dmg", "doc", "docx", "dylib", "eot", "exe", "flac", "gif",
-    "gz", "ico", "jar", "jpeg", "jpg", "m4a", "mov", "mp3", "mp4", "o", "otf", "pdf", "png", "ppt",
-    "pptx", "so", "tar", "tiff", "ttf", "wav", "webm", "webp", "woff", "woff2", "xls", "xlsx",
-    "zip",
-];
-const MAX_TEXT_FILE_BYTES: u64 = 4 * 1024 * 1024;
 const MAX_SCAN_ENTRIES: usize = 20_000;
 
 const BLOCKED_FILENAMES: &[&str] = &[
     ".env",
     ".env.local",
+    ".netrc",
     ".npmrc",
     ".pypirc",
-    ".netrc",
+    ".vault-token",
     "credentials.json",
+    "credentials.tfrc.json",
     "id_dsa",
     "id_ecdsa",
     "id_ed25519",
@@ -183,17 +202,42 @@ const BLOCKED_SECRET_SUFFIXES: &[&str] = &[".jks", ".key", ".kdbx", ".keystore",
 
 const BLOCKED_SENSITIVE_PATHS: &[&str] = &[
     ".aws/credentials",
+    ".azure/accesstokens.json",
+    ".azure/azureprofile.json",
     ".config/gcloud/application_default_credentials.json",
+    ".config/gh/hosts.yml",
+    ".config/rclone/rclone.conf",
     ".docker/config.json",
     ".kube/config",
+    ".terraform.d/credentials.tfrc.json",
 ];
 
 fn main() -> ExitCode {
+    let action = match output::parse_cli() {
+        Ok(action) => action,
+        Err(error) => {
+            eprintln!("{error}\n\n{}", output::help_text());
+            return ExitCode::FAILURE;
+        }
+    };
+
+    match action {
+        CliAction::Help => {
+            print!("{}", output::help_text());
+            ExitCode::SUCCESS
+        }
+        CliAction::Run(format) => run(format),
+    }
+}
+
+fn run(format: OutputFormat) -> ExitCode {
     let root = match env::current_dir() {
         Ok(path) => path,
         Err(error) => {
-            eprintln!("Repository check failed:");
-            eprintln!("- could not read current directory: {error}");
+            let findings = findings_from_raw([format!(
+                "repository: could not read current directory: {error}"
+            )]);
+            output::render(format, &findings);
             return ExitCode::FAILURE;
         }
     };
@@ -207,27 +251,25 @@ fn main() -> ExitCode {
     let repository_files = repo_files_under(&root, &root, &mut failures);
     check_repository_files(&root, &repository_files, &mut failures);
 
-    missing.sort_unstable();
-    missing.dedup();
-    failures.sort_unstable();
-    failures.dedup();
+    let mut raw_findings = missing;
+    raw_findings.extend(failures);
+    raw_findings.sort_unstable();
+    raw_findings.dedup();
 
-    if missing.is_empty() && failures.is_empty() {
-        println!("Repository check passed.");
-        return ExitCode::SUCCESS;
-    }
+    let findings = findings_from_raw(raw_findings);
+    output::render(format, &findings);
 
-    println!("Repository check failed:");
-    for item in missing.iter().chain(failures.iter()) {
-        println!("- {item}");
+    if findings.is_empty() {
+        ExitCode::SUCCESS
+    } else {
+        ExitCode::FAILURE
     }
-    ExitCode::FAILURE
 }
 
 fn check_required_files(root: &Path, missing: &mut Vec<String>) {
     for required_file in REQUIRED_FILES {
         if !root.join(required_file).is_file() {
-            missing.push((*required_file).to_owned());
+            missing.push(format!("{required_file}: required file is missing"));
         }
     }
 }
@@ -239,26 +281,17 @@ fn check_source_references(root: &Path, missing: &mut Vec<String>) {
             continue;
         }
 
-        match fs::metadata(&source_path) {
-            Ok(metadata) if is_oversized_text_file(metadata.len()) => {
-                missing.push(format!("{path} exceeds the 4 MiB text scan limit"));
-                continue;
-            }
-            Ok(_) => {}
+        let content = match read_required_text(&source_path, path) {
+            Ok(content) => content,
             Err(error) => {
-                missing.push(format!("{path} metadata could not be read: {error}"));
+                missing.push(error);
                 continue;
             }
-        }
-
-        let Ok(content) = fs::read_to_string(&source_path) else {
-            missing.push(format!("{path} must be readable as UTF-8"));
-            continue;
         };
 
         for expected in *expected_values {
             if !content.contains(expected) {
-                missing.push(format!("{path} reference: {expected}"));
+                missing.push(format!("{path}: missing required reference: {expected}"));
             }
         }
     }
@@ -271,44 +304,27 @@ fn check_repository_files(root: &Path, files: &[PathBuf], failures: &mut Vec<Str
         check_evidence_artifact(&relative_path, failures);
 
         if is_blocked_sensitive_path(&relative_path) {
-            failures.push(format!("{relative_path} is a blocked sensitive path"));
+            failures.push(format!("{relative_path}: blocked sensitive path"));
         }
 
         if let Some(file_name) = file_path.file_name().and_then(|name| name.to_str())
             && is_blocked_filename(file_name)
         {
-            failures.push(format!("{relative_path} is a blocked sensitive filename"));
+            failures.push(format!("{relative_path}: blocked sensitive filename"));
         }
 
-        if is_binary_file(file_path) {
-            continue;
-        }
-
-        match fs::metadata(file_path) {
-            Ok(metadata) if is_oversized_text_file(metadata.len()) => {
-                failures.push(format!("{relative_path} exceeds the 4 MiB text scan limit"));
-                continue;
-            }
-            Ok(_) => {}
-            Err(error) => {
-                failures.push(format!(
-                    "{relative_path} metadata could not be read: {error}"
-                ));
-                continue;
-            }
-        }
-
-        match fs::read_to_string(file_path) {
-            Ok(content) => {
+        match read_repository_content(file_path, &relative_path) {
+            Ok(ScannableContent::Binary) => {}
+            Ok(ScannableContent::Text { content, warning }) => {
+                if let Some(warning) = warning {
+                    failures.push(warning);
+                }
                 check_secret_content(&relative_path, &content, failures);
                 if is_workflow_file(&relative_path, file_path) {
                     check_workflow_content(&relative_path, &content, failures);
                 }
             }
-            Err(error) if error.kind() == io::ErrorKind::InvalidData => {}
-            Err(error) => {
-                failures.push(format!("{relative_path} could not be read: {error}"));
-            }
+            Err(error) => failures.push(error),
         }
     }
 }
@@ -323,7 +339,9 @@ fn check_evidence_artifact(relative_path: &str, failures: &mut Vec<String>) {
         || lower_path.contains("unredacted")
         || lower_path.contains("nonredacted")
     {
-        failures.push(format!("{relative_path} must be explicitly redacted"));
+        failures.push(format!(
+            "{relative_path}: evidence artifact must be explicitly redacted"
+        ));
     }
 }
 
@@ -337,7 +355,7 @@ fn repo_files_under(root: &Path, directory: &Path, failures: &mut Vec<String>) -
             Ok(entries) => entries,
             Err(error) => {
                 failures.push(format!(
-                    "{} could not be read: {error}",
+                    "{}: directory could not be read: {error}",
                     relative_path(root, &current_directory)
                 ));
                 continue;
@@ -348,7 +366,7 @@ fn repo_files_under(root: &Path, directory: &Path, failures: &mut Vec<String>) -
             scanned_entries += 1;
             if scanned_entries > MAX_SCAN_ENTRIES {
                 failures.push(format!(
-                    "repository scan exceeds the {MAX_SCAN_ENTRIES} entry limit"
+                    "repository: scan exceeds the {MAX_SCAN_ENTRIES} entry limit"
                 ));
                 directories.clear();
                 break;
@@ -356,7 +374,7 @@ fn repo_files_under(root: &Path, directory: &Path, failures: &mut Vec<String>) -
 
             let Ok(entry) = entry else {
                 failures.push(format!(
-                    "{} contains an unreadable directory entry",
+                    "{}: contains an unreadable directory entry",
                     relative_path(root, &current_directory)
                 ));
                 continue;
@@ -365,7 +383,7 @@ fn repo_files_under(root: &Path, directory: &Path, failures: &mut Vec<String>) -
             let path = entry.path();
             let Ok(file_type) = entry.file_type() else {
                 failures.push(format!(
-                    "{} file type could not be read",
+                    "{}: file type could not be read",
                     relative_path(root, &path)
                 ));
                 continue;
@@ -379,7 +397,7 @@ fn repo_files_under(root: &Path, directory: &Path, failures: &mut Vec<String>) -
                 files.push(path);
             } else if file_type.is_symlink() {
                 failures.push(format!(
-                    "{} is a symlink and will not be followed",
+                    "{}: symlink will not be followed",
                     relative_path(root, &path)
                 ));
             }
@@ -419,17 +437,6 @@ fn is_environment_template(file_name: &str) -> bool {
     )
 }
 
-fn is_binary_file(path: &Path) -> bool {
-    path.extension()
-        .and_then(|extension| extension.to_str())
-        .map(str::to_ascii_lowercase)
-        .is_some_and(|extension| BINARY_SUFFIXES.contains(&extension.as_str()))
-}
-
-fn is_oversized_text_file(size: u64) -> bool {
-    size > MAX_TEXT_FILE_BYTES
-}
-
 fn is_workflow_file(relative_path: &str, path: &Path) -> bool {
     relative_path.starts_with(".github/workflows/")
         && matches!(
@@ -450,10 +457,7 @@ fn relative_path(root: &Path, path: &Path) -> String {
 
 #[cfg(test)]
 mod tests {
-    use super::{
-        MAX_TEXT_FILE_BYTES, is_binary_file, is_blocked_filename, is_blocked_sensitive_path,
-        is_oversized_text_file, should_skip_dir,
-    };
+    use super::{is_blocked_filename, is_blocked_sensitive_path, should_skip_dir};
     use std::path::Path;
 
     #[test]
@@ -462,6 +466,7 @@ mod tests {
         assert!(is_blocked_filename("service-account.json"));
         assert!(is_blocked_filename("signing.P12"));
         assert!(is_blocked_filename("vault.kdbx"));
+        assert!(is_blocked_filename(".vault-token"));
         assert!(!is_blocked_filename(".env.example"));
         assert!(!is_blocked_filename(".env.production.sample"));
         assert!(!is_blocked_filename("public-certificate.pem"));
@@ -471,20 +476,8 @@ mod tests {
     fn blocks_root_credential_paths() {
         assert!(is_blocked_sensitive_path(".aws/credentials"));
         assert!(is_blocked_sensitive_path(".KUBE/config"));
+        assert!(is_blocked_sensitive_path(".config/gh/hosts.yml"));
         assert!(!is_blocked_sensitive_path("docs/.aws/credentials"));
-    }
-
-    #[test]
-    fn recognizes_binary_extensions_case_insensitively() {
-        assert!(is_binary_file(Path::new("archive.ZIP")));
-        assert!(is_binary_file(Path::new("fixture.DOCX")));
-        assert!(!is_binary_file(Path::new("README.md")));
-    }
-
-    #[test]
-    fn bounds_text_file_scans() {
-        assert!(!is_oversized_text_file(MAX_TEXT_FILE_BYTES));
-        assert!(is_oversized_text_file(MAX_TEXT_FILE_BYTES + 1));
     }
 
     #[test]
