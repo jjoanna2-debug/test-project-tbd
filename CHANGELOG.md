@@ -1,6 +1,6 @@
 # Changelog
 
-Documentation reconciled through **2026-08-16**.
+Documentation reconciled through **2026-08-17**.
 
 All notable changes to this repository are recorded here. The project follows a simple chronological changelog rather than a formal release-management process.
 
@@ -28,6 +28,9 @@ All notable changes to this repository are recorded here. The project follows a 
 - Dedicated test-only classifier corpus with realistic positives, hard negatives, provider probes, multiline assignments, YAML blocks, escaped values, documentation examples, placeholders, and misleading key names.
 - Calibration gates for average precision, precision, recall, and F1 at the active classifier threshold.
 - Workflow-policy regression tests for read-only permissions, trigger allowlisting, YAML indirection, checkout safety, nested inputs, and immutable references.
+- Focused content-classification module for bounded UTF-8 reads, declared-binary validation, magic-prefix recognition, and fail-closed handling.
+- Focused output module with deterministic text, JSON, and GitHub Actions annotation formats.
+- Command-line `--format` selection and `--help` for the repository doctor.
 
 ### Changed
 
@@ -45,13 +48,13 @@ All notable changes to this repository are recorded here. The project follows a 
 - Replaced recursive filesystem walking with iterative traversal capped at 20,000 visited entries.
 - Rejected repository symlinks instead of silently omitting them from the security boundary.
 - Normalized binary-extension handling across letter case.
-- Refused non-binary text files over 4 MiB before loading them into memory.
+- Refused scannable text files over 4 MiB before loading them into memory.
 - Applied the same 4 MiB ceiling to required-file reference checks and surfaced metadata failures explicitly.
 - Replaced extension-only binary skipping with bounded byte classification and magic-prefix detection.
 - Sampled declared binary files before skipping them, then reported and scanned UTF-8 text disguised behind binary suffixes.
 - Rejected undeclared binary content and invalid UTF-8 instead of silently omitting unscannable files.
 - Expanded blocked credential paths for cloud CLIs, GitHub CLI, rclone, Terraform, Vault, Docker, Kubernetes, and package tooling.
-- Split secret and workflow classifiers into focused Rust modules.
+- Split content, secret, workflow, and output responsibilities into focused Rust modules.
 - Replaced broad secret-key substring matching with exact key semantics, bounded multiline assignment parsing, provider-token plausibility checks, placeholder suppression, and per-file deduplication.
 - Added quoted, unquoted, escaped, multiline, YAML literal-block, and YAML folded-block parsing with explicit 4,096-byte and 32-line candidate limits.
 - Expanded provider coverage to current GitHub, GitLab, OpenAI, Slack, Stripe, npm, Google, SendGrid, AWS access-key, and private-key signals.
@@ -68,9 +71,12 @@ All notable changes to this repository are recorded here. The project follows a 
 - Corrected checkout-step tracking so nested input lists do not terminate checkout policy validation.
 - Expanded the protected Rust gate to all targets and features, direct doctor execution, merge-queue groups, pushes to `main`, and manual dispatches.
 - Added concurrency that cancels superseded runs for the same pull request or ref.
+- Made the doctor select GitHub annotation output automatically when `GITHUB_ACTIONS=true` while preserving concise text output locally.
+- Added deterministic JSON findings with stable `path`, `line`, and `message` fields for machine consumers.
+- Normalized repository findings into structured diagnostics without changing the underlying fail-closed exit behavior.
 - Grouped routine Dependabot minor and patch updates by ecosystem on a fixed Europe/Lisbon schedule while leaving major updates isolated for review.
-- Made the repository doctor assert durable toolchain, CI, classifier, workflow, and Dependabot guarantees so later edits cannot silently remove the automation baseline.
-- Reconciled the roadmap with completed repository, workflow, automation, doctor, and classifier-calibration phases.
+- Made the repository doctor assert durable toolchain, CI, classifier, workflow, content, diagnostic, and Dependabot guarantees so later edits cannot silently remove the automation baseline.
+- Reconciled the roadmap with completed repository, workflow, automation, doctor, classifier-calibration, and structured-diagnostic phases.
 - Distinguished the `codex-issue-22773-assets` and `codex-issue-23192-assets` evidence bundles from software releases, package versions, supported builds, and compatibility commitments.
 - Reconciled security, support, contribution, conduct, funding, legal, disclaimer, and attribution documents with the implemented repository and evidence surfaces.
 - Replaced the lightweight pull request checklist with scope, verification, impact, documentation, rollback, and follow-up sections.
@@ -80,7 +86,7 @@ All notable changes to this repository are recorded here. The project follows a 
 
 ### Documentation
 
-- Reviewed every maintained current-state document against the repository as implemented on 2026-08-16.
+- Reviewed every maintained current-state document against the repository as implemented through 2026-08-17.
 - Corrected beginner instructions to use a branch and pull request rather than pushing routine work directly to protected `main`.
 - Replaced stale “basic check” descriptions with the current modular doctor, protected gate, merge-queue, concurrency, resource-bound, and dependency-automation behavior.
 - Added explicit review dates to current technical and policy documentation.
@@ -91,6 +97,8 @@ All notable changes to this repository are recorded here. The project follows a 
 - Updated the README, beginner map, local setup, workflow guide, and structure map for the exact Rust 2024 toolchain and six-step quality gate.
 - Replaced the classifier roadmap's “in progress” status with the implemented calibration contract and optional future maintenance direction.
 - Documented the workflow event allowlist, universal write-permission rejection, indirection ban, checkout safety rules, and lowercase immutable-reference contract.
+- Documented content classification and all three repository-doctor diagnostic formats.
+- Marked structured diagnostics complete and moved genuinely optional work into a separate future phase.
 
 ### Notes
 
