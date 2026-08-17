@@ -32,7 +32,9 @@ pub(crate) fn help_text() -> &'static str {
 }
 
 pub(crate) fn findings_from_raw(raw: impl IntoIterator<Item = String>) -> Vec<Finding> {
-    raw.into_iter().map(|value| Finding::from_raw(&value)).collect()
+    raw.into_iter()
+        .map(|value| Finding::from_raw(&value))
+        .collect()
 }
 
 pub(crate) fn render(format: OutputFormat, findings: &[Finding]) {
@@ -205,10 +207,9 @@ fn render_github(findings: &[Finding]) {
                 github_property_escape(path),
                 line
             ),
-            (Some(path), None) => println!(
-                "::error file={}::{message}",
-                github_property_escape(path)
-            ),
+            (Some(path), None) => {
+                println!("::error file={}::{message}", github_property_escape(path))
+            }
             (None, _) => println!("::error::{message}"),
         }
     }
@@ -253,7 +254,10 @@ mod tests {
     #[test]
     fn parses_supported_output_formats() {
         assert_eq!(
-            parse_args(["--format".to_owned(), "json".to_owned()], OutputFormat::Text),
+            parse_args(
+                ["--format".to_owned(), "json".to_owned()],
+                OutputFormat::Text
+            ),
             Ok(CliAction::Run(OutputFormat::Json))
         );
         assert_eq!(
