@@ -30,8 +30,8 @@ pub(crate) fn read_required_text(path: &Path, display_path: &str) -> Result<Stri
         return Err(format!("{display_path}: exceeds the 4 MiB text scan limit"));
     }
 
-    let bytes = fs::read(path)
-        .map_err(|error| format!("{display_path}: could not be read: {error}"))?;
+    let bytes =
+        fs::read(path).map_err(|error| format!("{display_path}: could not be read: {error}"))?;
     String::from_utf8(bytes).map_err(|_| format!("{display_path}: must be readable as UTF-8"))
 }
 
@@ -104,8 +104,8 @@ fn read_sample(path: &Path) -> io::Result<Vec<u8>> {
 }
 
 fn read_full_text(path: &Path, display_path: &str) -> Result<String, String> {
-    let bytes = fs::read(path)
-        .map_err(|error| format!("{display_path}: could not be read: {error}"))?;
+    let bytes =
+        fs::read(path).map_err(|error| format!("{display_path}: could not be read: {error}"))?;
     String::from_utf8(bytes).map_err(|_| format!("{display_path}: must be readable as UTF-8"))
 }
 
@@ -186,9 +186,7 @@ fn has_known_binary_magic(bytes: &[u8]) -> bool {
         return true;
     }
 
-    bytes
-        .get(257..262)
-        .is_some_and(|magic| magic == b"ustar")
+    bytes.get(257..262).is_some_and(|magic| magic == b"ustar")
 }
 
 #[cfg(test)]
@@ -217,6 +215,9 @@ mod tests {
     fn distinguishes_text_binary_and_invalid_text() {
         assert_eq!(classify_sample(b"plain UTF-8 text\n"), SampleKind::Text);
         assert_eq!(classify_sample(b"abc\0def"), SampleKind::BinaryLike);
-        assert_eq!(classify_sample(&[b'a', 0xff, b'b']), SampleKind::InvalidText);
+        assert_eq!(
+            classify_sample(&[b'a', 0xff, b'b']),
+            SampleKind::InvalidText
+        );
     }
 }
