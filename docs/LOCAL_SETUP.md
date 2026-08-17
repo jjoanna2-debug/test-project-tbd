@@ -1,8 +1,8 @@
 # Local Setup
 
-Verified against the repository on **2026-08-16**.
+Verified against the repository on **2026-08-17**.
 
-This guide covers the current local workflow: clone, create a branch, run the same validation used by CI, commit, push, and open a pull request.
+This guide covers the current local workflow: clone, create a branch, run the same validation used by CI, inspect repository-doctor diagnostics, commit, push, and open a pull request.
 
 ## Requirements
 
@@ -55,7 +55,10 @@ Cargo.toml
 rust-toolchain.toml
 src/main.rs
 src/bin/check_repo.rs
+src/bin/check_repo/content.rs
+src/bin/check_repo/output.rs
 src/bin/check_repo/secrets.rs
+src/bin/check_repo/secrets/corpus.rs
 src/bin/check_repo/workflows.rs
 README.md
 START_HERE.md
@@ -80,6 +83,30 @@ cargo run --quiet --locked --bin check_repo
 
 The repository treats compiler, Clippy, and rustdoc warnings as failures in CI. Fix the first reported defect, rerun the failed command, and then rerun the full set.
 
+## Repository Doctor Output
+
+The local default is human-readable text:
+
+```bash
+cargo run --quiet --locked --bin check_repo -- --format text
+```
+
+For deterministic machine-readable output:
+
+```bash
+cargo run --quiet --locked --bin check_repo -- --format json
+```
+
+For the same annotation format used in GitHub Actions:
+
+```bash
+cargo run --quiet --locked --bin check_repo -- --format github
+```
+
+Use `--help` for the supported interface. Unsupported or ambiguous arguments fail rather than being ignored.
+
+Inside GitHub Actions, the doctor automatically defaults to GitHub annotations. Locally it defaults to text.
+
 ## Run the Doctor Wrapper
 
 ```bash
@@ -88,17 +115,19 @@ bash scripts/doctor.sh
 
 The doctor currently checks:
 
-- required repository, toolchain, and source invariants;
+- required repository, toolchain, source, content, and output invariants;
 - one deterministic, sorted repository inventory;
 - iterative traversal capped at 20,000 visited entries;
 - rejection of symlinks and explicit reporting of unreadable filesystem state;
-- a 4 MiB ceiling on every non-binary text read, including required-file reference checks;
+- a 4 MiB ceiling on every scannable text read, including required-file reference checks;
+- up to 64 KiB of validation for files carrying declared binary extensions;
+- binary magic prefixes, UTF-8 validity, misleading binary suffixes, and undeclared binary content;
 - sensitive filenames, credential stores, key containers, and non-redacted evidence paths;
 - private-key blocks, provider token shapes, AWS access-key shapes, and scored generic secret assignments;
-- contextual GitHub Actions permissions, triggers, checkout credentials, full action SHA pins, and Docker digests;
-- durable CI and Dependabot configuration invariants.
+- contextual GitHub Actions permissions, triggers, YAML indirection, checkout credentials, full lowercase action SHA pins, and lowercase Docker digests;
+- durable CI, classifier, content, diagnostic, and Dependabot configuration invariants.
 
-Passing output:
+Passing wrapper output:
 
 ```text
 Repository check passed.
