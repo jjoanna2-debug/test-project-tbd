@@ -208,7 +208,7 @@ fn render_github(findings: &[Finding]) {
                 line
             ),
             (Some(path), None) => {
-                println!("::error file={}::{message}", github_property_escape(path))
+                println!("::error file={}::{message}", github_property_escape(path));
             }
             (None, _) => println!("::error::{message}"),
         }
