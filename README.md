@@ -1,8 +1,8 @@
 # Rust Staging Lab
 
-Documentation snapshot: **2026-08-16**.
+Documentation snapshot: **2026-08-17**.
 
-A compact Rust-first staging area for learning GitHub, repository automation, defensive tooling, and future CLI ideas. The repository is deliberately small, but its checks are real: protected CI, deterministic repository inspection, bounded filesystem work, contextual GitHub Actions policy checks, and a calibrated secret-signal classifier.
+A compact Rust-first staging area for learning GitHub, repository automation, defensive tooling, and future CLI ideas. The repository is deliberately small, but its checks are real: protected CI, deterministic repository inspection, bounded filesystem work, contextual GitHub Actions policy checks, calibrated secret-signal classification, and structured diagnostics.
 
 ## Current Snapshot
 
@@ -14,8 +14,10 @@ A compact Rust-first staging area for learning GitHub, repository automation, de
 | Runtime dependencies | None |
 | Default branch | Protected `main` |
 | Required check | `Repository smoke test` |
-| Doctor text-read limit | 4 MiB per non-binary file |
+| Doctor text-read limit | 4 MiB per scannable text file |
+| Doctor binary sample limit | 64 KiB per declared binary file |
 | Doctor traversal limit | 20,000 visited directory entries |
+| Diagnostic formats | text, JSON, GitHub Actions annotations |
 | Intended use | Learning, testing, and experimentation only |
 
 Public repository: <https://github.com/jjoanna2-debug/test-project-tbd>
@@ -34,6 +36,7 @@ This repository is used to practice and improve:
 - dependency-free repository inspection and policy enforcement;
 - secret-pattern classification with measurable regression tests;
 - safe GitHub Actions and Dependabot configuration;
+- deterministic human-readable and machine-readable diagnostics;
 - documentation, licensing, contribution, and public-repository hygiene.
 
 It is not a production system, commercial product, managed service, professional recommendation, security product, or operational dependency.
@@ -46,6 +49,8 @@ Cargo.lock
 rust-toolchain.toml
 src/main.rs
 src/bin/check_repo.rs
+src/bin/check_repo/content.rs
+src/bin/check_repo/output.rs
 src/bin/check_repo/secrets.rs
 src/bin/check_repo/secrets/corpus.rs
 src/bin/check_repo/workflows.rs
@@ -65,7 +70,7 @@ The manifest also denies debug macros, unfinished `todo!` paths, and `unimplemen
 
 ## Repository Doctor
 
-`src/bin/check_repo.rs` builds one deterministic repository inventory and coordinates focused classifiers. It exits successfully only when the repository satisfies its current structural, security, workflow, and automation invariants.
+`src/bin/check_repo.rs` builds one deterministic repository inventory and coordinates focused content, secret, workflow, and output modules. It exits successfully only when the repository satisfies its current structural, security, workflow, automation, and content invariants.
 
 ### Inventory and resource boundaries
 
@@ -80,7 +85,7 @@ The doctor:
 - reports UTF-8 text hidden behind a binary suffix and then scans the full text;
 - rejects undeclared binary data and invalid UTF-8 instead of silently omitting it;
 - recognizes common executable, archive, object, image, document, audio, database, and WebAssembly magic prefixes;
-- refuses to load non-binary files larger than 4 MiB;
+- refuses to load scannable text files larger than 4 MiB;
 - applies the same 4 MiB ceiling to required-file reference checks;
 - reports unreadable directories, entries, metadata, and files instead of silently omitting them.
 
@@ -133,7 +138,21 @@ Workflow checks are context-aware rather than blind substring searches. The doct
 - lowercase SHA-256 digests for Docker actions;
 - checkout-step tracking that remains correct when inputs contain nested YAML lists.
 
-A future workflow needing a different trigger or token permission must update the policy, tests, risk analysis, and current documentation explicitly. The repository does not inherit authority merely because a YAML key exists for it.
+A future workflow needing a different trigger or token permission must update the policy, tests, risk analysis, and current documentation explicitly.
+
+### Structured diagnostics
+
+The doctor supports three deterministic output modes:
+
+```bash
+cargo run --quiet --locked --bin check_repo -- --format text
+cargo run --quiet --locked --bin check_repo -- --format json
+cargo run --quiet --locked --bin check_repo -- --format github
+```
+
+`text` is the default locally. `json` emits stable `path`, `line`, and `message` fields for machine consumers. `github` emits GitHub Actions workflow-command annotations so failures appear on the relevant file and line when available. Inside GitHub Actions, the default automatically switches to annotation output.
+
+The command also supports `--help` and rejects unknown or ambiguous arguments rather than silently inventing behavior.
 
 ## Run Locally
 
@@ -154,7 +173,7 @@ Or run the local wrapper for the repository doctor:
 bash scripts/doctor.sh
 ```
 
-Passing doctor output:
+Passing local output:
 
 ```text
 Repository check passed.
@@ -170,11 +189,11 @@ The required `Repository smoke test` runs formatting, compilation, strict Clippy
 - merge-queue groups;
 - manual workflow dispatches.
 
-The workflow disables incremental compilation, treats compiler and rustdoc warnings as failures, forces current JavaScript Action runtime behavior, and uses the exact toolchain declared by the repository.
+The workflow disables incremental compilation, treats compiler and rustdoc warnings as failures, forces current JavaScript Action runtime behavior, and uses the exact toolchain declared by the repository. The repository doctor automatically emits GitHub annotations during Actions runs.
 
 New commits cancel older in-progress runs for the same pull request or ref. CI therefore validates the current revision rather than financing an archaeological survey of superseded commits.
 
-The doctor also asserts the important toolchain, workflow, and Dependabot settings. Removing merge-queue coverage, stale-run cancellation, all-target checks, documentation compilation, direct doctor execution, read-only workflow boundaries, immutable references, or grouped dependency-update policy causes the repository gate to fail.
+The doctor also asserts the important toolchain, workflow, classifier, content-boundary, and Dependabot settings. Removing merge-queue coverage, stale-run cancellation, all-target checks, documentation compilation, direct doctor execution, read-only workflow boundaries, immutable references, or grouped dependency-update policy causes the repository gate to fail.
 
 ## Dependency Automation
 
@@ -209,10 +228,10 @@ Use a branch and pull request for changes to `main`. The current workflow is doc
 
 The completed baseline does not require another framework or another folder of ceremony. Future work should begin only when a concrete consumer exists. Useful candidates include:
 
-- structured findings for CI annotations or machine consumption;
 - benchmarks for large-but-valid repositories within the existing resource limits;
 - reusable library boundaries if a second binary or caller appears;
 - corpus maintenance when provider formats or realistic hard negatives change;
+- configuration only when fixed policy is no longer sufficient;
 - dependencies only where measured value exceeds maintenance and supply-chain cost.
 
 See [ROADMAP.md](ROADMAP.md) for the completed phase status and optional direction.
@@ -237,7 +256,7 @@ The repository doctor and protected workflow are guardrails, not a security audi
 
 ## Funding Status
 
-No active GitHub funding provider is configured as of 2026-08-16. The placeholder `.github/FUNDING.yml` does not expose a Sponsor button or create sponsorship tiers, paid support, consulting, maintenance, priority, or service obligations.
+No active GitHub funding provider is configured as of 2026-08-17. The placeholder `.github/FUNDING.yml` does not expose a Sponsor button or create sponsorship tiers, paid support, consulting, maintenance, priority, or service obligations.
 
 ## License
 
